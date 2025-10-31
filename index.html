@@ -25,6 +25,7 @@
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
+            --mobile-header-height: 60px;
         }
         
         * {
@@ -654,47 +655,372 @@
             color: var(--text-secondary);
         }
         
-        /* Responsive */
+        /* Roll Number Badge */
+        .roll-badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+        
+        /* Mobile Optimizations */
         @media (max-width: 768px) {
+            /* Sidebar adjustments */
             .sidebar {
                 transform: translateX(-100%);
+                width: 280px;
             }
             
             .sidebar.active {
                 transform: translateX(0);
             }
             
-            .main-content {
-                margin-left: 0;
+            .sidebar-header {
                 padding: 1rem;
             }
             
-            .footer {
-                margin-left: 0;
+            .sidebar-header h3 {
+                font-size: 1.25rem;
             }
             
+            .sidebar-menu .nav-link {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Main content adjustments */
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: calc(var(--mobile-header-height) + 1rem);
+            }
+            
+            /* Footer adjustments */
+            .footer {
+                margin-left: 0;
+                padding: 1.5rem 0;
+            }
+            
+            /* Menu toggle button */
             .menu-toggle {
                 display: block;
             }
             
-            .dashboard-card {
-                margin-bottom: 1rem;
-            }
-            
+            /* Top bar adjustments */
             .top-bar {
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 999;
+                border-radius: 0;
+                height: var(--mobile-header-height);
             }
             
             .top-bar h2 {
-                margin-bottom: 1rem;
+                margin-bottom: 0.5rem;
+                font-size: 1.25rem;
             }
             
+            /* Dashboard cards adjustments */
+            .dashboard-card {
+                margin-bottom: 1rem;
+                padding: 1.25rem;
+            }
+            
+            .dashboard-card i {
+                font-size: 2rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .dashboard-card h3 {
+                font-size: 1.75rem;
+            }
+            
+            /* Fee summary adjustments */
             .fee-summary {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .fee-stat-card {
+                padding: 0.75rem;
+            }
+            
+            .fee-stat-card .stat-value {
+                font-size: 1.25rem;
+            }
+            
+            /* Table adjustments */
+            .table-responsive {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+            
+            .table thead th {
+                font-size: 0.7rem;
+                padding: 0.5rem;
+            }
+            
+            .table tbody td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            /* Button adjustments */
+            .btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            /* Modal adjustments */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            /* Download options adjustments */
+            .download-options {
                 grid-template-columns: 1fr;
             }
             
-            .download-options {
+            /* Form adjustments */
+            .form-control, .form-select {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            /* Notification adjustments */
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            /* Connection status adjustments */
+            .connection-status {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                text-align: center;
+            }
+            
+            /* Card adjustments */
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            .card-header {
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            /* Progress bar adjustments */
+            .progress {
+                height: 6px;
+            }
+            
+            /* Login container adjustments */
+            .login-container {
+                margin: 50px auto;
+                padding: 1.5rem;
+            }
+            
+            .login-header i {
+                font-size: 2.5rem;
+            }
+            
+            /* Mobile floating action button */
+            .mobile-fab {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background-color: var(--accent-color);
+                color: white;
+                border: none;
+                box-shadow: var(--shadow-lg);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 998;
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-fab:hover {
+                transform: scale(1.1);
+                background-color: #2c5282;
+            }
+            
+            .mobile-fab i {
+                font-size: 1.5rem;
+            }
+            
+            /* Mobile navigation overlay */
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 997;
+                display: none;
+            }
+            
+            .mobile-nav-overlay.active {
+                display: block;
+            }
+            
+            /* Mobile bottom navigation */
+            .mobile-bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                display: none;
+                z-index: 996;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .mobile-bottom-nav .nav {
+                display: flex;
+                justify-content: space-around;
+            }
+            
+            .mobile-bottom-nav .nav-link {
+                color: rgba(255, 255, 255, 0.7);
+                padding: 0.75rem;
+                text-align: center;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+            }
+            
+            .mobile-bottom-nav .nav-link.active {
+                color: white;
+            }
+            
+            .mobile-bottom-nav .nav-link i {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-bottom-nav .nav-link span {
+                font-size: 0.7rem;
+            }
+            
+            /* Student card adjustments */
+            .student-card {
+                border: 1px solid var(--border-color);
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                transition: all 0.2s ease;
+            }
+            
+            .student-card:hover {
+                box-shadow: var(--shadow-md);
+                border-color: var(--accent-color);
+            }
+            
+            .student-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.75rem;
+            }
+            
+            .student-card-name {
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+            
+            .student-card-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            .student-card-body {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .student-card-detail {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .student-card-label {
+                color: var(--text-muted);
+                font-size: 0.75rem;
+            }
+            
+            .student-card-value {
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .dashboard-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .fee-stat-card .stat-value {
+                font-size: 1.1rem;
+            }
+            
+            .table thead th {
+                font-size: 0.65rem;
+            }
+            
+            .table tbody td {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .btn {
+                font-size: 0.75rem;
+            }
+            
+            .card-header {
+                font-size: 0.9rem;
+            }
+            
+            .student-card-body {
                 grid-template-columns: 1fr;
             }
         }
@@ -757,6 +1083,9 @@
 
     <!-- Main Dashboard -->
     <div id="dashboard" style="display: none;">
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+        
         <!-- Menu Toggle Button for Mobile -->
         <button class="menu-toggle" id="menuToggle">
             <i class="bi bi-list"></i>
@@ -814,28 +1143,28 @@
             <!-- Dashboard Section -->
             <div id="dashboardSection" class="content-section">
                 <div class="row mb-4">
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 col-6 mb-3">
                         <div class="dashboard-card">
                             <i class="bi bi-people-fill"></i>
                             <h3 id="totalStudents">0</h3>
                             <p>Total Students</p>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 col-6 mb-3">
                         <div class="dashboard-card">
                             <i class="bi bi-book-fill"></i>
                             <h3 id="totalCourses">0</h3>
                             <p>Total Courses</p>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 col-6 mb-3">
                         <div class="dashboard-card">
                             <i class="bi bi-cash-stack"></i>
                             <h3 id="totalFees">PKR 0</h3>
                             <p>Total Fees</p>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 col-6 mb-3">
                         <div class="dashboard-card">
                             <i class="bi bi-calendar-check-fill"></i>
                             <h3 id="attendanceRate">0%</h3>
@@ -908,23 +1237,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Contact</th>
-                                        <th>Course</th>
-                                        <th>Fees (PKR)</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="studentsTableBody">
-                                    <!-- Students will be added here -->
-                                </tbody>
-                            </table>
+                        <div id="studentsContainer" class="row">
+                            <!-- Student cards will be added here -->
                         </div>
                     </div>
                 </div>
@@ -949,7 +1263,6 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Course Name</th>
                                         <th>Students Enrolled</th>
                                         <th>Actions</th>
@@ -969,8 +1282,8 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Fees Management</h5>
-                        <div class="d-flex">
-                            <select id="monthSelect" class="form-select me-2">
+                        <div class="d-flex flex-column flex-md-row">
+                            <select id="monthSelect" class="form-select me-md-2 mb-2 mb-md-0">
                                 <option value="0">January</option>
                                 <option value="1">February</option>
                                 <option value="2">March</option>
@@ -984,7 +1297,7 @@
                                 <option value="10">November</option>
                                 <option value="11">December</option>
                             </select>
-                            <select id="yearSelect" class="form-select me-2">
+                            <select id="yearSelect" class="form-select me-md-2 mb-2 mb-md-0">
                                 <!-- Years will be populated dynamically -->
                             </select>
                             <button class="btn btn-primary" id="downloadFeesBtn">
@@ -993,23 +1306,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>ID</th>
-                                        <th>Student Name</th>
-                                        <th>Course</th>
-                                        <th>Fee Amount (PKR)</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="feesTableBody">
-                                    <!-- Fees will be added here -->
-                                </tbody>
-                            </table>
+                        <div id="feesContainer" class="row">
+                            <!-- Fee cards will be added here -->
                         </div>
                     </div>
                 </div>
@@ -1020,12 +1318,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Attendance Management</h5>
-                        <div class="d-flex">
-                            <input type="date" id="attendanceDate" class="form-control me-2">
-                            <button id="markAttendanceBtn" class="btn btn-light me-2">
+                        <div class="d-flex flex-column flex-md-row">
+                            <input type="date" id="attendanceDate" class="form-control me-md-2 mb-2 mb-md-0">
+                            <button id="markAttendanceBtn" class="btn btn-light me-md-2 mb-2 mb-md-0">
                                 <i class="bi bi-check2-square"></i> Mark Attendance
                             </button>
-                            <button id="deleteAttendanceBtn" class="btn btn-outline-danger me-2">
+                            <button id="deleteAttendanceBtn" class="btn btn-outline-danger me-md-2 mb-2 mb-md-0">
                                 <i class="bi bi-trash"></i> Delete 3 Months
                             </button>
                             <button class="btn btn-primary" id="downloadAttendanceBtn">
@@ -1034,22 +1332,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>ID</th>
-                                        <th>Student Name</th>
-                                        <th>Course</th>
-                                        <th>Attendance Rate</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="attendanceTableBody">
-                                    <!-- Attendance will be added here -->
-                                </tbody>
-                            </table>
+                        <div id="attendanceContainer" class="row">
+                            <!-- Attendance cards will be added here -->
                         </div>
                     </div>
                 </div>
@@ -1070,6 +1354,37 @@
                 </div>
             </div>
         </footer>
+        
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav" id="mobileBottomNav">
+            <nav class="nav">
+                <a class="nav-link active" href="#" data-section="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-link" href="#" data-section="students">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Students</span>
+                </a>
+                <a class="nav-link" href="#" data-section="courses">
+                    <i class="bi bi-book-fill"></i>
+                    <span>Courses</span>
+                </a>
+                <a class="nav-link" href="#" data-section="fees">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Fees</span>
+                </a>
+                <a class="nav-link" href="#" data-section="attendance">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <span>Attendance</span>
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Mobile Floating Action Button -->
+        <button class="mobile-fab" id="mobileFab">
+            <i class="bi bi-download"></i>
+        </button>
     </div>
 
     <!-- Add Student Modal -->
@@ -1120,7 +1435,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="editStudentForm">
-                        <input type="hidden" id="editStudentId">
+                        <input type="hidden" id="editStudentRollNumber">
                         <div class="mb-3">
                             <label for="editStudentName" class="form-label">Student Name</label>
                             <input type="text" class="form-control" id="editStudentName" required>
@@ -1201,15 +1516,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Enroll Student in Course</h5>
+                    <h5 class="modal-title">Enroll Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="enrollStudentForm">
                         <input type="hidden" id="enrollCourseId">
                         <div class="mb-3">
-                            <label for="enrollStudentName" class="form-label">Student Name</label>
-                            <select class="form-select" id="enrollStudentName" required>
+                            <label for="enrollStudent" class="form-label">Select Student</label>
+                            <select class="form-select" id="enrollStudent" required>
                                 <option value="">Select Student</option>
                                 <!-- Students will be populated dynamically -->
                             </select>
@@ -1218,85 +1533,6 @@
                             <button type="submit" class="btn btn-primary">Enroll Student</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mark Attendance Modal -->
-    <div class="modal fade" id="markAttendanceModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Mark Attendance for <span id="attendanceDateDisplay"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Roll No</th>
-                                    <th>ID</th>
-                                    <th>Student Name</th>
-                                    <th>Course</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="attendanceTableBodyModal">
-                                <!-- Students will be added here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary" id="saveAttendanceBtn">Save Attendance</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Export Data Modal -->
-    <div class="modal fade" id="exportDataModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Export Data</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="download-options">
-                        <div class="download-option" onclick="downloadAllData()">
-                            <i class="bi bi-download"></i>
-                            <h5>Download All Data</h5>
-                            <p>Export all data in a single file</p>
-                        </div>
-                        <div class="download-option" onclick="downloadStudentsData()">
-                            <i class="bi bi-people-fill"></i>
-                            <h5>Students Data</h5>
-                            <p>Export students information</p>
-                        </div>
-                        <div class="download-option" onclick="downloadCoursesData()">
-                            <i class="bi bi-book-fill"></i>
-                            <h5>Courses Data</h5>
-                            <p>Export courses information</p>
-                        </div>
-                        <div class="download-option" onclick="downloadFeesData()">
-                            <i class="bi bi-cash-stack"></i>
-                            <h5>Fees Data</h5>
-                            <p>Export fees information</p>
-                        </div>
-                        <div class="download-option" onclick="downloadAttendanceData()">
-                            <i class="bi bi-calendar-check-fill"></i>
-                            <h5>Attendance Data</h5>
-                            <p>Export attendance information</p>
-                        </div>
-                        <div class="download-option" onclick="downloadSummaryReport()">
-                            <i class="bi bi-file-earmark-text"></i>
-                            <h5>Summary Report</h5>
-                            <p>Export summary statistics</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1311,7 +1547,7 @@
                     <h4 id="confirmTitle">Confirm Action</h4>
                     <p id="confirmMessage">Are you sure you want to perform this action?</p>
                     <div class="d-flex justify-content-center gap-2">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-danger" id="confirmButton">Confirm</button>
                     </div>
                 </div>
@@ -1319,1916 +1555,1421 @@
         </div>
     </div>
 
+    <!-- Download Options Modal -->
+    <div class="modal fade" id="downloadOptionsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Download Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="download-options">
+                        <div class="download-option" data-type="students">
+                            <i class="bi bi-people-fill"></i>
+                            <h5>Students</h5>
+                            <p>Download all student data</p>
+                        </div>
+                        <div class="download-option" data-type="courses">
+                            <i class="bi bi-book-fill"></i>
+                            <h5>Courses</h5>
+                            <p>Download all course data</p>
+                        </div>
+                        <div class="download-option" data-type="fees">
+                            <i class="bi bi-cash-stack"></i>
+                            <h5>Fees</h5>
+                            <p>Download all fee data</p>
+                        </div>
+                        <div class="download-option" data-type="attendance">
+                            <i class="bi bi-calendar-check-fill"></i>
+                            <h5>Attendance</h5>
+                            <p>Download all attendance data</p>
+                        </div>
+                        <div class="download-option" data-type="all">
+                            <i class="bi bi-download"></i>
+                            <h5>All Data</h5>
+                            <p>Download complete system data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-        import { getDatabase, ref, set, get, push, update, remove, onValue, query as rtdbQuery, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+    <script>
+        // Flat data structures
+        let students = [];
+        let courses = [];
+        let fees = [];
+        let attendance = [];
+        let enrollments = []; // Flat structure for student-course relationships
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyB_jAuvdnqVA-g4JzL90fukKGGN_U1mMAI",
-            authDomain: "edutech-ead49.firebaseapp.com",
-            databaseURL: "https://edutech-ead49-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "edutech-ead49",
-            storageBucket: "edutech-ead49.firebasestorage.app",
-            messagingSenderId: "503549426705",
-            appId: "1:503549426705:web:c9130b6202d5f9b31185b0"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        
-        // Initialize Realtime Database
-        let database;
-        let databaseInitialized = false;
-        
-        // DOM Elements
+        // DOM elements
         const loginScreen = document.getElementById('loginScreen');
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const exportDataBtn = document.getElementById('exportDataBtn');
-        const quickDownloadBtn = document.getElementById('quickDownloadBtn');
-        const navLinks = document.querySelectorAll('.sidebar-menu .nav-link');
-        const contentSections = document.querySelectorAll('.content-section');
-        const notification = document.getElementById('notification');
         const loginSpinner = document.getElementById('loginSpinner');
+        const clearDataBtn = document.getElementById('clearDataBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
-        const pageTitle = document.getElementById('pageTitle');
-        const adminName = document.getElementById('adminName');
-        const clearDataBtn = document.getElementById('clearDataBtn');
-        const connectionStatus = document.getElementById('connectionStatus');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileBottomNav = document.getElementById('mobileBottomNav');
+        const mobileFab = document.getElementById('mobileFab');
+        const notification = document.getElementById('notification');
         const loadingOverlay = document.getElementById('loadingOverlay');
-        
-        // Download buttons
-        const downloadStudentsBtn = document.getElementById('downloadStudentsBtn');
-        const downloadCoursesBtn = document.getElementById('downloadCoursesBtn');
-        const downloadFeesBtn = document.getElementById('downloadFeesBtn');
-        const downloadAttendanceBtn = document.getElementById('downloadAttendanceBtn');
-        
-        // Export modal buttons
-        const exportAllDataBtn = document.getElementById('exportAllDataBtn');
-        const exportStudentsDataBtn = document.getElementById('exportStudentsDataBtn');
-        const exportCoursesDataBtn = document.getElementById('exportCoursesDataBtn');
-        const exportFeesDataBtn = document.getElementById('exportFeesDataBtn');
-        const exportAttendanceDataBtn = document.getElementById('exportAttendanceDataBtn');
-        
-        // Confirmation modal elements
-        const confirmModal = document.getElementById('confirmModal');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const adminName = document.getElementById('adminName');
+        const pageTitle = document.getElementById('pageTitle');
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
         const confirmTitle = document.getElementById('confirmTitle');
         const confirmMessage = document.getElementById('confirmMessage');
         const confirmButton = document.getElementById('confirmButton');
-        
-        // Cache for data
-        let coursesCache = [];
-        let studentsCache = [];
-        let nextRollNumber = 1; // For generating roll numbers
-        
-        // Mobile menu toggle
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-        
-        // Clear login data button
-        clearDataBtn.addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('username');
-            showNotification('Login data cleared successfully!', 'success');
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
-        });
-        
-        // Initialize Realtime Database
-        async function initializeDatabase() {
-            try {
-                database = getDatabase(app);
-                console.log("Realtime Database initialized successfully");
-                showConnectionStatus('Connected to database', 'connected');
-                databaseInitialized = true;
-                return true;
-            } catch (error) {
-                console.error("Error initializing Realtime Database:", error);
-                showConnectionStatus('Database connection failed: ' + error.message, 'disconnected');
-                return false;
-            }
-        }
-        
-        // Show connection status
-        function showConnectionStatus(message, type) {
-            connectionStatus.textContent = message;
-            connectionStatus.className = `connection-status ${type}`;
-            connectionStatus.style.display = 'block';
-            
-            setTimeout(() => {
-                connectionStatus.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Check if user is already logged in
-        window.addEventListener('DOMContentLoaded', async () => {
-            // Initialize Database
-            const databaseInitialized = await initializeDatabase();
-            
-            if (!databaseInitialized) {
-                showNotification('Failed to connect to database. Please check your connection.', 'error');
-                return;
-            }
-            
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const username = localStorage.getItem('username');
-            
-            // Only show dashboard if both isLoggedIn is true and username is valid
-            if (isLoggedIn === 'true' && username === 'shariq') {
-                loginScreen.style.display = 'none';
-                dashboard.style.display = 'block';
-                adminName.textContent = username;
-                loadDashboard();
+        const downloadOptionsModal = new bootstrap.Modal(document.getElementById('downloadOptionsModal'));
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const quickDownloadBtn = document.getElementById('quickDownloadBtn');
+
+        // Section elements
+        const dashboardSection = document.getElementById('dashboardSection');
+        const studentsSection = document.getElementById('studentsSection');
+        const coursesSection = document.getElementById('coursesSection');
+        const feesSection = document.getElementById('feesSection');
+        const attendanceSection = document.getElementById('attendanceSection');
+
+        // Dashboard elements
+        const totalStudents = document.getElementById('totalStudents');
+        const totalCourses = document.getElementById('totalCourses');
+        const totalFees = document.getElementById('totalFees');
+        const attendanceRate = document.getElementById('attendanceRate');
+        const recentStudents = document.getElementById('recentStudents');
+        const paidFeesCount = document.getElementById('paidFeesCount');
+        const unpaidFeesCount = document.getElementById('unpaidFeesCount');
+        const totalFeesCount = document.getElementById('totalFeesCount');
+        const feeStatusTable = document.getElementById('feeStatusTable');
+
+        // Students section elements
+        const studentsContainer = document.getElementById('studentsContainer');
+        const addStudentModal = new bootstrap.Modal(document.getElementById('addStudentModal'));
+        const addStudentForm = document.getElementById('addStudentForm');
+        const editStudentModal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+        const editStudentForm = document.getElementById('editStudentForm');
+        const downloadStudentsBtn = document.getElementById('downloadStudentsBtn');
+
+        // Courses section elements
+        const coursesTableBody = document.getElementById('coursesTableBody');
+        const addCourseModal = new bootstrap.Modal(document.getElementById('addCourseModal'));
+        const addCourseForm = document.getElementById('addCourseForm');
+        const editCourseModal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+        const editCourseForm = document.getElementById('editCourseForm');
+        const enrollStudentModal = new bootstrap.Modal(document.getElementById('enrollStudentModal'));
+        const enrollStudentForm = document.getElementById('enrollStudentForm');
+        const downloadCoursesBtn = document.getElementById('downloadCoursesBtn');
+
+        // Fees section elements
+        const feesContainer = document.getElementById('feesContainer');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const downloadFeesBtn = document.getElementById('downloadFeesBtn');
+
+        // Attendance section elements
+        const attendanceContainer = document.getElementById('attendanceContainer');
+        const attendanceDate = document.getElementById('attendanceDate');
+        const markAttendanceBtn = document.getElementById('markAttendanceBtn');
+        const deleteAttendanceBtn = document.getElementById('deleteAttendanceBtn');
+        const downloadAttendanceBtn = document.getElementById('downloadAttendanceBtn');
+
+        // Initialize the app
+        function init() {
+            // Check if user is logged in
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                showDashboard();
+                loadAdminName();
+                loadData();
+                setupEventListeners();
+                populateYearSelect();
+                setCurrentDate();
             } else {
-                // Clear any invalid login data
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('username');
-                loginScreen.style.display = 'block';
-                dashboard.style.display = 'none';
+                setupLoginEventListeners();
             }
+        }
+
+        // Setup login event listeners
+        function setupLoginEventListeners() {
+            loginForm.addEventListener('submit', handleLogin);
+            clearDataBtn.addEventListener('click', clearLoginData);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Logout
+            logoutBtn.addEventListener('click', handleLogout);
             
-            // Set current date for attendance
-            const today = new Date();
-            document.getElementById('attendanceDate').value = today.toISOString().split('T')[0];
-        });
-        
-        // Login functionality
-        loginForm.addEventListener('submit', (e) => {
+            // Mobile menu toggle
+            menuToggle.addEventListener('click', toggleMobileMenu);
+            mobileNavOverlay.addEventListener('click', toggleMobileMenu);
+            
+            // Navigation
+            document.querySelectorAll('.nav-link[data-section]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = e.currentTarget.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Update active state in sidebar
+                    document.querySelectorAll('.sidebar-menu .nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    e.currentTarget.classList.add('active');
+                    
+                    // Update active state in mobile bottom nav
+                    document.querySelectorAll('.mobile-bottom-nav .nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    document.querySelector(`.mobile-bottom-nav .nav-link[data-section="${section}"]`).classList.add('active');
+                    
+                    // Close mobile menu if open
+                    if (sidebar.classList.contains('active')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+            
+            // Student forms
+            addStudentForm.addEventListener('submit', handleAddStudent);
+            editStudentForm.addEventListener('submit', handleEditStudent);
+            downloadStudentsBtn.addEventListener('click', () => downloadData('students'));
+            
+            // Course forms
+            addCourseForm.addEventListener('submit', handleAddCourse);
+            editCourseForm.addEventListener('submit', handleEditCourse);
+            enrollStudentForm.addEventListener('submit', handleEnrollStudent);
+            downloadCoursesBtn.addEventListener('click', () => downloadData('courses'));
+            
+            // Fees
+            monthSelect.addEventListener('change', loadFees);
+            yearSelect.addEventListener('change', loadFees);
+            downloadFeesBtn.addEventListener('click', () => downloadData('fees'));
+            
+            // Attendance
+            attendanceDate.addEventListener('change', loadAttendance);
+            markAttendanceBtn.addEventListener('click', markAttendance);
+            deleteAttendanceBtn.addEventListener('click', deleteOldAttendance);
+            downloadAttendanceBtn.addEventListener('click', () => downloadData('attendance'));
+            
+            // Download options
+            exportDataBtn.addEventListener('click', () => downloadOptionsModal.show());
+            quickDownloadBtn.addEventListener('click', () => downloadData('all'));
+            mobileFab.addEventListener('click', () => downloadOptionsModal.show());
+            
+            // Download option clicks
+            document.querySelectorAll('.download-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const type = option.getAttribute('data-type');
+                    downloadOptionsModal.hide();
+                    downloadData(type);
+                });
+            });
+        }
+
+        // Handle login
+        function handleLogin(e) {
             e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
             
             // Show loading spinner
             loginSpinner.style.display = 'block';
             
-            // Fixed admin credentials
-            const adminUsername = "shariq";
-            const adminPassword = "shariq123";
-            
-            // Simple validation
+            // Simulate API call
             setTimeout(() => {
-                if (username === adminUsername && password === adminPassword) {
-                    // Set login state in localStorage
+                // Simple authentication (in real app, this would be a server call)
+                if (username === 'admin' && password === 'admin123') {
                     localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('username', username);
-                    
-                    // Show dashboard
-                    loginScreen.style.display = 'none';
-                    dashboard.style.display = 'block';
-                    adminName.textContent = username;
-                    
-                    // Show success message
+                    localStorage.setItem('adminName', username);
                     showNotification('Login successful!', 'success');
-                    loginSpinner.style.display = 'none';
-                    
-                    // Load dashboard data
-                    loadDashboard();
+                    showDashboard();
+                    loadAdminName();
+                    loadData();
+                    setupEventListeners();
+                    populateYearSelect();
+                    setCurrentDate();
                 } else {
-                    // Show error message
                     showNotification('Invalid username or password!', 'error');
-                    loginSpinner.style.display = 'none';
                 }
-            }, 500); // Reduced delay for faster response
-        });
-        
-        // Logout functionality
-        logoutBtn.addEventListener('click', () => {
-            // Clear login state from localStorage
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('username');
-            
-            // Show login screen
-            loginScreen.style.display = 'block';
-            dashboard.style.display = 'none';
-            
-            // Clear form
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            
-            // Show success message
-            showNotification('Logged out successfully!', 'success');
-        });
-        
-        // Quick download functionality
-        quickDownloadBtn.addEventListener('click', () => {
-            downloadAllData();
-        });
-        
-        // Export data functionality
-        exportDataBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const modal = new bootstrap.Modal(document.getElementById('exportDataModal'));
-            modal.show();
-        });
-        
-        // Navigation functionality
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = link.getAttribute('data-section');
                 
-                if (section) {
-                    // Update active nav link
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    
-                    // Show selected section
-                    contentSections.forEach(s => s.style.display = 'none');
-                    document.getElementById(`${section}Section`).style.display = 'block';
-                    
-                    // Update page title
-                    pageTitle.textContent = link.textContent.trim();
-                    
-                    // Load section data
-                    if (section === 'dashboard') {
-                        loadDashboard();
-                    } else if (section === 'students') {
-                        loadStudents();
-                    } else if (section === 'courses') {
-                        loadCourses();
-                    } else if (section === 'fees') {
-                        loadFees();
-                    } else if (section === 'attendance') {
-                        loadAttendance();
-                    }
-                    
-                    // Close sidebar on mobile
-                    if (window.innerWidth <= 768) {
-                        sidebar.classList.remove('active');
-                    }
-                }
+                // Hide loading spinner
+                loginSpinner.style.display = 'none';
+            }, 1000);
+        }
+
+        // Handle logout
+        function handleLogout() {
+            confirmTitle.textContent = 'Confirm Logout';
+            confirmMessage.textContent = 'Are you sure you want to logout?';
+            confirmButton.textContent = 'Logout';
+            confirmButton.className = 'btn btn-danger';
+            
+            confirmButton.onclick = () => {
+                localStorage.removeItem('isLoggedIn');
+                showNotification('Logged out successfully!', 'success');
+                loginScreen.style.display = 'block';
+                dashboard.style.display = 'none';
+                confirmModal.hide();
+            };
+            
+            confirmModal.show();
+        }
+
+        // Clear login data
+        function clearLoginData() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('adminName');
+            showNotification('Login data cleared!', 'success');
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            dashboard.style.display = 'block';
+            
+            // Show mobile bottom navigation
+            if (window.innerWidth <= 768) {
+                mobileBottomNav.style.display = 'block';
+            }
+        }
+
+        // Load admin name
+        function loadAdminName() {
+            const name = localStorage.getItem('adminName') || 'Admin';
+            adminName.textContent = name;
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+        }
+
+        // Show section
+        function showSection(section) {
+            // Hide all sections
+            dashboardSection.style.display = 'none';
+            studentsSection.style.display = 'none';
+            coursesSection.style.display = 'none';
+            feesSection.style.display = 'none';
+            attendanceSection.style.display = 'none';
+            
+            // Show selected section
+            switch (section) {
+                case 'dashboard':
+                    dashboardSection.style.display = 'block';
+                    pageTitle.textContent = 'Dashboard';
+                    loadDashboard();
+                    break;
+                case 'students':
+                    studentsSection.style.display = 'block';
+                    pageTitle.textContent = 'Students Management';
+                    loadStudents();
+                    break;
+                case 'courses':
+                    coursesSection.style.display = 'block';
+                    pageTitle.textContent = 'Courses Management';
+                    loadCourses();
+                    break;
+                case 'fees':
+                    feesSection.style.display = 'block';
+                    pageTitle.textContent = 'Fees Management';
+                    loadFees();
+                    break;
+                case 'attendance':
+                    attendanceSection.style.display = 'block';
+                    pageTitle.textContent = 'Attendance Management';
+                    loadAttendance();
+                    break;
+            }
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            // Load students
+            const studentsData = localStorage.getItem('students');
+            if (studentsData) {
+                students = JSON.parse(studentsData);
+            } else {
+                // Initialize with sample data
+                students = [
+                    { id: 1, name: 'Ali Ahmed', contact: '03001234567', fees: 5000, rollNumber: 'STU001' },
+                    { id: 2, name: 'Sara Khan', contact: '03007654321', fees: 4500, rollNumber: 'STU002' },
+                    { id: 3, name: 'Usman Malik', contact: '03009876543', fees: 6000, rollNumber: 'STU003' }
+                ];
+                saveStudents();
+            }
+            
+            // Load courses
+            const coursesData = localStorage.getItem('courses');
+            if (coursesData) {
+                courses = JSON.parse(coursesData);
+            } else {
+                // Initialize with sample data
+                courses = [
+                    { id: 1, name: 'Web Development' },
+                    { id: 2, name: 'Data Science' },
+                    { id: 3, name: 'Mobile App Development' }
+                ];
+                saveCourses();
+            }
+            
+            // Load enrollments
+            const enrollmentsData = localStorage.getItem('enrollments');
+            if (enrollmentsData) {
+                enrollments = JSON.parse(enrollmentsData);
+            } else {
+                // Initialize with sample data
+                enrollments = [
+                    { id: 1, studentId: 1, courseId: 1 },
+                    { id: 2, studentId: 2, courseId: 2 },
+                    { id: 3, studentId: 3, courseId: 3 }
+                ];
+                saveEnrollments();
+            }
+            
+            // Load fees
+            const feesData = localStorage.getItem('fees');
+            if (feesData) {
+                fees = JSON.parse(feesData);
+            } else {
+                // Initialize with sample data
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth();
+                
+                fees = [
+                    { id: 1, studentId: 1, month: currentMonth, year: currentYear, amount: 5000, status: 'paid', date: '2023-06-15' },
+                    { id: 2, studentId: 2, month: currentMonth, year: currentYear, amount: 4500, status: 'paid', date: '2023-06-10' },
+                    { id: 3, studentId: 3, month: currentMonth, year: currentYear, amount: 6000, status: 'unpaid', date: '' }
+                ];
+                saveFees();
+            }
+            
+            // Load attendance
+            const attendanceData = localStorage.getItem('attendance');
+            if (attendanceData) {
+                attendance = JSON.parse(attendanceData);
+            } else {
+                // Initialize with sample data
+                const today = new Date().toISOString().split('T')[0];
+                attendance = [
+                    { id: 1, studentId: 1, date: today, status: 'present' },
+                    { id: 2, studentId: 2, date: today, status: 'present' },
+                    { id: 3, studentId: 3, date: today, status: 'absent' }
+                ];
+                saveAttendance();
+            }
+            
+            // Load dashboard
+            loadDashboard();
+        }
+
+        // Save students to localStorage
+        function saveStudents() {
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        // Save courses to localStorage
+        function saveCourses() {
+            localStorage.setItem('courses', JSON.stringify(courses));
+        }
+
+        // Save enrollments to localStorage
+        function saveEnrollments() {
+            localStorage.setItem('enrollments', JSON.stringify(enrollments));
+        }
+
+        // Save fees to localStorage
+        function saveFees() {
+            localStorage.setItem('fees', JSON.stringify(fees));
+        }
+
+        // Save attendance to localStorage
+        function saveAttendance() {
+            localStorage.setItem('attendance', JSON.stringify(attendance));
+        }
+
+        // Load dashboard
+        function loadDashboard() {
+            // Update stats
+            totalStudents.textContent = students.length;
+            totalCourses.textContent = courses.length;
+            
+            // Calculate total fees
+            const totalFeesAmount = students.reduce((sum, student) => sum + student.fees, 0);
+            totalFees.textContent = `PKR ${totalFeesAmount.toLocaleString()}`;
+            
+            // Calculate attendance rate
+            const totalAttendanceRecords = attendance.length;
+            const presentRecords = attendance.filter(record => record.status === 'present').length;
+            const attendancePercentage = totalAttendanceRecords > 0 
+                ? Math.round((presentRecords / totalAttendanceRecords) * 100) 
+                : 0;
+            attendanceRate.textContent = `${attendancePercentage}%`;
+            
+            // Load recent students
+            recentStudents.innerHTML = '';
+            const recentStudentsList = [...students].reverse().slice(0, 5);
+            recentStudentsList.forEach(student => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `
+                    <div>
+                        <strong>${student.name}</strong>
+                        <span class="roll-badge ms-2">${student.rollNumber}</span>
+                    </div>
+                    <span class="text-muted">${student.contact}</span>
+                `;
+                recentStudents.appendChild(li);
             });
-        });
-        
+            
+            // Load fee status
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            
+            const monthFees = fees.filter(fee => 
+                fee.month === currentMonth && fee.year === currentYear
+            );
+            
+            const paidFees = monthFees.filter(fee => fee.status === 'paid').length;
+            const unpaidFees = monthFees.filter(fee => fee.status === 'unpaid').length;
+            const totalMonthFees = monthFees.length;
+            
+            paidFeesCount.textContent = paidFees;
+            unpaidFeesCount.textContent = unpaidFees;
+            totalFeesCount.textContent = totalMonthFees;
+            
+            // Load fee status table
+            feeStatusTable.innerHTML = '';
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            // Get last 3 months
+            for (let i = 2; i >= 0; i--) {
+                const month = (currentMonth - i + 12) % 12;
+                const year = month > currentMonth ? currentYear - 1 : currentYear;
+                
+                const monthFeesData = fees.filter(fee => 
+                    fee.month === month && fee.year === year
+                );
+                
+                const paid = monthFeesData.filter(fee => fee.status === 'paid').length;
+                const unpaid = monthFeesData.filter(fee => fee.status === 'unpaid').length;
+                const total = monthFeesData.length;
+                const collectionRate = total > 0 ? Math.round((paid / total) * 100) : 0;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${monthNames[month]} ${year}</td>
+                    <td><span class="status-paid">${paid}</span></td>
+                    <td><span class="status-unpaid">${unpaid}</span></td>
+                    <td>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" style="width: ${collectionRate}%"></div>
+                        </div>
+                        <small>${collectionRate}%</small>
+                    </td>
+                `;
+                feeStatusTable.appendChild(tr);
+            }
+        }
+
+        // Load students
+        function loadStudents() {
+            studentsContainer.innerHTML = '';
+            
+            if (students.length === 0) {
+                studentsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-people-fill" style="font-size: 3rem; color: var(--text-muted);"></i>
+                        <h5 class="mt-3">No students found</h5>
+                        <p class="text-muted">Add students to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            students.forEach(student => {
+                // Find enrollment for this student
+                const enrollment = enrollments.find(e => e.studentId === student.id);
+                const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
+                const courseName = course ? course.name : 'Not enrolled';
+                
+                const studentCard = document.createElement('div');
+                studentCard.className = 'col-md-6 col-lg-4 mb-4';
+                studentCard.innerHTML = `
+                    <div class="student-card">
+                        <div class="student-card-header">
+                            <div class="student-card-name">${student.name}</div>
+                            <div class="student-card-actions">
+                                <button class="btn btn-sm btn-outline-primary" onclick="editStudent(${student.id})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${student.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="student-card-body">
+                            <div class="student-card-detail">
+                                <span class="student-card-label">Roll Number</span>
+                                <span class="student-card-value">${student.rollNumber}</span>
+                            </div>
+                            <div class="student-card-detail">
+                                <span class="student-card-label">Contact</span>
+                                <span class="student-card-value">${student.contact}</span>
+                            </div>
+                            <div class="student-card-detail">
+                                <span class="student-card-label">Fees</span>
+                                <span class="student-card-value">PKR ${student.fees.toLocaleString()}</span>
+                            </div>
+                            <div class="student-card-detail">
+                                <span class="student-card-label">Course</span>
+                                <span class="student-card-value">${courseName}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                studentsContainer.appendChild(studentCard);
+            });
+        }
+
+        // Handle add student
+        function handleAddStudent(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const contact = document.getElementById('studentContact').value;
+            const fees = parseInt(document.getElementById('studentFees').value);
+            const courseId = parseInt(document.getElementById('studentCourse').value);
+            
+            // Generate roll number
+            const rollNumber = `STU${String(students.length + 1).padStart(3, '0')}`;
+            
+            // Create new student
+            const newStudent = {
+                id: Date.now(),
+                name,
+                contact,
+                fees,
+                rollNumber
+            };
+            
+            // Add student
+            students.push(newStudent);
+            saveStudents();
+            
+            // Create enrollment
+            if (courseId) {
+                const newEnrollment = {
+                    id: Date.now(),
+                    studentId: newStudent.id,
+                    courseId
+                };
+                enrollments.push(newEnrollment);
+                saveEnrollments();
+            }
+            
+            // Reset form and close modal
+            addStudentForm.reset();
+            addStudentModal.hide();
+            
+            // Show notification
+            showNotification('Student added successfully!', 'success');
+            
+            // Reload students
+            loadStudents();
+            loadDashboard();
+        }
+
+        // Edit student
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            
+            // Find enrollment for this student
+            const enrollment = enrollments.find(e => e.studentId === student.id);
+            const courseId = enrollment ? enrollment.courseId : '';
+            
+            // Populate form
+            document.getElementById('editStudentRollNumber').value = student.rollNumber;
+            document.getElementById('editStudentName').value = student.name;
+            document.getElementById('editStudentContact').value = student.contact;
+            document.getElementById('editStudentFees').value = student.fees;
+            
+            // Populate course dropdown
+            const courseSelect = document.getElementById('editStudentCourse');
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.name;
+                if (course.id === courseId) {
+                    option.selected = true;
+                }
+                courseSelect.appendChild(option);
+            });
+            
+            // Show modal
+            editStudentModal.show();
+        }
+
+        // Handle edit student
+        function handleEditStudent(e) {
+            e.preventDefault();
+            
+            const rollNumber = document.getElementById('editStudentRollNumber').value;
+            const name = document.getElementById('editStudentName').value;
+            const contact = document.getElementById('editStudentContact').value;
+            const fees = parseInt(document.getElementById('editStudentFees').value);
+            const courseId = parseInt(document.getElementById('editStudentCourse').value);
+            
+            // Find student
+            const studentIndex = students.findIndex(s => s.rollNumber === rollNumber);
+            if (studentIndex === -1) return;
+            
+            // Update student
+            students[studentIndex] = {
+                ...students[studentIndex],
+                name,
+                contact,
+                fees
+            };
+            saveStudents();
+            
+            // Update enrollment
+            const enrollmentIndex = enrollments.findIndex(e => e.studentId === students[studentIndex].id);
+            if (enrollmentIndex !== -1) {
+                if (courseId) {
+                    enrollments[enrollmentIndex].courseId = courseId;
+                } else {
+                    enrollments.splice(enrollmentIndex, 1);
+                }
+            } else if (courseId) {
+                enrollments.push({
+                    id: Date.now(),
+                    studentId: students[studentIndex].id,
+                    courseId
+                });
+            }
+            saveEnrollments();
+            
+            // Reset form and close modal
+            editStudentForm.reset();
+            editStudentModal.hide();
+            
+            // Show notification
+            showNotification('Student updated successfully!', 'success');
+            
+            // Reload students
+            loadStudents();
+            loadDashboard();
+        }
+
+        // Delete student
+        function deleteStudent(id) {
+            confirmTitle.textContent = 'Confirm Delete';
+            confirmMessage.textContent = 'Are you sure you want to delete this student? This action cannot be undone.';
+            confirmButton.textContent = 'Delete';
+            confirmButton.className = 'btn btn-danger';
+            
+            confirmButton.onclick = () => {
+                // Find student
+                const studentIndex = students.findIndex(s => s.id === id);
+                if (studentIndex === -1) return;
+                
+                // Delete student
+                students.splice(studentIndex, 1);
+                saveStudents();
+                
+                // Delete enrollment
+                const enrollmentIndex = enrollments.findIndex(e => e.studentId === id);
+                if (enrollmentIndex !== -1) {
+                    enrollments.splice(enrollmentIndex, 1);
+                    saveEnrollments();
+                }
+                
+                // Delete related fees
+                fees = fees.filter(fee => fee.studentId !== id);
+                saveFees();
+                
+                // Delete related attendance
+                attendance = attendance.filter(att => att.studentId !== id);
+                saveAttendance();
+                
+                // Show notification
+                showNotification('Student deleted successfully!', 'success');
+                
+                // Reload students
+                loadStudents();
+                loadDashboard();
+                
+                confirmModal.hide();
+            };
+            
+            confirmModal.show();
+        }
+
+        // Load courses
+        function loadCourses() {
+            coursesTableBody.innerHTML = '';
+            
+            if (courses.length === 0) {
+                coursesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="text-center py-4">
+                            <i class="bi bi-book-fill" style="font-size: 2rem; color: var(--text-muted);"></i>
+                            <p class="mt-2 mb-0">No courses found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            courses.forEach(course => {
+                // Count enrolled students
+                const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${course.name}</td>
+                    <td>${enrolledCount}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editCourse(${course.id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success me-1" onclick="enrollStudent(${course.id})">
+                            <i class="bi bi-person-plus"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                coursesTableBody.appendChild(tr);
+            });
+        }
+
+        // Handle add course
+        function handleAddCourse(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('courseName').value;
+            
+            // Create new course
+            const newCourse = {
+                id: Date.now(),
+                name
+            };
+            
+            // Add course
+            courses.push(newCourse);
+            saveCourses();
+            
+            // Reset form and close modal
+            addCourseForm.reset();
+            addCourseModal.hide();
+            
+            // Show notification
+            showNotification('Course added successfully!', 'success');
+            
+            // Reload courses
+            loadCourses();
+            loadDashboard();
+            
+            // Update course dropdowns
+            updateCourseDropdowns();
+        }
+
+        // Edit course
+        function editCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (!course) return;
+            
+            // Populate form
+            document.getElementById('editCourseId').value = course.id;
+            document.getElementById('editCourseName').value = course.name;
+            
+            // Show modal
+            editCourseModal.show();
+        }
+
+        // Handle edit course
+        function handleEditCourse(e) {
+            e.preventDefault();
+            
+            const id = parseInt(document.getElementById('editCourseId').value);
+            const name = document.getElementById('editCourseName').value;
+            
+            // Find course
+            const courseIndex = courses.findIndex(c => c.id === id);
+            if (courseIndex === -1) return;
+            
+            // Update course
+            courses[courseIndex] = {
+                ...courses[courseIndex],
+                name
+            };
+            saveCourses();
+            
+            // Reset form and close modal
+            editCourseForm.reset();
+            editCourseModal.hide();
+            
+            // Show notification
+            showNotification('Course updated successfully!', 'success');
+            
+            // Reload courses
+            loadCourses();
+            
+            // Update course dropdowns
+            updateCourseDropdowns();
+        }
+
+        // Delete course
+        function deleteCourse(id) {
+            confirmTitle.textContent = 'Confirm Delete';
+            confirmMessage.textContent = 'Are you sure you want to delete this course? This action cannot be undone.';
+            confirmButton.textContent = 'Delete';
+            confirmButton.className = 'btn btn-danger';
+            
+            confirmButton.onclick = () => {
+                // Find course
+                const courseIndex = courses.findIndex(c => c.id === id);
+                if (courseIndex === -1) return;
+                
+                // Delete course
+                courses.splice(courseIndex, 1);
+                saveCourses();
+                
+                // Delete related enrollments
+                enrollments = enrollments.filter(e => e.courseId !== id);
+                saveEnrollments();
+                
+                // Show notification
+                showNotification('Course deleted successfully!', 'success');
+                
+                // Reload courses
+                loadCourses();
+                loadDashboard();
+                
+                // Update course dropdowns
+                updateCourseDropdowns();
+                
+                confirmModal.hide();
+            };
+            
+            confirmModal.show();
+        }
+
+        // Enroll student
+        function enrollStudent(courseId) {
+            // Populate student dropdown
+            const studentSelect = document.getElementById('enrollStudent');
+            studentSelect.innerHTML = '<option value="">Select Student</option>';
+            
+            // Get students not enrolled in this course
+            const enrolledStudentIds = enrollments
+                .filter(e => e.courseId === courseId)
+                .map(e => e.studentId);
+            
+            const availableStudents = students.filter(s => !enrolledStudentIds.includes(s.id));
+            
+            availableStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} (${student.rollNumber})`;
+                studentSelect.appendChild(option);
+            });
+            
+            // Set course ID
+            document.getElementById('enrollCourseId').value = courseId;
+            
+            // Show modal
+            enrollStudentModal.show();
+        }
+
+        // Handle enroll student
+        function handleEnrollStudent(e) {
+            e.preventDefault();
+            
+            const courseId = parseInt(document.getElementById('enrollCourseId').value);
+            const studentId = parseInt(document.getElementById('enrollStudent').value);
+            
+            // Create new enrollment
+            const newEnrollment = {
+                id: Date.now(),
+                studentId,
+                courseId
+            };
+            
+            // Add enrollment
+            enrollments.push(newEnrollment);
+            saveEnrollments();
+            
+            // Reset form and close modal
+            enrollStudentForm.reset();
+            enrollStudentModal.hide();
+            
+            // Show notification
+            showNotification('Student enrolled successfully!', 'success');
+            
+            // Reload courses
+            loadCourses();
+        }
+
+        // Update course dropdowns
+        function updateCourseDropdowns() {
+            // Update add student form
+            const studentCourseSelect = document.getElementById('studentCourse');
+            studentCourseSelect.innerHTML = '<option value="">Select Course</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.name;
+                studentCourseSelect.appendChild(option);
+            });
+            
+            // Update edit student form
+            const editStudentCourseSelect = document.getElementById('editStudentCourse');
+            editStudentCourseSelect.innerHTML = '<option value="">Select Course</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.name;
+                editStudentCourseSelect.appendChild(option);
+            });
+        }
+
+        // Populate year select
+        function populateYearSelect() {
+            const currentYear = new Date().getFullYear();
+            yearSelect.innerHTML = '';
+            
+            // Add current year and previous 4 years
+            for (let i = 0; i < 5; i++) {
+                const year = currentYear - i;
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (i === 0) {
+                    option.selected = true;
+                }
+                yearSelect.appendChild(option);
+            }
+        }
+
+        // Set current date
+        function setCurrentDate() {
+            const today = new Date().toISOString().split('T')[0];
+            attendanceDate.value = today;
+        }
+
+        // Load fees
+        function loadFees() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+            
+            feesContainer.innerHTML = '';
+            
+            // Filter fees for selected month and year
+            const monthFees = fees.filter(fee => fee.month === month && fee.year === year);
+            
+            if (monthFees.length === 0) {
+                feesContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-cash-stack" style="font-size: 3rem; color: var(--text-muted);"></i>
+                        <h5 class="mt-3">No fee records found</h5>
+                        <p class="text-muted">There are no fee records for the selected month and year</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            monthFees.forEach(fee => {
+                const student = students.find(s => s.id === fee.studentId);
+                if (!student) return;
+                
+                const feeCard = document.createElement('div');
+                feeCard.className = 'col-md-6 col-lg-4 mb-4';
+                feeCard.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${student.name}</strong>
+                                <span class="roll-badge ms-2">${student.rollNumber}</span>
+                            </div>
+                            <span class="${fee.status === 'paid' ? 'status-paid' : 'status-unpaid'}">
+                                ${fee.status === 'paid' ? 'Paid' : 'Unpaid'}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Amount:</span>
+                                <strong>PKR ${fee.amount.toLocaleString()}</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Due Date:</span>
+                                <span>${new Date(year, month + 1, 0).toLocaleDateString()}</span>
+                            </div>
+                            ${fee.status === 'paid' ? `
+                                <div class="d-flex justify-content-between">
+                                    <span>Payment Date:</span>
+                                    <span>${new Date(fee.date).toLocaleDateString()}</span>
+                                </div>
+                            ` : `
+                                <div class="d-grid gap-2 mt-3">
+                                    <button class="btn btn-success btn-sm" onclick="markFeeAsPaid(${fee.id})">
+                                        <i class="bi bi-check-circle"></i> Mark as Paid
+                                    </button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+                feesContainer.appendChild(feeCard);
+            });
+        }
+
+        // Mark fee as paid
+        function markFeeAsPaid(id) {
+            const feeIndex = fees.findIndex(f => f.id === id);
+            if (feeIndex === -1) return;
+            
+            // Update fee
+            fees[feeIndex] = {
+                ...fees[feeIndex],
+                status: 'paid',
+                date: new Date().toISOString().split('T')[0]
+            };
+            saveFees();
+            
+            // Show notification
+            showNotification('Fee marked as paid!', 'success');
+            
+            // Reload fees
+            loadFees();
+            loadDashboard();
+        }
+
+        // Load attendance
+        function loadAttendance() {
+            const date = attendanceDate.value;
+            
+            attendanceContainer.innerHTML = '';
+            
+            // Filter attendance for selected date
+            const dateAttendance = attendance.filter(att => att.date === date);
+            
+            if (dateAttendance.length === 0) {
+                attendanceContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-calendar-check-fill" style="font-size: 3rem; color: var(--text-muted);"></i>
+                        <h5 class="mt-3">No attendance records found</h5>
+                        <p class="text-muted">Mark attendance for the selected date</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            dateAttendance.forEach(att => {
+                const student = students.find(s => s.id === att.studentId);
+                if (!student) return;
+                
+                const attendanceCard = document.createElement('div');
+                attendanceCard.className = 'col-md-6 col-lg-4 mb-4';
+                attendanceCard.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${student.name}</strong>
+                                <span class="roll-badge ms-2">${student.rollNumber}</span>
+                            </div>
+                            <span class="${att.status === 'present' ? 'status-paid' : 'status-unpaid'}">
+                                ${att.status === 'present' ? 'Present' : 'Absent'}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Date:</span>
+                                <span>${new Date(att.date).toLocaleDateString()}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Status:</span>
+                                <span class="${att.status === 'present' ? 'status-paid' : 'status-unpaid'}">
+                                    ${att.status === 'present' ? 'Present' : 'Absent'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                attendanceContainer.appendChild(attendanceCard);
+            });
+        }
+
+        // Mark attendance
+        function markAttendance() {
+            const date = attendanceDate.value;
+            
+            // Check if attendance already exists for this date
+            const existingAttendance = attendance.filter(att => att.date === date);
+            
+            if (existingAttendance.length > 0) {
+                confirmTitle.textContent = 'Attendance Already Exists';
+                confirmMessage.textContent = 'Attendance for this date already exists. Do you want to overwrite it?';
+                confirmButton.textContent = 'Overwrite';
+                confirmButton.className = 'btn btn-warning';
+                
+                confirmButton.onclick = () => {
+                    // Delete existing attendance
+                    attendance = attendance.filter(att => att.date !== date);
+                    saveAttendance();
+                    
+                    // Create new attendance records
+                    students.forEach(student => {
+                        attendance.push({
+                            id: Date.now() + Math.random(),
+                            studentId: student.id,
+                            date,
+                            status: 'present' // Default to present
+                        });
+                    });
+                    saveAttendance();
+                    
+                    // Show notification
+                    showNotification('Attendance marked successfully!', 'success');
+                    
+                    // Reload attendance
+                    loadAttendance();
+                    loadDashboard();
+                    
+                    confirmModal.hide();
+                };
+                
+                confirmModal.show();
+                return;
+            }
+            
+            // Create attendance records for all students
+            students.forEach(student => {
+                attendance.push({
+                    id: Date.now() + Math.random(),
+                    studentId: student.id,
+                    date,
+                    status: 'present' // Default to present
+                });
+            });
+            saveAttendance();
+            
+            // Show notification
+            showNotification('Attendance marked successfully!', 'success');
+            
+            // Reload attendance
+            loadAttendance();
+            loadDashboard();
+        }
+
+        // Delete old attendance
+        function deleteOldAttendance() {
+            confirmTitle.textContent = 'Confirm Delete';
+            confirmMessage.textContent = 'Are you sure you want to delete attendance records older than 3 months? This action cannot be undone.';
+            confirmButton.textContent = 'Delete';
+            confirmButton.className = 'btn btn-danger';
+            
+            confirmButton.onclick = () => {
+                const currentDate = new Date();
+                const threeMonthsAgo = new Date();
+                threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+                
+                // Delete attendance older than 3 months
+                const initialLength = attendance.length;
+                attendance = attendance.filter(att => {
+                    const attDate = new Date(att.date);
+                    return attDate >= threeMonthsAgo;
+                });
+                
+                const deletedCount = initialLength - attendance.length;
+                saveAttendance();
+                
+                // Show notification
+                showNotification(`${deletedCount} attendance records deleted!`, 'success');
+                
+                // Reload attendance
+                loadAttendance();
+                loadDashboard();
+                
+                confirmModal.hide();
+            };
+            
+            confirmModal.show();
+        }
+
+        // Download data
+        function downloadData(type) {
+            let csvContent = '';
+            let filename = '';
+            
+            switch (type) {
+                case 'students':
+                    // Create CSV header
+                    csvContent = 'Roll Number,Name,Contact,Fees,Course\n';
+                    
+                    // Add student data
+                    students.forEach(student => {
+                        // Find enrollment for this student
+                        const enrollment = enrollments.find(e => e.studentId === student.id);
+                        const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
+                        const courseName = course ? course.name : 'Not enrolled';
+                        
+                        csvContent += `${student.rollNumber},${student.name},${student.contact},${student.fees},"${courseName}"\n`;
+                    });
+                    
+                    filename = 'students.csv';
+                    break;
+                    
+                case 'courses':
+                    // Create CSV header
+                    csvContent = 'Course Name,Enrolled Students\n';
+                    
+                    // Add course data
+                    courses.forEach(course => {
+                        // Count enrolled students
+                        const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
+                        csvContent += `"${course.name}",${enrolledCount}\n`;
+                    });
+                    
+                    filename = 'courses.csv';
+                    break;
+                    
+                case 'fees':
+                    // Create CSV header
+                    csvContent = 'Student Name,Roll Number,Month,Year,Amount,Status,Payment Date\n';
+                    
+                    // Add fee data
+                    fees.forEach(fee => {
+                        const student = students.find(s => s.id === fee.studentId);
+                        if (!student) return;
+                        
+                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                          'July', 'August', 'September', 'October', 'November', 'December'];
+                        
+                        csvContent += `${student.name},${student.rollNumber},${monthNames[fee.month]},${fee.year},${fee.amount},${fee.status},${fee.date}\n`;
+                    });
+                    
+                    filename = 'fees.csv';
+                    break;
+                    
+                case 'attendance':
+                    // Create CSV header
+                    csvContent = 'Student Name,Roll Number,Date,Status\n';
+                    
+                    // Add attendance data
+                    attendance.forEach(att => {
+                        const student = students.find(s => s.id === att.studentId);
+                        if (!student) return;
+                        
+                        csvContent += `${student.name},${student.rollNumber},${att.date},${att.status}\n`;
+                    });
+                    
+                    filename = 'attendance.csv';
+                    break;
+                    
+                case 'all':
+                    // Create a zip-like structure with multiple CSV files
+                    // In a real implementation, you would use a library like JSZip
+                    // For simplicity, we'll create a single CSV with all data
+                    
+                    csvContent = 'EDUTECH MANAGEMENT SYSTEM - ALL DATA\n\n';
+                    
+                    // Students section
+                    csvContent += 'STUDENTS\n';
+                    csvContent += 'Roll Number,Name,Contact,Fees,Course\n';
+                    students.forEach(student => {
+                        const enrollment = enrollments.find(e => e.studentId === student.id);
+                        const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
+                        const courseName = course ? course.name : 'Not enrolled';
+                        
+                        csvContent += `${student.rollNumber},${student.name},${student.contact},${student.fees},"${courseName}"\n`;
+                    });
+                    
+                    csvContent += '\n';
+                    
+                    // Courses section
+                    csvContent += 'COURSES\n';
+                    csvContent += 'Course Name,Enrolled Students\n';
+                    courses.forEach(course => {
+                        const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
+                        csvContent += `"${course.name}",${enrolledCount}\n`;
+                    });
+                    
+                    csvContent += '\n';
+                    
+                    // Fees section
+                    csvContent += 'FEES\n';
+                    csvContent += 'Student Name,Roll Number,Month,Year,Amount,Status,Payment Date\n';
+                    fees.forEach(fee => {
+                        const student = students.find(s => s.id === fee.studentId);
+                        if (!student) return;
+                        
+                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                          'July', 'August', 'September', 'October', 'November', 'December'];
+                        
+                        csvContent += `${student.name},${student.rollNumber},${monthNames[fee.month]},${fee.year},${fee.amount},${fee.status},${fee.date}\n`;
+                    });
+                    
+                    csvContent += '\n';
+                    
+                    // Attendance section
+                    csvContent += 'ATTENDANCE\n';
+                    csvContent += 'Student Name,Roll Number,Date,Status\n';
+                    attendance.forEach(att => {
+                        const student = students.find(s => s.id === att.studentId);
+                        if (!student) return;
+                        
+                        csvContent += `${student.name},${student.rollNumber},${att.date},${att.status}\n`;
+                    });
+                    
+                    filename = 'edutech_data.csv';
+                    break;
+            }
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show notification
+            showNotification(`${filename} downloaded successfully!`, 'success');
+        }
+
         // Show notification
         function showNotification(message, type) {
             notification.textContent = message;
             notification.className = `notification ${type}`;
             notification.style.display = 'block';
             
+            // Hide notification after 3 seconds
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
         }
-        
-        // Show loading overlay
-        function showLoading(show = true) {
-            loadingOverlay.style.display = show ? 'flex' : 'none';
-        }
-        
-        // Generate next roll number
-        async function getNextRollNumber() {
-            try {
-                const studentsRef = ref(database, 'students');
-                const snapshot = await get(studentsRef);
-                
-                if (snapshot.exists()) {
-                    const students = snapshot.val();
-                    let maxRollNumber = 0;
-                    
-                    Object.values(students).forEach(student => {
-                        if (student.rollNumber && student.rollNumber > maxRollNumber) {
-                            maxRollNumber = student.rollNumber;
-                        }
-                    });
-                    
-                    return maxRollNumber + 1;
-                } else {
-                    return 1;
-                }
-            } catch (error) {
-                console.error("Error getting next roll number:", error);
-                return nextRollNumber++;
-            }
-        }
-        
-        // Load dashboard data
-        async function loadDashboard() {
-            try {
-                console.log("Loading dashboard data...");
-                
-                // Get total students
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                const students = studentsSnapshot.val() || {};
-                const studentCount = Object.keys(students).length;
-                document.getElementById('totalStudents').textContent = studentCount;
-                
-                // Get total courses
-                const coursesRef = ref(database, 'courses');
-                const coursesSnapshot = await get(coursesRef);
-                const courses = coursesSnapshot.val() || {};
-                const courseCount = Object.keys(courses).length;
-                document.getElementById('totalCourses').textContent = courseCount;
-                
-                // Get total fees
-                let totalFees = 0;
-                Object.values(students).forEach(student => {
-                    totalFees += parseInt(student.fees) || 0;
-                });
-                document.getElementById('totalFees').textContent = `PKR ${totalFees.toLocaleString()}`;
-                
-                // Get attendance rate (simplified calculation)
-                const attendanceRef = ref(database, 'attendance');
-                const attendanceSnapshot = await get(attendanceRef);
-                const attendance = attendanceSnapshot.val() || {};
-                
-                let totalRecords = 0;
-                let presentRecords = 0;
-                
-                Object.values(attendance).forEach(record => {
-                    if (record.status === 'present') {
-                        presentRecords++;
-                    }
-                    totalRecords++;
-                });
-                
-                const attendanceRate = totalRecords > 0 ? Math.round((presentRecords / totalRecords) * 100) : 0;
-                document.getElementById('attendanceRate').textContent = `${attendanceRate}%`;
-                
-                // Get recent students
-                const recentStudentsList = document.getElementById('recentStudents');
-                recentStudentsList.innerHTML = '';
-                
-                // Convert to array and sort by createdAt
-                const studentsArray = Object.values(students);
-                studentsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                
-                studentsArray.slice(0, 5).forEach(student => {
-                    const li = document.createElement('li');
-                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    li.innerHTML = `
-                        <div>
-                            <strong>Roll ${student.rollNumber || 'N/A'}: ${student.name}</strong>
-                            <div class="text-muted small">${student.course}</div>
-                        </div>
-                        <span class="badge bg-primary rounded-pill">PKR ${student.fees}</span>
-                    `;
-                    recentStudentsList.appendChild(li);
-                });
-                
-                // Load fee status data
-                await loadFeeStatusData();
-                
-                console.log("Dashboard data loaded successfully");
-            } catch (error) {
-                console.error("Error loading dashboard:", error);
-                showNotification('Error loading dashboard: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Load fee status data for dashboard
-        async function loadFeeStatusData() {
-            try {
-                const feesRef = ref(database, 'fees');
-                const feesSnapshot = await get(feesRef);
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                let paidCount = 0;
-                let unpaidCount = 0;
-                let totalCount = 0;
-                
-                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                const monthlyData = {};
-                
-                // Initialize monthly data
-                for (let i = 0; i < 12; i++) {
-                    monthlyData[i] = { paid: 0, unpaid: 0 };
-                }
-                
-                if (feesSnapshot.exists()) {
-                    const fees = feesSnapshot.val();
-                    const students = studentsSnapshot.val() || {};
-                    
-                    Object.values(fees).forEach(fee => {
-                        totalCount++;
-                        if (fee.status === 'paid') {
-                            paidCount++;
-                            monthlyData[fee.month].paid++;
-                        } else {
-                            unpaidCount++;
-                            monthlyData[fee.month].unpaid++;
-                        }
-                    });
-                }
-                
-                // Update summary cards
-                document.getElementById('paidFeesCount').textContent = paidCount;
-                document.getElementById('unpaidFeesCount').textContent = unpaidCount;
-                document.getElementById('totalFeesCount').textContent = totalCount;
-                
-                // Update monthly table
-                const feeStatusTable = document.getElementById('feeStatusTable');
-                feeStatusTable.innerHTML = '';
-                
-                const currentMonth = new Date().getMonth();
-                
-                // Show last 6 months
-                for (let i = 5; i >= 0; i--) {
-                    const monthIndex = (currentMonth - i + 12) % 12;
-                    const monthData = monthlyData[monthIndex];
-                    const total = monthData.paid + monthData.unpaid;
-                    const rate = total > 0 ? Math.round((monthData.paid / total) * 100) : 0;
-                    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${monthNames[monthIndex]}</td>
-                        <td>${monthData.paid}</td>
-                        <td>${monthData.unpaid}</td>
-                        <td>${rate}%</td>
-                    `;
-                    feeStatusTable.appendChild(row);
-                }
-            } catch (error) {
-                console.error("Error loading fee status data:", error);
-            }
-        }
-        
-        // Load courses and cache them
-        async function loadAndCacheCourses() {
-            try {
-                const coursesRef = ref(database, 'courses');
-                const snapshot = await get(coursesRef);
-                
-                if (snapshot.exists()) {
-                    coursesCache = Object.values(snapshot.val());
-                    return coursesCache;
-                } else {
-                    coursesCache = [];
-                    return [];
-                }
-            } catch (error) {
-                console.error("Error loading courses:", error);
-                showNotification('Error loading courses: ' + error.message, 'error');
-                return [];
-            }
-        }
-        
-        // Load students and cache them
-        async function loadAndCacheStudents() {
-            try {
-                const studentsRef = ref(database, 'students');
-                const snapshot = await get(studentsRef);
-                
-                if (snapshot.exists()) {
-                    studentsCache = Object.values(snapshot.val());
-                    return studentsCache;
-                } else {
-                    studentsCache = [];
-                    return [];
-                }
-            } catch (error) {
-                console.error("Error loading students:", error);
-                showNotification('Error loading students: ' + error.message, 'error');
-                return [];
-            }
-        }
-        
-        // Load students
-        async function loadStudents() {
-            try {
-                console.log("Loading students...");
-                
-                const studentsTableBody = document.getElementById('studentsTableBody');
-                studentsTableBody.innerHTML = '';
-                
-                const studentsRef = ref(database, 'students');
-                const snapshot = await get(studentsRef);
-                
-                if (snapshot.exists()) {
-                    const students = snapshot.val();
-                    Object.keys(students).forEach(key => {
-                        const student = students[key];
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${student.rollNumber || 'N/A'}</td>
-                            <td>${key}</td>
-                            <td>${student.name}</td>
-                            <td>${student.contact}</td>
-                            <td>${student.course}</td>
-                            <td>PKR ${student.fees}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editStudent('${key}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('${key}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        studentsTableBody.appendChild(row);
-                    });
-                    console.log("Students loaded successfully");
-                } else {
-                    console.log("No students found");
-                }
-                
-                // Populate course dropdowns
-                populateCourseDropdowns();
-            } catch (error) {
-                console.error("Error loading students:", error);
-                showNotification('Error loading students: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Add student
-        document.getElementById('addStudentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                console.log("Adding student...");
-                
-                const name = document.getElementById('studentName').value;
-                const contact = document.getElementById('studentContact').value;
-                const fees = document.getElementById('studentFees').value;
-                const course = document.getElementById('studentCourse').value;
-                
-                console.log("Student data:", { name, contact, fees, course });
-                
-                // Generate a new key for the student
-                const newStudentRef = push(ref(database, 'students'));
-                
-                // Get next roll number
-                const rollNumber = await getNextRollNumber();
-                
-                // Set the student data
-                await set(newStudentRef, {
-                    name,
-                    contact,
-                    fees,
-                    course,
-                    rollNumber,
-                    createdAt: new Date().toISOString()
-                });
-                
-                console.log("Student added with ID:", newStudentRef.key);
-                
-                showNotification('Student added successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
-                document.getElementById('addStudentForm').reset();
-                loadStudents();
-            } catch (error) {
-                console.error("Error adding student:", error);
-                showNotification('Error adding student: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Edit student
-        window.editStudent = async function(id) {
-            try {
-                console.log("Editing student:", id);
-                
-                const studentRef = ref(database, 'students/' + id);
-                const snapshot = await get(studentRef);
-                
-                if (snapshot.exists()) {
-                    const student = snapshot.val();
-                    
-                    console.log("Student data:", student);
-                    
-                    document.getElementById('editStudentId').value = id;
-                    document.getElementById('editStudentName').value = student.name;
-                    document.getElementById('editStudentContact').value = student.contact;
-                    document.getElementById('editStudentFees').value = student.fees;
-                    document.getElementById('editStudentCourse').value = student.course;
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
-                    modal.show();
-                } else {
-                    console.error("Student not found");
-                    showNotification('Student not found', 'error');
-                }
-            } catch (error) {
-                console.error("Error loading student data:", error);
-                showNotification('Error loading student data: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        };
-        
-        // Update student
-        document.getElementById('editStudentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                console.log("Updating student...");
-                
-                const id = document.getElementById('editStudentId').value;
-                const name = document.getElementById('editStudentName').value;
-                const contact = document.getElementById('editStudentContact').value;
-                const fees = document.getElementById('editStudentFees').value;
-                const course = document.getElementById('editStudentCourse').value;
-                
-                console.log("Updated student data:", { id, name, contact, fees, course });
-                
-                await update(ref(database, 'students/' + id), {
-                    name,
-                    contact,
-                    fees,
-                    course
-                });
-                
-                console.log("Student updated successfully");
-                
-                showNotification('Student updated successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('editStudentModal')).hide();
-                loadStudents();
-            } catch (error) {
-                console.error("Error updating student:", error);
-                showNotification('Error updating student: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Delete student
-        window.deleteStudent = async function(id) {
-            try {
-                console.log("Deleting student:", id);
-                
-                // Show confirmation modal
-                confirmTitle.textContent = "Delete Student";
-                confirmMessage.textContent = "Are you sure you want to delete this student? This action cannot be undone.";
-                
-                confirmButton.onclick = async function() {
-                    try {
-                        await remove(ref(database, 'students/' + id));
-                        
-                        console.log("Student deleted successfully");
-                        
-                        showNotification('Student deleted successfully!', 'success');
-                        loadStudents();
-                        
-                        // Hide confirmation modal
-                        bootstrap.Modal.getInstance(confirmModal).hide();
-                    } catch (error) {
-                        console.error("Error deleting student:", error);
-                        showNotification('Error deleting student: ' + error.message, 'error');
-                        showConnectionStatus('Database error: ' + error.message, 'disconnected');
-                    }
-                };
-                
-                // Show confirmation modal
-                const modal = new bootstrap.Modal(confirmModal);
-                modal.show();
-            } catch (error) {
-                console.error("Error preparing student deletion:", error);
-                showNotification('Error preparing deletion: ' + error.message, 'error');
-            }
-        };
-        
-        // Load courses
-        async function loadCourses() {
-            try {
-                console.log("Loading courses...");
-                
-                const coursesTableBody = document.getElementById('coursesTableBody');
-                coursesTableBody.innerHTML = '';
-                
-                const coursesRef = ref(database, 'courses');
-                const snapshot = await get(coursesRef);
-                
-                if (snapshot.exists()) {
-                    const courses = snapshot.val();
-                    
-                    // Get students count for each course
-                    const studentsRef = ref(database, 'students');
-                    const studentsSnapshot = await get(studentsRef);
-                    const students = studentsSnapshot.val() || {};
-                    
-                    Object.keys(courses).forEach(key => {
-                        const course = courses[key];
-                        
-                        // Count enrolled students
-                        let enrolledCount = 0;
-                        Object.keys(students).forEach(studentId => {
-                            if (students[studentId].course === course.name) {
-                                enrolledCount++;
-                            }
-                        });
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${key}</td>
-                            <td>${course.name}</td>
-                            <td>${enrolledCount}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editCourse('${key}')">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger me-1" onclick="deleteCourse('${key}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-success" onclick="enrollStudent('${key}')">
-                                    <i class="bi bi-person-plus"></i> Enroll
-                                </button>
-                            </td>
-                        `;
-                        coursesTableBody.appendChild(row);
-                    });
-                    
-                    console.log("Courses loaded successfully");
-                } else {
-                    console.log("No courses found");
-                }
-            } catch (error) {
-                console.error("Error loading courses:", error);
-                showNotification('Error loading courses: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Add course
-        document.getElementById('addCourseForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                console.log("Adding course...");
-                
-                const name = document.getElementById('courseName').value;
-                
-                console.log("Course data:", { name });
-                
-                const newCourseRef = push(ref(database, 'courses'));
-                await set(newCourseRef, {
-                    name,
-                    createdAt: new Date().toISOString()
-                });
-                
-                console.log("Course added with ID:", newCourseRef.key);
-                
-                showNotification('Course added successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
-                document.getElementById('addCourseForm').reset();
-                
-                // Update courses cache
-                await loadAndCacheCourses();
-                
-                // Refresh course dropdowns
-                populateCourseDropdowns();
-                
-                // Reload courses section
-                loadCourses();
-            } catch (error) {
-                console.error("Error adding course:", error);
-                showNotification('Error adding course: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Edit course
-        window.editCourse = async function(id) {
-            try {
-                console.log("Editing course:", id);
-                
-                const courseRef = ref(database, 'courses/' + id);
-                const snapshot = await get(courseRef);
-                
-                if (snapshot.exists()) {
-                    const course = snapshot.val();
-                    
-                    console.log("Course data:", course);
-                    
-                    document.getElementById('editCourseId').value = id;
-                    document.getElementById('editCourseName').value = course.name;
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-                    modal.show();
-                } else {
-                    console.error("Course not found");
-                    showNotification('Course not found', 'error');
-                }
-            } catch (error) {
-                console.error("Error loading course data:", error);
-                showNotification('Error loading course data: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        };
-        
-        // Update course
-        document.getElementById('editCourseForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                console.log("Updating course...");
-                
-                const id = document.getElementById('editCourseId').value;
-                const name = document.getElementById('editCourseName').value;
-                
-                console.log("Updated course data:", { id, name });
-                
-                await update(ref(database, 'courses/' + id), {
-                    name
-                });
-                
-                console.log("Course updated successfully");
-                
-                showNotification('Course updated successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('editCourseModal')).hide();
-                
-                // Update courses cache
-                await loadAndCacheCourses();
-                
-                // Refresh course dropdowns
-                populateCourseDropdowns();
-                
-                // Reload courses section
-                loadCourses();
-            } catch (error) {
-                console.error("Error updating course:", error);
-                showNotification('Error updating course: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Delete course
-        window.deleteCourse = async function(id) {
-            try {
-                console.log("Deleting course:", id);
-                
-                // Show confirmation modal
-                confirmTitle.textContent = "Delete Course";
-                confirmMessage.textContent = "Are you sure you want to delete this course? This action cannot be undone.";
-                
-                confirmButton.onclick = async function() {
-                    try {
-                        await remove(ref(database, 'courses/' + id));
-                        
-                        console.log("Course deleted successfully");
-                        
-                        showNotification('Course deleted successfully!', 'success');
-                        
-                        // Update courses cache
-                        await loadAndCacheCourses();
-                        
-                        // Refresh course dropdowns
-                        populateCourseDropdowns();
-                        
-                        // Reload courses section
-                        loadCourses();
-                        
-                        // Hide confirmation modal
-                        bootstrap.Modal.getInstance(confirmModal).hide();
-                    } catch (error) {
-                        console.error("Error deleting course:", error);
-                        showNotification('Error deleting course: ' + error.message, 'error');
-                        showConnectionStatus('Database error: ' + error.message, 'disconnected');
-                    }
-                };
-                
-                // Show confirmation modal
-                const modal = new bootstrap.Modal(confirmModal);
-                modal.show();
-            } catch (error) {
-                console.error("Error preparing course deletion:", error);
-                showNotification('Error preparing deletion: ' + error.message, 'error');
-            }
-        };
-        
-        // Enroll student in course
-        window.enrollStudent = async function(courseId) {
-            try {
-                console.log("Enrolling student in course:", courseId);
-                
-                document.getElementById('enrollCourseId').value = courseId;
-                
-                // Populate student dropdown
-                const studentDropdown = document.getElementById('enrollStudentName');
-                studentDropdown.innerHTML = '<option value="">Select Student</option>';
-                
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    Object.keys(students).forEach(key => {
-                        const student = students[key];
-                        const option = document.createElement('option');
-                        option.value = key;
-                        option.textContent = `Roll ${student.rollNumber || 'N/A'}: ${student.name}`;
-                        studentDropdown.appendChild(option);
-                    });
-                }
-                
-                const modal = new bootstrap.Modal(document.getElementById('enrollStudentModal'));
-                modal.show();
-            } catch (error) {
-                console.error("Error loading students for enrollment:", error);
-                showNotification('Error loading students: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        };
-        
-        // Process enrollment
-        document.getElementById('enrollStudentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                console.log("Processing enrollment...");
-                
-                const courseId = document.getElementById('enrollCourseId').value;
-                const studentId = document.getElementById('enrollStudentName').value;
-                
-                console.log("Enrollment data:", { courseId, studentId });
-                
-                // Get course name
-                const courseRef = ref(database, 'courses/' + courseId);
-                const courseSnapshot = await get(courseRef);
-                const courseName = courseSnapshot.val().name;
-                
-                // Update student's course
-                await update(ref(database, 'students/' + studentId), {
-                    course: courseName
-                });
-                
-                console.log("Student enrolled successfully");
-                
-                showNotification('Student enrolled successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('enrollStudentModal')).hide();
-                loadCourses();
-                loadStudents();
-            } catch (error) {
-                console.error("Error enrolling student:", error);
-                showNotification('Error enrolling student: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Load fees
-        function loadFees() {
-            // Set current month and year
-            const now = new Date();
-            document.getElementById('monthSelect').value = now.getMonth();
-            
-            // Populate year dropdown
-            const yearSelect = document.getElementById('yearSelect');
-            yearSelect.innerHTML = '';
-            const currentYear = now.getFullYear();
-            
-            for (let year = currentYear - 5; year <= currentYear + 5; year++) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                if (year === currentYear) {
-                    option.selected = true;
-                }
-                yearSelect.appendChild(option);
-            }
-            
-            // Load fees data
-            loadFeesData();
-        }
-        
-        // Load fees data based on selected month and year
-        async function loadFeesData() {
-            try {
-                console.log("Loading fees data...");
-                
-                const month = document.getElementById('monthSelect').value;
-                const year = document.getElementById('yearSelect').value;
-                
-                const feesTableBody = document.getElementById('feesTableBody');
-                feesTableBody.innerHTML = '';
-                
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    console.log("Found", Object.keys(students).length, "students for fees");
-                    
-                    Object.keys(students).forEach(studentId => {
-                        const student = students[studentId];
-                        
-                        // Check if fee record exists for this month/year
-                        const feesRef = ref(database, 'fees');
-                        const feesSnapshot = get(feesRef);
-                        
-                        feesSnapshot.then(feesData => {
-                            let status = 'unpaid';
-                            let feeId = '';
-                            
-                            if (feesData.exists()) {
-                                const fees = feesData.val();
-                                Object.keys(fees).forEach(key => {
-                                    const fee = fees[key];
-                                    if (fee.studentId === studentId && 
-                                        fee.month === parseInt(month) && 
-                                        fee.year === parseInt(year)) {
-                                        status = fee.status;
-                                        feeId = key;
-                                    }
-                                });
-                            }
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${student.rollNumber || 'N/A'}</td>
-                                <td>${studentId}</td>
-                                <td>${student.name}</td>
-                                <td>${student.course}</td>
-                                <td>PKR ${student.fees}</td>
-                                <td>
-                                    <span class="${status === 'paid' ? 'status-paid' : 'status-unpaid'}">
-                                        ${status === 'paid' ? 'Paid' : 'Unpaid'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm ${status === 'paid' ? 'btn-outline-warning' : 'btn-outline-success'}" 
-                                            onclick="toggleFeeStatus('${studentId}', '${month}', '${year}', '${status}', '${feeId}')">
-                                        ${status === 'paid' ? 'Mark Unpaid' : 'Mark Paid'}
-                                    </button>
-                                </td>
-                            `;
-                            feesTableBody.appendChild(row);
-                        });
-                    });
-                }
-                
-                console.log("Fees data loaded successfully");
-            } catch (error) {
-                console.error("Error loading fees data:", error);
-                showNotification('Error loading fees: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Toggle fee status
-        window.toggleFeeStatus = async function(studentId, month, year, currentStatus, feeId) {
-            try {
-                console.log("Toggling fee status...");
-                
-                const newStatus = currentStatus === 'paid' ? 'unpaid' : 'paid';
-                
-                if (feeId) {
-                    // Update existing fee record
-                    await update(ref(database, 'fees/' + feeId), {
-                        status: newStatus
-                    });
-                } else {
-                    // Create new fee record
-                    const newFeeRef = push(ref(database, 'fees'));
-                    await set(newFeeRef, {
-                        studentId,
-                        month: parseInt(month),
-                        year: parseInt(year),
-                        status: newStatus,
-                        createdAt: new Date().toISOString()
-                    });
-                }
-                
-                console.log("Fee status updated successfully");
-                
-                showNotification(`Fee marked as ${newStatus}!`, 'success');
-                loadFeesData();
-            } catch (error) {
-                console.error("Error updating fee status:", error);
-                showNotification('Error updating fee status: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        };
-        
-        // Month/year change event listeners
-        document.getElementById('monthSelect').addEventListener('change', loadFeesData);
-        document.getElementById('yearSelect').addEventListener('change', loadFeesData);
-        
-        // Load attendance
-        async function loadAttendance() {
-            try {
-                console.log("Loading attendance...");
-                
-                const attendanceTableBody = document.getElementById('attendanceTableBody');
-                attendanceTableBody.innerHTML = '';
-                
-                // Set today's date as default
-                const today = new Date();
-                document.getElementById('attendanceDate').value = today.toISOString().split('T')[0];
-                
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    console.log("Found", Object.keys(students).length, "students for attendance");
-                    
-                    Object.keys(students).forEach(studentId => {
-                        const student = students[studentId];
-                        
-                        // Calculate attendance rate (simplified)
-                        const attendanceRef = ref(database, 'attendance');
-                        const attendanceSnapshot = get(attendanceRef);
-                        
-                        attendanceSnapshot.then(attData => {
-                            let totalDays = 0;
-                            let presentDays = 0;
-                            
-                            if (attData.exists()) {
-                                const attendance = attData.val();
-                                Object.keys(attendance).forEach(key => {
-                                    const att = attendance[key];
-                                    if (att.studentId === studentId) {
-                                        totalDays++;
-                                        if (att.status === 'present') {
-                                            presentDays++;
-                                        }
-                                    }
-                                });
-                            }
-                            
-                            const attendanceRate = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${student.rollNumber || 'N/A'}</td>
-                                <td>${studentId}</td>
-                                <td>${student.name}</td>
-                                <td>${student.course}</td>
-                                <td>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar" role="progressbar" 
-                                             style="width: ${attendanceRate}%; background-color: ${attendanceRate > 70 ? '#38a169' : attendanceRate > 40 ? '#d69e2e' : '#e53e3e'};"
-                                             aria-valuenow="${attendanceRate}" aria-valuemin="0" aria-valuemax="100">
-                                            ${attendanceRate}%
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentAttendance('${studentId}')">
-                                        <i class="bi bi-calendar3"></i> View
-                                    </button>
-                                </td>
-                            `;
-                            attendanceTableBody.appendChild(row);
-                        });
-                    });
-                }
-                
-                console.log("Attendance loaded successfully");
-            } catch (error) {
-                console.error("Error loading attendance:", error);
-                showNotification('Error loading attendance: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Mark attendance button
-        document.getElementById('markAttendanceBtn').addEventListener('click', async () => {
-            try {
-                console.log("Marking attendance...");
-                
-                const date = document.getElementById('attendanceDate').value;
-                if (!date) {
-                    showNotification('Please select a date!', 'error');
-                    return;
-                }
-                
-                document.getElementById('attendanceDateDisplay').textContent = new Date(date).toLocaleDateString();
-                
-                // Populate attendance table
-                const attendanceTableBodyModal = document.getElementById('attendanceTableBodyModal');
-                attendanceTableBodyModal.innerHTML = '';
-                
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    console.log("Found", Object.keys(students).length, "students for marking attendance");
-                    
-                    Object.keys(students).forEach(studentId => {
-                        const student = students[studentId];
-                        
-                        // Check if attendance already exists for this date
-                        const attendanceRef = ref(database, 'attendance');
-                        const attendanceSnapshot = get(attendanceRef);
-                        
-                        attendanceSnapshot.then(attData => {
-                            let status = 'absent';
-                            
-                            if (attData.exists()) {
-                                const attendance = attData.val();
-                                Object.keys(attendance).forEach(key => {
-                                    const att = attendance[key];
-                                    if (att.studentId === studentId && att.date === date) {
-                                        status = att.status;
-                                    }
-                                });
-                            }
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${student.rollNumber || 'N/A'}</td>
-                                <td>${studentId}</td>
-                                <td>${student.name}</td>
-                                <td>${student.course}</td>
-                                <td>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="attendance-${studentId}" 
-                                               id="present-${studentId}" value="present" ${status === 'present' ? 'checked' : ''}>
-                                        <label class="form-check-label" for="present-${studentId}">Present</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="attendance-${studentId}" 
-                                               id="absent-${studentId}" value="absent" ${status === 'absent' ? 'checked' : ''}>
-                                        <label class="form-check-label" for="absent-${studentId}">Absent</label>
-                                    </div>
-                                </td>
-                            `;
-                            attendanceTableBodyModal.appendChild(row);
-                        });
-                    });
-                }
-                
-                const modal = new bootstrap.Modal(document.getElementById('markAttendanceModal'));
-                modal.show();
-            } catch (error) {
-                console.error("Error loading attendance data:", error);
-                showNotification('Error loading attendance data: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Save attendance
-        document.getElementById('saveAttendanceBtn').addEventListener('click', async () => {
-            try {
-                console.log("Saving attendance...");
-                
-                const date = document.getElementById('attendanceDate').value;
-                
-                const studentsRef = ref(database, 'students');
-                const studentsSnapshot = await get(studentsRef);
-                
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    
-                    Object.keys(students).forEach(studentId => {
-                        const statusRadio = document.querySelector(`input[name="attendance-${studentId}"]:checked`);
-                        
-                        if (statusRadio) {
-                            const status = statusRadio.value;
-                            
-                            // Check if attendance record already exists
-                            const attendanceRef = ref(database, 'attendance');
-                            const attendanceSnapshot = get(attendanceRef);
-                            
-                            attendanceSnapshot.then(attData => {
-                                let recordExists = false;
-                                let existingKey = '';
-                                
-                                if (attData.exists()) {
-                                    const attendance = attData.val();
-                                    Object.keys(attendance).forEach(key => {
-                                        const att = attendance[key];
-                                        if (att.studentId === studentId && att.date === date) {
-                                            recordExists = true;
-                                            existingKey = key;
-                                        }
-                                    });
-                                }
-                                
-                                if (recordExists) {
-                                    // Update existing record
-                                    update(ref(database, 'attendance/' + existingKey), {
-                                        status
-                                    }).then(() => {
-                                        console.log("Attendance updated for student:", studentId);
-                                    }).catch(error => {
-                                        console.error("Error updating attendance:", error);
-                                    });
-                                } else {
-                                    // Create new record
-                                    const newAttRef = push(ref(database, 'attendance'));
-                                    set(newAttRef, {
-                                        studentId,
-                                        date,
-                                        status,
-                                        createdAt: new Date().toISOString()
-                                    }).then(() => {
-                                        console.log("Attendance added for student:", studentId);
-                                    }).catch(error => {
-                                        console.error("Error adding attendance:", error);
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-                
-                console.log("Attendance saved successfully");
-                showNotification('Attendance saved successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('markAttendanceModal')).hide();
-                loadAttendance();
-            } catch (error) {
-                console.error("Error saving attendance:", error);
-                showNotification('Error saving attendance: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        });
-        
-        // Delete attendance data for 3 months
-        document.getElementById('deleteAttendanceBtn').addEventListener('click', () => {
-            // Show confirmation modal
-            confirmTitle.textContent = "Delete Attendance Data";
-            confirmMessage.textContent = "Are you sure you want to delete all attendance data for the last 3 months? This action cannot be undone.";
-            
-            confirmButton.onclick = async function() {
-                try {
-                    console.log("Deleting attendance data for last 3 months...");
-                    
-                    // Get current date
-                    const currentDate = new Date();
-                    
-                    // Calculate date 3 months ago
-                    const threeMonthsAgo = new Date();
-                    threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-                    
-                    // Get all attendance records
-                    const attendanceRef = ref(database, 'attendance');
-                    const attendanceSnapshot = get(attendanceRef);
-                    
-                    attendanceSnapshot.then(snapshot => {
-                        if (snapshot.exists()) {
-                            const attendance = snapshot.val();
-                            let deletedCount = 0;
-                            
-                            Object.keys(attendance).forEach(key => {
-                                const att = attendance[key];
-                                const attDate = new Date(att.date);
-                                
-                                // Check if attendance date is within the last 3 months
-                                if (attDate >= threeMonthsAgo && attDate <= currentDate) {
-                                    remove(ref(database, 'attendance/' + key)).then(() => {
-                                        console.log("Deleted attendance record:", key);
-                                        deletedCount++;
-                                    }).catch(error => {
-                                        console.error("Error deleting attendance record:", error);
-                                    });
-                                }
-                            });
-                            
-                            console.log("Attendance data deleted successfully");
-                            showNotification(`Deleted ${deletedCount} attendance records for the last 3 months!`, 'success');
-                            loadAttendance();
-                        } else {
-                            showNotification('No attendance data found!', 'error');
-                        }
-                        
-                        // Hide confirmation modal
-                        bootstrap.Modal.getInstance(confirmModal).hide();
-                    }).catch(error => {
-                        console.error("Error deleting attendance data:", error);
-                        showNotification('Error deleting attendance data: ' + error.message, 'error');
-                        showConnectionStatus('Database error: ' + error.message, 'disconnected');
-                        bootstrap.Modal.getInstance(confirmModal).hide();
-                    });
-                } catch (error) {
-                    console.error("Error preparing attendance deletion:", error);
-                    showNotification('Error preparing deletion: ' + error.message, 'error');
-                    bootstrap.Modal.getInstance(confirmModal).hide();
-                }
-            };
-            
-            // Show confirmation modal
-            const modal = new bootstrap.Modal(confirmModal);
-            modal.show();
-        });
-        
-        // View student attendance (placeholder function)
-        window.viewStudentAttendance = function(studentId) {
-            showNotification('Student attendance view would open here', 'success');
-        };
-        
-        // Populate course dropdowns
-        async function populateCourseDropdowns() {
-            try {
-                console.log("Populating course dropdowns...");
-                
-                const studentCourseDropdown = document.getElementById('studentCourse');
-                const editStudentCourseDropdown = document.getElementById('editStudentCourse');
-                
-                studentCourseDropdown.innerHTML = '<option value="">Select Course</option>';
-                editStudentCourseDropdown.innerHTML = '<option value="">Select Course</option>';
-                
-                // Load courses from cache or database
-                let courses = coursesCache;
-                if (courses.length === 0) {
-                    courses = await loadAndCacheCourses();
-                }
-                
-                courses.forEach(course => {
-                    const option1 = document.createElement('option');
-                    option1.value = course.name;
-                    option1.textContent = course.name;
-                    studentCourseDropdown.appendChild(option1);
-                    
-                    const option2 = document.createElement('option');
-                    option2.value = course.name;
-                    option2.textContent = course.name;
-                    editStudentCourseDropdown.appendChild(option2);
-                });
-                
-                console.log("Course dropdowns populated successfully");
-            } catch (error) {
-                console.error("Error populating course dropdowns:", error);
-                showNotification('Error loading courses: ' + error.message, 'error');
-                showConnectionStatus('Database error: ' + error.message, 'disconnected');
-            }
-        }
-        
-        // Function to create and download a ZIP file with all data
-        async function downloadAllDataAsZip() {
-            try {
-                console.log("Downloading all data as ZIP...");
-                
-                // Get all data
-                const studentsRef = ref(database, 'students');
-                const coursesRef = ref(database, 'courses');
-                const feesRef = ref(database, 'fees');
-                const attendanceRef = ref(database, 'attendance');
-                
-                const studentsSnapshot = await get(studentsRef);
-                const coursesSnapshot = await get(coursesRef);
-                const feesSnapshot = await get(feesRef);
-                const attendanceSnapshot = await get(attendanceRef);
-                
-                // Create a single CSV file with all data
-                let csvContent = "EDUTECH MANAGEMENT SYSTEM - COMPLETE DATA EXPORT\n";
-                csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
-                
-                // Add students data
-                if (studentsSnapshot.exists()) {
-                    const students = studentsSnapshot.val();
-                    csvContent += "=== STUDENTS DATA ===\n\n";
-                    csvContent += "Roll Number,ID,Name,Contact,Course,Fees,Created At\n";
-                    
-                    Object.keys(students).forEach(key => {
-                        const student = students[key];
-                        csvContent += `${student.rollNumber || 'N/A'},${key},"${student.name}","${student.contact}","${student.course}",${student.fees},"${student.createdAt}"\n`;
-                    });
-                    
-                    csvContent += "\n\n";
-                }
-                
-                // Add courses data
-                if (coursesSnapshot.exists()) {
-                    const courses = coursesSnapshot.val();
-                    csvContent += "=== COURSES DATA ===\n\n";
-                    csvContent += "ID,Course Name,Created At\n";
-                    
-                    Object.keys(courses).forEach(key => {
-                        const course = courses[key];
-                        csvContent += `${key},"${course.name}","${course.createdAt}"\n`;
-                    });
-                    
-                    csvContent += "\n\n";
-                }
-                
-                // Add fees data
-                if (feesSnapshot.exists()) {
-                    const fees = feesSnapshot.val();
-                    const students = studentsSnapshot.val() || {};
-                    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                    
-                    csvContent += "=== FEES DATA ===\n\n";
-                    csvContent += "Roll Number,Student ID,Student Name,Course,Fee Amount,Status,Month,Year,Created At\n";
-                    
-                    Object.keys(fees).forEach(key => {
-                        const fee = fees[key];
-                        const student = students[fee.studentId] || {};
-                        csvContent += `${student.rollNumber || 'N/A'},${fee.studentId},"${student.name || 'N/A'}","${student.course || 'N/A'}",${student.fees || 'N/A'},"${fee.status}","${monthNames[fee.month]}",${fee.year},"${fee.createdAt}"\n`;
-                    });
-                    
-                    csvContent += "\n\n";
-                }
-                
-                // Add attendance data
-                if (attendanceSnapshot.exists()) {
-                    const attendance = attendanceSnapshot.val();
-                    const students = studentsSnapshot.val() || {};
-                    
-                    csvContent += "=== ATTENDANCE DATA ===\n\n";
-                    csvContent += "Roll Number,Student ID,Student Name,Course,Date,Status,Created At\n";
-                    
-                    Object.keys(attendance).forEach(key => {
-                        const att = attendance[key];
-                        const student = students[att.studentId] || {};
-                        csvContent += `${student.rollNumber || 'N/A'},${att.studentId},"${student.name || 'N/A'}","${student.course || 'N/A'}",${att.date},"${att.status}","${att.createdAt}"\n`;
-                    });
-                }
-                
-                // Create download link
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('download', `edutech_complete_data_export_${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                showNotification('All data downloaded successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            } catch (error) {
-                console.error("Error downloading all data:", error);
-                showNotification('Error downloading data: ' + error.message, 'error');
-            }
-        }
-        
-        // Download functions for export modal
-        window.downloadAllData = function() {
-            downloadAllDataAsZip();
-        };
-        
-        window.downloadStudentsData = function() {
-            bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            downloadStudentsBtn.click();
-        };
-        
-        window.downloadCoursesData = function() {
-            bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            downloadCoursesBtn.click();
-        };
-        
-        window.downloadFeesData = function() {
-            bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            downloadFeesBtn.click();
-        };
-        
-        window.downloadAttendanceData = function() {
-            bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            downloadAttendanceBtn.click();
-        };
-        
-        window.downloadSummaryReport = function() {
-            downloadSummaryReport();
-        };
-        
-        // Function to download summary report
-        async function downloadSummaryReport() {
-            try {
-                console.log("Downloading summary report...");
-                
-                // Get all data
-                const studentsRef = ref(database, 'students');
-                const coursesRef = ref(database, 'courses');
-                const feesRef = ref(database, 'fees');
-                const attendanceRef = ref(database, 'attendance');
-                
-                const studentsSnapshot = await get(studentsRef);
-                const coursesSnapshot = await get(coursesRef);
-                const feesSnapshot = await get(feesRef);
-                const attendanceSnapshot = await get(attendanceRef);
-                
-                // Create summary report
-                let reportContent = "EDUTECH MANAGEMENT SYSTEM - SUMMARY REPORT\n";
-                reportContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
-                
-                // Overall statistics
-                reportContent += "=== OVERALL STATISTICS ===\n\n";
-                
-                const students = studentsSnapshot.val() || {};
-                const courses = coursesSnapshot.val() || {};
-                const fees = feesSnapshot.val() || {};
-                const attendance = attendanceSnapshot.val() || {};
-                
-                reportContent += `Total Students: ${Object.keys(students).length}\n`;
-                reportContent += `Total Courses: ${Object.keys(courses).length}\n`;
-                reportContent += `Total Fee Records: ${Object.keys(fees).length}\n`;
-                reportContent += `Total Attendance Records: ${Object.keys(attendance).length}\n\n`;
-                
-                // Course-wise student distribution
-                reportContent += "=== COURSE-WISE STUDENT DISTRIBUTION ===\n\n";
-                reportContent += "Course Name,Number of Students\n";
-                
-                const courseStudentCount = {};
-                Object.values(courses).forEach(course => {
-                    courseStudentCount[course.name] = 0;
-                });
-                
-                Object.values(students).forEach(student => {
-                    if (student.course && courseStudentCount[student.course] !== undefined) {
-                        courseStudentCount[student.course]++;
-                    }
-                });
-                
-                Object.keys(courseStudentCount).forEach(courseName => {
-                    reportContent += `"${courseName}",${courseStudentCount[courseName]}\n`;
-                });
-                
-                reportContent += "\n";
-                
-                // Fee collection summary
-                reportContent += "=== FEE COLLECTION SUMMARY ===\n\n";
-                
-                let totalFeesAmount = 0;
-                let paidFeesAmount = 0;
-                let unpaidFeesAmount = 0;
-                
-                Object.values(students).forEach(student => {
-                    const feeAmount = parseInt(student.fees) || 0;
-                    totalFeesAmount += feeAmount;
-                });
-                
-                Object.values(fees).forEach(fee => {
-                    const student = students[fee.studentId] || {};
-                    const feeAmount = parseInt(student.fees) || 0;
-                    
-                    if (fee.status === 'paid') {
-                        paidFeesAmount += feeAmount;
-                    } else {
-                        unpaidFeesAmount += feeAmount;
-                    }
-                });
-                
-                reportContent += `Total Fees Amount: PKR ${totalFeesAmount.toLocaleString()}\n`;
-                reportContent += `Paid Fees Amount: PKR ${paidFeesAmount.toLocaleString()}\n`;
-                reportContent += `Unpaid Fees Amount: PKR ${unpaidFeesAmount.toLocaleString()}\n`;
-                reportContent += `Collection Rate: ${totalFeesAmount > 0 ? Math.round((paidFeesAmount / totalFeesAmount) * 100) : 0}%\n\n`;
-                
-                // Monthly fee collection
-                reportContent += "=== MONTHLY FEE COLLECTION ===\n\n";
-                reportContent += "Month,Year,Paid Count,Unpaid Count,Collection Rate\n";
-                
-                const monthlyFeeData = {};
-                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                
-                Object.values(fees).forEach(fee => {
-                    const key = `${fee.year}-${fee.month}`;
-                    if (!monthlyFeeData[key]) {
-                        monthlyFeeData[key] = { paid: 0, unpaid: 0 };
-                    }
-                    
-                    if (fee.status === 'paid') {
-                        monthlyFeeData[key].paid++;
-                    } else {
-                        monthlyFeeData[key].unpaid++;
-                    }
-                });
-                
-                Object.keys(monthlyFeeData).sort().forEach(key => {
-                    const [year, month] = key.split('-');
-                    const data = monthlyFeeData[key];
-                    const total = data.paid + data.unpaid;
-                    const rate = total > 0 ? Math.round((data.paid / total) * 100) : 0;
-                    
-                    reportContent += `${monthNames[parseInt(month)]},${year},${data.paid},${data.unpaid},${rate}%\n`;
-                });
-                
-                // Attendance summary
-                reportContent += "\n=== ATTENDANCE SUMMARY ===\n\n";
-                
-                let totalAttendanceRecords = 0;
-                let presentAttendanceRecords = 0;
-                
-                Object.values(attendance).forEach(att => {
-                    totalAttendanceRecords++;
-                    if (att.status === 'present') {
-                        presentAttendanceRecords++;
-                    }
-                });
-                
-                const overallAttendanceRate = totalAttendanceRecords > 0 ? Math.round((presentAttendanceRecords / totalAttendanceRecords) * 100) : 0;
-                
-                reportContent += `Total Attendance Records: ${totalAttendanceRecords}\n`;
-                reportContent += `Present Records: ${presentAttendanceRecords}\n`;
-                reportContent += `Absent Records: ${totalAttendanceRecords - presentAttendanceRecords}\n`;
-                reportContent += `Overall Attendance Rate: ${overallAttendanceRate}%\n\n`;
-                
-                // Student-wise attendance rates
-                reportContent += "=== STUDENT-WISE ATTENDANCE RATES ===\n\n";
-                reportContent += "Roll Number,Student Name,Course,Attendance Rate\n";
-                
-                const studentAttendanceData = {};
-                
-                Object.values(attendance).forEach(att => {
-                    if (!studentAttendanceData[att.studentId]) {
-                        studentAttendanceData[att.studentId] = { total: 0, present: 0 };
-                    }
-                    
-                    studentAttendanceData[att.studentId].total++;
-                    if (att.status === 'present') {
-                        studentAttendanceData[att.studentId].present++;
-                    }
-                });
-                
-                Object.keys(studentAttendanceData).forEach(studentId => {
-                    const student = students[studentId] || {};
-                    const data = studentAttendanceData[studentId];
-                    const rate = data.total > 0 ? Math.round((data.present / data.total) * 100) : 0;
-                    
-                    reportContent += `${student.rollNumber || 'N/A'},"${student.name || 'N/A'}","${student.course || 'N/A'}",${rate}%\n`;
-                });
-                
-                // Create download link
-                const blob = new Blob([reportContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('download', `edutech_summary_report_${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                showNotification('Summary report downloaded successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('exportDataModal')).hide();
-            } catch (error) {
-                console.error("Error downloading summary report:", error);
-                showNotification('Error downloading summary report: ' + error.message, 'error');
-            }
-        }
-        
-        // CSV Download Functions
-        
-        // Download students data
-        downloadStudentsBtn.addEventListener('click', async () => {
-            try {
-                console.log("Downloading students data...");
-                
-                const studentsRef = ref(database, 'students');
-                const snapshot = await get(studentsRef);
-                
-                if (snapshot.exists()) {
-                    const students = snapshot.val();
-                    
-                    // Create CSV content
-                    let csvContent = "Roll Number,ID,Name,Contact,Course,Fees,Created At\n";
-                    
-                    Object.keys(students).forEach(key => {
-                        const student = students[key];
-                        csvContent += `${student.rollNumber || 'N/A'},${key},"${student.name}","${student.contact}","${student.course}",${student.fees},"${student.createdAt}"\n`;
-                    });
-                    
-                    // Create download link
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', `students_${new Date().toISOString().split('T')[0]}.csv`);
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    showNotification('Students data downloaded successfully!', 'success');
-                } else {
-                    showNotification('No students data found!', 'error');
-                }
-            } catch (error) {
-                console.error("Error downloading students data:", error);
-                showNotification('Error downloading students data: ' + error.message, 'error');
-            }
-        });
-        
-        // Download courses data
-        downloadCoursesBtn.addEventListener('click', async () => {
-            try {
-                console.log("Downloading courses data...");
-                
-                const coursesRef = ref(database, 'courses');
-                const snapshot = await get(coursesRef);
-                
-                if (snapshot.exists()) {
-                    const courses = snapshot.val();
-                    
-                    // Create CSV content
-                    let csvContent = "ID,Course Name,Created At\n";
-                    
-                    Object.keys(courses).forEach(key => {
-                        const course = courses[key];
-                        csvContent += `${key},"${course.name}","${course.createdAt}"\n`;
-                    });
-                    
-                    // Create download link
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', `courses_${new Date().toISOString().split('T')[0]}.csv`);
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    showNotification('Courses data downloaded successfully!', 'success');
-                } else {
-                    showNotification('No courses data found!', 'error');
-                }
-            } catch (error) {
-                console.error("Error downloading courses data:", error);
-                showNotification('Error downloading courses data: ' + error.message, 'error');
-            }
-        });
-        
-        // Download fees data
-        downloadFeesBtn.addEventListener('click', async () => {
-            try {
-                console.log("Downloading fees data...");
-                
-                const month = document.getElementById('monthSelect').value;
-                const year = document.getElementById('yearSelect').value;
-                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                
-                const feesRef = ref(database, 'fees');
-                const snapshot = await get(feesRef);
-                
-                if (snapshot.exists()) {
-                    const fees = snapshot.val();
-                    
-                    // Get students data for student names
-                    const studentsRef = ref(database, 'students');
-                    const studentsSnapshot = await get(studentsRef);
-                    const students = studentsSnapshot.val() || {};
-                    
-                    // Create CSV content
-                    let csvContent = "Roll Number,Student ID,Student Name,Course,Fee Amount,Status,Month,Year,Created At\n";
-                    
-                    Object.keys(fees).forEach(key => {
-                        const fee = fees[key];
-                        
-                        // Only include fees for selected month and year
-                        if (fee.month == month && fee.year == year) {
-                            const student = students[fee.studentId] || {};
-                            csvContent += `${student.rollNumber || 'N/A'},${fee.studentId},"${student.name || 'N/A'}","${student.course || 'N/A'}",${student.fees || 'N/A'},"${fee.status}","${monthNames[fee.month]}",${fee.year},"${fee.createdAt}"\n`;
-                        }
-                    });
-                    
-                    // Create download link
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', `fees_${monthNames[month]}_${year}.csv`);
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    showNotification('Fees data downloaded successfully!', 'success');
-                } else {
-                    showNotification('No fees data found!', 'error');
-                }
-            } catch (error) {
-                console.error("Error downloading fees data:", error);
-                showNotification('Error downloading fees data: ' + error.message, 'error');
-            }
-        });
-        
-        // Download attendance data
-        downloadAttendanceBtn.addEventListener('click', async () => {
-            try {
-                console.log("Downloading attendance data...");
-                
-                const attendanceRef = ref(database, 'attendance');
-                const snapshot = await get(attendanceRef);
-                
-                if (snapshot.exists()) {
-                    const attendance = snapshot.val();
-                    
-                    // Get students data for student names
-                    const studentsRef = ref(database, 'students');
-                    const studentsSnapshot = await get(studentsRef);
-                    const students = studentsSnapshot.val() || {};
-                    
-                    // Create CSV content
-                    let csvContent = "Roll Number,Student ID,Student Name,Course,Date,Status,Created At\n";
-                    
-                    Object.keys(attendance).forEach(key => {
-                        const att = attendance[key];
-                        const student = students[att.studentId] || {};
-                        csvContent += `${student.rollNumber || 'N/A'},${att.studentId},"${student.name || 'N/A'}","${student.course || 'N/A'}",${att.date},"${att.status}","${att.createdAt}"\n`;
-                    });
-                    
-                    // Create download link
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', `attendance_${new Date().toISOString().split('T')[0]}.csv`);
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    showNotification('Attendance data downloaded successfully!', 'success');
-                } else {
-                    showNotification('No attendance data found!', 'error');
-                }
-            } catch (error) {
-                console.error("Error downloading attendance data:", error);
-                showNotification('Error downloading attendance data: ' + error.message, 'error');
-            }
-        });
+
+        // Initialize the app
+        init();
     </script>
 </body>
 </html>
