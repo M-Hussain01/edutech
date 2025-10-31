@@ -24,7 +24,6 @@
             overflow-x: hidden;
         }
         
-        /* Sidebar Styles */
         .sidebar {
             position: fixed;
             top: 0;
@@ -78,7 +77,6 @@
             font-size: 1.2rem;
         }
         
-        /* Main Content */
         .main-content {
             margin-left: 250px;
             padding: 20px;
@@ -86,7 +84,6 @@
             min-height: 100vh;
         }
         
-        /* Top Bar */
         .top-bar {
             background-color: white;
             padding: 15px 20px;
@@ -103,7 +100,6 @@
             color: var(--dark-text);
         }
         
-        /* Card Styles */
         .card {
             border: none;
             border-radius: 12px;
@@ -270,7 +266,6 @@
             color: white;
         }
         
-        /* Mobile Responsiveness */
         .menu-toggle {
             display: none;
             position: fixed;
@@ -346,9 +341,6 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <p class="mt-2">Signing in...</p>
-                </div>
-                <div class="mt-3 text-center">
-                    <small class="text-muted">Demo Credentials: Username: shariq, Password: shariq123</small>
                 </div>
                 <div class="mt-3 text-center">
                     <button type="button" class="btn btn-outline-secondary btn-sm" id="clearDataBtn">
@@ -808,7 +800,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, writeBatch, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+        import { getDatabase, ref, set, get, push, update, remove, onValue, query as rtdbQuery, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -824,8 +816,9 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         
-        // Initialize Firestore with persistence
-        let db;
+        // Initialize Realtime Database
+        let database;
+        let databaseInitialized = false;
         
         // DOM Elements
         const loginScreen = document.getElementById('loginScreen');
@@ -858,16 +851,16 @@
             }, 1000);
         });
         
-        // Initialize Firestore with offline persistence
-        async function initializeFirestore() {
+        // Initialize Realtime Database
+        async function initializeDatabase() {
             try {
-                db = getFirestore(app);
-                await enableIndexedDbPersistence(db);
-                console.log("Firestore initialized successfully with offline persistence");
+                database = getDatabase(app);
+                console.log("Realtime Database initialized successfully");
                 showConnectionStatus('Connected to database', 'connected');
+                databaseInitialized = true;
                 return true;
             } catch (error) {
-                console.error("Error initializing Firestore:", error);
+                console.error("Error initializing Realtime Database:", error);
                 showConnectionStatus('Database connection failed: ' + error.message, 'disconnected');
                 return false;
             }
@@ -886,10 +879,10 @@
         
         // Check if user is already logged in
         window.addEventListener('DOMContentLoaded', async () => {
-            // Initialize Firestore
-            const firestoreInitialized = await initializeFirestore();
+            // Initialize Database
+            const databaseInitialized = await initializeDatabase();
             
-            if (!firestoreInitialized) {
+            if (!databaseInitialized) {
                 showNotification('Failed to connect to database. Please check your connection.', 'error');
                 return;
             }
@@ -1029,31 +1022,36 @@
                 console.log("Loading dashboard data...");
                 
                 // Get total students
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                console.log("Students snapshot:", studentsSnapshot.size);
-                document.getElementById('totalStudents').textContent = studentsSnapshot.size;
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
+                const students = studentsSnapshot.val() || {};
+                const studentCount = Object.keys(students).length;
+                document.getElementById('totalStudents').textContent = studentCount;
                 
                 // Get total courses
-                const coursesSnapshot = await getDocs(collection(db, 'courses'));
-                console.log("Courses snapshot:", coursesSnapshot.size);
-                document.getElementById('totalCourses').textContent = coursesSnapshot.size;
+                const coursesRef = ref(database, 'courses');
+                const coursesSnapshot = await get(coursesRef);
+                const courses = coursesSnapshot.val() || {};
+                const courseCount = Object.keys(courses).length;
+                document.getElementById('totalCourses').textContent = courseCount;
                 
                 // Get total fees
                 let totalFees = 0;
-                studentsSnapshot.forEach(doc => {
-                    totalFees += parseInt(doc.data().fees) || 0;
+                Object.values(students).forEach(student => {
+                    totalFees += parseInt(student.fees) || 0;
                 });
                 document.getElementById('totalFees').textContent = `₹${totalFees.toLocaleString()}`;
                 
                 // Get attendance rate (simplified calculation)
-                const attendanceSnapshot = await getDocs(collection(db, 'attendance'));
-                console.log("Attendance snapshot:", attendanceSnapshot.size);
+                const attendanceRef = ref(database, 'attendance');
+                const attendanceSnapshot = await get(attendanceRef);
+                const attendance = attendanceSnapshot.val() || {};
+                
                 let totalRecords = 0;
                 let presentRecords = 0;
                 
-                attendanceSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (data.status === 'present') {
+                Object.values(attendance).forEach(record => {
+                    if (record.status === 'present') {
                         presentRecords++;
                     }
                     totalRecords++;
@@ -1066,24 +1064,21 @@
                 const recentStudentsList = document.getElementById('recentStudents');
                 recentStudentsList.innerHTML = '';
                 
-                const q = query(collection(db, 'students'), orderBy('createdAt', 'desc'));
-                const recentStudentsSnapshot = await getDocs(q);
-                let count = 0;
-                recentStudentsSnapshot.forEach(doc => {
-                    if (count < 5) {
-                        const student = doc.data();
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                        li.innerHTML = `
-                            <div>
-                                <strong>${student.name}</strong>
-                                <div class="text-muted small">${student.course}</div>
-                            </div>
-                            <span class="badge bg-primary rounded-pill">₹${student.fees}</span>
-                        `;
-                        recentStudentsList.appendChild(li);
-                        count++;
-                    }
+                // Convert to array and sort by createdAt
+                const studentsArray = Object.values(students);
+                studentsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                studentsArray.slice(0, 5).forEach(student => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.innerHTML = `
+                        <div>
+                            <strong>${student.name}</strong>
+                            <div class="text-muted small">${student.course}</div>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">₹${student.fees}</span>
+                    `;
+                    recentStudentsList.appendChild(li);
                 });
                 
                 // Initialize fee chart (simplified for this example)
@@ -1115,34 +1110,38 @@
                 const studentsTableBody = document.getElementById('studentsTableBody');
                 studentsTableBody.innerHTML = '';
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                console.log("Found", studentsSnapshot.size, "students");
+                const studentsRef = ref(database, 'students');
+                const snapshot = await get(studentsRef);
                 
-                studentsSnapshot.forEach(doc => {
-                    const student = doc.data();
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${doc.id}</td>
-                        <td>${student.name}</td>
-                        <td>${student.contact}</td>
-                        <td>${student.course}</td>
-                        <td>₹${student.fees}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editStudent('${doc.id}')">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('${doc.id}')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    studentsTableBody.appendChild(row);
-                });
+                if (snapshot.exists()) {
+                    const students = snapshot.val();
+                    Object.keys(students).forEach(key => {
+                        const student = students[key];
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${key}</td>
+                            <td>${student.name}</td>
+                            <td>${student.contact}</td>
+                            <td>${student.course}</td>
+                            <td>₹${student.fees}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editStudent('${key}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('${key}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        studentsTableBody.appendChild(row);
+                    });
+                    console.log("Students loaded successfully");
+                } else {
+                    console.log("No students found");
+                }
                 
                 // Populate course dropdowns
                 populateCourseDropdowns();
-                
-                console.log("Students loaded successfully");
             } catch (error) {
                 console.error("Error loading students:", error);
                 showNotification('Error loading students: ' + error.message, 'error');
@@ -1164,15 +1163,19 @@
                 
                 console.log("Student data:", { name, contact, fees, course });
                 
-                const docRef = await addDoc(collection(db, 'students'), {
+                // Generate a new key for the student
+                const newStudentRef = push(ref(database, 'students'));
+                
+                // Set the student data
+                await set(newStudentRef, {
                     name,
                     contact,
                     fees,
                     course,
-                    createdAt: serverTimestamp()
+                    createdAt: new Date().toISOString()
                 });
                 
-                console.log("Student added with ID:", docRef.id);
+                console.log("Student added with ID:", newStudentRef.key);
                 
                 showNotification('Student added successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
@@ -1190,19 +1193,26 @@
             try {
                 console.log("Editing student:", id);
                 
-                const studentDoc = await getDoc(doc(db, 'students', id));
-                const student = studentDoc.data();
+                const studentRef = ref(database, 'students/' + id);
+                const snapshot = await get(studentRef);
                 
-                console.log("Student data:", student);
-                
-                document.getElementById('editStudentId').value = id;
-                document.getElementById('editStudentName').value = student.name;
-                document.getElementById('editStudentContact').value = student.contact;
-                document.getElementById('editStudentFees').value = student.fees;
-                document.getElementById('editStudentCourse').value = student.course;
-                
-                const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
-                modal.show();
+                if (snapshot.exists()) {
+                    const student = snapshot.val();
+                    
+                    console.log("Student data:", student);
+                    
+                    document.getElementById('editStudentId').value = id;
+                    document.getElementById('editStudentName').value = student.name;
+                    document.getElementById('editStudentContact').value = student.contact;
+                    document.getElementById('editStudentFees').value = student.fees;
+                    document.getElementById('editStudentCourse').value = student.course;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+                    modal.show();
+                } else {
+                    console.error("Student not found");
+                    showNotification('Student not found', 'error');
+                }
             } catch (error) {
                 console.error("Error loading student data:", error);
                 showNotification('Error loading student data: ' + error.message, 'error');
@@ -1225,7 +1235,7 @@
                 
                 console.log("Updated student data:", { id, name, contact, fees, course });
                 
-                await updateDoc(doc(db, 'students', id), {
+                await update(ref(database, 'students/' + id), {
                     name,
                     contact,
                     fees,
@@ -1250,7 +1260,7 @@
                 try {
                     console.log("Deleting student:", id);
                     
-                    await deleteDoc(doc(db, 'students', id));
+                    await remove(ref(database, 'students/' + id));
                     
                     console.log("Student deleted successfully");
                     
@@ -1272,37 +1282,52 @@
                 const coursesTableBody = document.getElementById('coursesTableBody');
                 coursesTableBody.innerHTML = '';
                 
-                const coursesSnapshot = await getDocs(collection(db, 'courses'));
-                console.log("Found", coursesSnapshot.size, "courses");
+                const coursesRef = ref(database, 'courses');
+                const snapshot = await get(coursesRef);
                 
-                coursesSnapshot.forEach(doc => {
-                    const course = doc.data();
+                if (snapshot.exists()) {
+                    const courses = snapshot.val();
                     
-                    // Count enrolled students
-                    const q = query(collection(db, 'students'), where('course', '==', course.name));
-                    getDocs(q).then(studentSnapshot => {
+                    // Get students count for each course
+                    const studentsRef = ref(database, 'students');
+                    const studentsSnapshot = await get(studentsRef);
+                    const students = studentsSnapshot.val() || {};
+                    
+                    Object.keys(courses).forEach(key => {
+                        const course = courses[key];
+                        
+                        // Count enrolled students
+                        let enrolledCount = 0;
+                        Object.keys(students).forEach(studentId => {
+                            if (students[studentId].course === course.name) {
+                                enrolledCount++;
+                            }
+                        });
+                        
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${doc.id}</td>
+                            <td>${key}</td>
                             <td>${course.name}</td>
-                            <td>${studentSnapshot.size}</td>
+                            <td>${enrolledCount}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editCourse('${doc.id}')">
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editCourse('${key}')">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger me-1" onclick="deleteCourse('${doc.id}')">
+                                <button class="btn btn-sm btn-outline-danger me-1" onclick="deleteCourse('${key}')">
                                     <i class="bi bi-trash"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-success" onclick="enrollStudent('${doc.id}')">
+                                <button class="btn btn-sm btn-outline-success" onclick="enrollStudent('${key}')">
                                     <i class="bi bi-person-plus"></i> Enroll
                                 </button>
                             </td>
                         `;
                         coursesTableBody.appendChild(row);
                     });
-                });
-                
-                console.log("Courses loaded successfully");
+                    
+                    console.log("Courses loaded successfully");
+                } else {
+                    console.log("No courses found");
+                }
             } catch (error) {
                 console.error("Error loading courses:", error);
                 showNotification('Error loading courses: ' + error.message, 'error');
@@ -1321,12 +1346,13 @@
                 
                 console.log("Course data:", { name });
                 
-                const docRef = await addDoc(collection(db, 'courses'), {
+                const newCourseRef = push(ref(database, 'courses'));
+                await set(newCourseRef, {
                     name,
-                    createdAt: serverTimestamp()
+                    createdAt: new Date().toISOString()
                 });
                 
-                console.log("Course added with ID:", docRef.id);
+                console.log("Course added with ID:", newCourseRef.key);
                 
                 showNotification('Course added successfully!', 'success');
                 bootstrap.Modal.getInstance(document.getElementById('addCourseModal')).hide();
@@ -1344,16 +1370,23 @@
             try {
                 console.log("Editing course:", id);
                 
-                const courseDoc = await getDoc(doc(db, 'courses', id));
-                const course = courseDoc.data();
+                const courseRef = ref(database, 'courses/' + id);
+                const snapshot = await get(courseRef);
                 
-                console.log("Course data:", course);
-                
-                document.getElementById('editCourseId').value = id;
-                document.getElementById('editCourseName').value = course.name;
-                
-                const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-                modal.show();
+                if (snapshot.exists()) {
+                    const course = snapshot.val();
+                    
+                    console.log("Course data:", course);
+                    
+                    document.getElementById('editCourseId').value = id;
+                    document.getElementById('editCourseName').value = course.name;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+                    modal.show();
+                } else {
+                    console.error("Course not found");
+                    showNotification('Course not found', 'error');
+                }
             } catch (error) {
                 console.error("Error loading course data:", error);
                 showNotification('Error loading course data: ' + error.message, 'error');
@@ -1373,7 +1406,7 @@
                 
                 console.log("Updated course data:", { id, name });
                 
-                await updateDoc(doc(db, 'courses', id), {
+                await update(ref(database, 'courses/' + id), {
                     name
                 });
                 
@@ -1395,7 +1428,7 @@
                 try {
                     console.log("Deleting course:", id);
                     
-                    await deleteDoc(doc(db, 'courses', id));
+                    await remove(ref(database, 'courses/' + id));
                     
                     console.log("Course deleted successfully");
                     
@@ -1420,14 +1453,19 @@
                 const studentDropdown = document.getElementById('enrollStudentName');
                 studentDropdown.innerHTML = '<option value="">Select Student</option>';
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                studentsSnapshot.forEach(doc => {
-                    const student = doc.data();
-                    const option = document.createElement('option');
-                    option.value = doc.id;
-                    option.textContent = student.name;
-                    studentDropdown.appendChild(option);
-                });
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
+                
+                if (studentsSnapshot.exists()) {
+                    const students = studentsSnapshot.val();
+                    Object.keys(students).forEach(key => {
+                        const student = students[key];
+                        const option = document.createElement('option');
+                        option.value = key;
+                        option.textContent = student.name;
+                        studentDropdown.appendChild(option);
+                    });
+                }
                 
                 const modal = new bootstrap.Modal(document.getElementById('enrollStudentModal'));
                 modal.show();
@@ -1451,11 +1489,12 @@
                 console.log("Enrollment data:", { courseId, studentId });
                 
                 // Get course name
-                const courseDoc = await getDoc(doc(db, 'courses', courseId));
-                const courseName = courseDoc.data().name;
+                const courseRef = ref(database, 'courses/' + courseId);
+                const courseSnapshot = await get(courseRef);
+                const courseName = courseSnapshot.val().name;
                 
                 // Update student's course
-                await updateDoc(doc(db, 'students', studentId), {
+                await update(ref(database, 'students/' + studentId), {
                     course: courseName
                 });
                 
@@ -1508,52 +1547,59 @@
                 const feesTableBody = document.getElementById('feesTableBody');
                 feesTableBody.innerHTML = '';
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                console.log("Found", studentsSnapshot.size, "students for fees");
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
                 
-                studentsSnapshot.forEach(doc => {
-                    const student = doc.data();
-                    const studentId = doc.id;
+                if (studentsSnapshot.exists()) {
+                    const students = studentsSnapshot.val();
+                    console.log("Found", Object.keys(students).length, "students for fees");
                     
-                    // Check if fee record exists for this month/year
-                    const q = query(
-                        collection(db, 'fees'),
-                        where('studentId', '==', studentId),
-                        where('month', '==', parseInt(month)),
-                        where('year', '==', parseInt(year))
-                    );
-                    
-                    getDocs(q).then(feeSnapshot => {
-                        let status = 'unpaid';
-                        let feeId = '';
+                    Object.keys(students).forEach(studentId => {
+                        const student = students[studentId];
                         
-                        if (!feeSnapshot.empty) {
-                            const feeDoc = feeSnapshot.docs[0];
-                            status = feeDoc.data().status;
-                            feeId = feeDoc.id;
-                        }
+                        // Check if fee record exists for this month/year
+                        const feesRef = ref(database, 'fees');
+                        const feesSnapshot = get(feesRef);
                         
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${studentId}</td>
-                            <td>${student.name}</td>
-                            <td>${student.course}</td>
-                            <td>₹${student.fees}</td>
-                            <td>
-                                <span class="${status === 'paid' ? 'status-paid' : 'status-unpaid'}">
-                                    ${status === 'paid' ? 'Paid' : 'Unpaid'}
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm ${status === 'paid' ? 'btn-outline-warning' : 'btn-outline-success'}" 
-                                        onclick="toggleFeeStatus('${studentId}', '${month}', '${year}', '${status}', '${feeId}')">
-                                    ${status === 'paid' ? 'Mark Unpaid' : 'Mark Paid'}
-                                </button>
-                            </td>
-                        `;
-                        feesTableBody.appendChild(row);
+                        feesSnapshot.then(feesData => {
+                            let status = 'unpaid';
+                            let feeId = '';
+                            
+                            if (feesData.exists()) {
+                                const fees = feesData.val();
+                                Object.keys(fees).forEach(key => {
+                                    const fee = fees[key];
+                                    if (fee.studentId === studentId && 
+                                        fee.month === parseInt(month) && 
+                                        fee.year === parseInt(year)) {
+                                        status = fee.status;
+                                        feeId = key;
+                                    }
+                                });
+                            }
+                            
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${studentId}</td>
+                                <td>${student.name}</td>
+                                <td>${student.course}</td>
+                                <td>₹${student.fees}</td>
+                                <td>
+                                    <span class="${status === 'paid' ? 'status-paid' : 'status-unpaid'}">
+                                        ${status === 'paid' ? 'Paid' : 'Unpaid'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm ${status === 'paid' ? 'btn-outline-warning' : 'btn-outline-success'}" 
+                                            onclick="toggleFeeStatus('${studentId}', '${month}', '${year}', '${status}', '${feeId}')">
+                                        ${status === 'paid' ? 'Mark Unpaid' : 'Mark Paid'}
+                                    </button>
+                                </td>
+                            `;
+                            feesTableBody.appendChild(row);
+                        });
                     });
-                });
+                }
                 
                 console.log("Fees data loaded successfully");
             } catch (error) {
@@ -1572,17 +1618,18 @@
                 
                 if (feeId) {
                     // Update existing fee record
-                    await updateDoc(doc(db, 'fees', feeId), {
+                    await update(ref(database, 'fees/' + feeId), {
                         status: newStatus
                     });
                 } else {
                     // Create new fee record
-                    await addDoc(collection(db, 'fees'), {
+                    const newFeeRef = push(ref(database, 'fees'));
+                    await set(newFeeRef, {
                         studentId,
                         month: parseInt(month),
                         year: parseInt(year),
                         status: newStatus,
-                        createdAt: serverTimestamp()
+                        createdAt: new Date().toISOString()
                     });
                 }
                 
@@ -1613,51 +1660,63 @@
                 const today = new Date();
                 document.getElementById('attendanceDate').value = today.toISOString().split('T')[0];
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                console.log("Found", studentsSnapshot.size, "students for attendance");
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
                 
-                studentsSnapshot.forEach(doc => {
-                    const student = doc.data();
-                    const studentId = doc.id;
+                if (studentsSnapshot.exists()) {
+                    const students = studentsSnapshot.val();
+                    console.log("Found", Object.keys(students).length, "students for attendance");
                     
-                    // Calculate attendance rate (simplified)
-                    const q = query(collection(db, 'attendance'), where('studentId', '==', studentId));
-                    getDocs(q).then(attSnapshot => {
-                        let totalDays = 0;
-                        let presentDays = 0;
+                    Object.keys(students).forEach(studentId => {
+                        const student = students[studentId];
                         
-                        attSnapshot.forEach(attDoc => {
-                            totalDays++;
-                            if (attDoc.data().status === 'present') {
-                                presentDays++;
+                        // Calculate attendance rate (simplified)
+                        const attendanceRef = ref(database, 'attendance');
+                        const attendanceSnapshot = get(attendanceRef);
+                        
+                        attendanceSnapshot.then(attData => {
+                            let totalDays = 0;
+                            let presentDays = 0;
+                            
+                            if (attData.exists()) {
+                                const attendance = attData.val();
+                                Object.keys(attendance).forEach(key => {
+                                    const att = attendance[key];
+                                    if (att.studentId === studentId) {
+                                        totalDays++;
+                                        if (att.status === 'present') {
+                                            presentDays++;
+                                        }
+                                    }
+                                });
                             }
-                        });
-                        
-                        const attendanceRate = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${studentId}</td>
-                            <td>${student.name}</td>
-                            <td>${student.course}</td>
-                            <td>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar" 
-                                         style="width: ${attendanceRate}%; background-color: ${attendanceRate > 70 ? '#27ae60' : attendanceRate > 40 ? '#f39c12' : '#e74c3c'};"
-                                         aria-valuenow="${attendanceRate}" aria-valuemin="0" aria-valuemax="100">
-                                        ${attendanceRate}%
+                            
+                            const attendanceRate = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+                            
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${studentId}</td>
+                                <td>${student.name}</td>
+                                <td>${student.course}</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar" role="progressbar" 
+                                             style="width: ${attendanceRate}%; background-color: ${attendanceRate > 70 ? '#27ae60' : attendanceRate > 40 ? '#f39c12' : '#e74c3c'};"
+                                             aria-valuenow="${attendanceRate}" aria-valuemin="0" aria-valuemax="100">
+                                            ${attendanceRate}%
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary" onclick="viewStudentAttendance('${studentId}')">
-                                    <i class="bi bi-calendar3"></i> View
-                                </button>
-                            </td>
-                        `;
-                        attendanceTableBody.appendChild(row);
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentAttendance('${studentId}')">
+                                        <i class="bi bi-calendar3"></i> View
+                                    </button>
+                                </td>
+                            `;
+                            attendanceTableBody.appendChild(row);
+                        });
                     });
-                });
+                }
                 
                 console.log("Attendance loaded successfully");
             } catch (error) {
@@ -1684,48 +1743,55 @@
                 const attendanceTableBodyModal = document.getElementById('attendanceTableBodyModal');
                 attendanceTableBodyModal.innerHTML = '';
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                console.log("Found", studentsSnapshot.size, "students for marking attendance");
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
                 
-                studentsSnapshot.forEach(doc => {
-                    const student = doc.data();
-                    const studentId = doc.id;
+                if (studentsSnapshot.exists()) {
+                    const students = studentsSnapshot.val();
+                    console.log("Found", Object.keys(students).length, "students for marking attendance");
                     
-                    // Check if attendance already exists for this date
-                    const q = query(
-                        collection(db, 'attendance'),
-                        where('studentId', '==', studentId),
-                        where('date', '==', date)
-                    );
-                    
-                    getDocs(q).then(attSnapshot => {
-                        let status = 'absent';
+                    Object.keys(students).forEach(studentId => {
+                        const student = students[studentId];
                         
-                        if (!attSnapshot.empty) {
-                            status = attSnapshot.docs[0].data().status;
-                        }
+                        // Check if attendance already exists for this date
+                        const attendanceRef = ref(database, 'attendance');
+                        const attendanceSnapshot = get(attendanceRef);
                         
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${studentId}</td>
-                            <td>${student.name}</td>
-                            <td>${student.course}</td>
-                            <td>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="attendance-${studentId}" 
-                                           id="present-${studentId}" value="present" ${status === 'present' ? 'checked' : ''}>
-                                    <label class="form-check-label" for="present-${studentId}">Present</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="attendance-${studentId}" 
-                                           id="absent-${studentId}" value="absent" ${status === 'absent' ? 'checked' : ''}>
-                                    <label class="form-check-label" for="absent-${studentId}">Absent</label>
-                                </div>
-                            </td>
-                        `;
-                        attendanceTableBodyModal.appendChild(row);
+                        attendanceSnapshot.then(attData => {
+                            let status = 'absent';
+                            
+                            if (attData.exists()) {
+                                const attendance = attData.val();
+                                Object.keys(attendance).forEach(key => {
+                                    const att = attendance[key];
+                                    if (att.studentId === studentId && att.date === date) {
+                                        status = att.status;
+                                    }
+                                });
+                            }
+                            
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${studentId}</td>
+                                <td>${student.name}</td>
+                                <td>${student.course}</td>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="attendance-${studentId}" 
+                                               id="present-${studentId}" value="present" ${status === 'present' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="present-${studentId}">Present</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="attendance-${studentId}" 
+                                               id="absent-${studentId}" value="absent" ${status === 'absent' ? 'checked' : ''}>
+                                        <label class="form-check-label" for="absent-${studentId}">Absent</label>
+                                    </div>
+                                </td>
+                            `;
+                            attendanceTableBodyModal.appendChild(row);
+                        });
                     });
-                });
+                }
                 
                 const modal = new bootstrap.Modal(document.getElementById('markAttendanceModal'));
                 modal.show();
@@ -1743,55 +1809,69 @@
                 
                 const date = document.getElementById('attendanceDate').value;
                 
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                const batch = writeBatch(db);
+                const studentsRef = ref(database, 'students');
+                const studentsSnapshot = await get(studentsRef);
                 
-                studentsSnapshot.forEach(doc => {
-                    const studentId = doc.id;
-                    const statusRadio = document.querySelector(`input[name="attendance-${studentId}"]:checked`);
+                if (studentsSnapshot.exists()) {
+                    const students = studentsSnapshot.val();
                     
-                    if (statusRadio) {
-                        const status = statusRadio.value;
+                    Object.keys(students).forEach(studentId => {
+                        const statusRadio = document.querySelector(`input[name="attendance-${studentId}"]:checked`);
                         
-                        // Check if attendance record already exists
-                        const q = query(
-                            collection(db, 'attendance'),
-                            where('studentId', '==', studentId),
-                            where('date', '==', date)
-                        );
-                        
-                        getDocs(q).then(attSnapshot => {
-                            if (!attSnapshot.empty) {
-                                // Update existing record
-                                const attId = attSnapshot.docs[0].id;
-                                batch.update(doc(db, 'attendance', attId), {
-                                    status
-                                });
-                            } else {
-                                // Create new record
-                                const newAttRef = doc(collection(db, 'attendance'));
-                                batch.set(newAttRef, {
-                                    studentId,
-                                    date,
-                                    status,
-                                    createdAt: serverTimestamp()
-                                });
-                            }
+                        if (statusRadio) {
+                            const status = statusRadio.value;
                             
-                            // Commit the batch
-                            batch.commit().then(() => {
-                                console.log("Attendance saved successfully");
-                                showNotification('Attendance saved successfully!', 'success');
-                                bootstrap.Modal.getInstance(document.getElementById('markAttendanceModal')).hide();
-                                loadAttendance();
-                            }).catch(error => {
-                                console.error("Error saving attendance:", error);
-                                showNotification('Error saving attendance: ' + error.message, 'error');
-                                showConnectionStatus('Database error: ' + error.message, 'disconnected');
+                            // Check if attendance record already exists
+                            const attendanceRef = ref(database, 'attendance');
+                            const attendanceSnapshot = get(attendanceRef);
+                            
+                            attendanceSnapshot.then(attData => {
+                                let recordExists = false;
+                                let existingKey = '';
+                                
+                                if (attData.exists()) {
+                                    const attendance = attData.val();
+                                    Object.keys(attendance).forEach(key => {
+                                        const att = attendance[key];
+                                        if (att.studentId === studentId && att.date === date) {
+                                            recordExists = true;
+                                            existingKey = key;
+                                        }
+                                    });
+                                }
+                                
+                                if (recordExists) {
+                                    // Update existing record
+                                    update(ref(database, 'attendance/' + existingKey), {
+                                        status
+                                    }).then(() => {
+                                        console.log("Attendance updated for student:", studentId);
+                                    }).catch(error => {
+                                        console.error("Error updating attendance:", error);
+                                    });
+                                } else {
+                                    // Create new record
+                                    const newAttRef = push(ref(database, 'attendance'));
+                                    set(newAttRef, {
+                                        studentId,
+                                        date,
+                                        status,
+                                        createdAt: new Date().toISOString()
+                                    }).then(() => {
+                                        console.log("Attendance added for student:", studentId);
+                                    }).catch(error => {
+                                        console.error("Error adding attendance:", error);
+                                    });
+                                }
                             });
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+                
+                console.log("Attendance saved successfully");
+                showNotification('Attendance saved successfully!', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('markAttendanceModal')).hide();
+                loadAttendance();
             } catch (error) {
                 console.error("Error saving attendance:", error);
                 showNotification('Error saving attendance: ' + error.message, 'error');
@@ -1810,27 +1890,31 @@
                     const month = date.getMonth();
                     
                     // Get all attendance records for the selected month
-                    const q = query(
-                        collection(db, 'attendance'),
-                        where('date', '>=', new Date(year, month, 1)),
-                        where('date', '<', new Date(year, month + 1, 1))
-                    );
+                    const attendanceRef = ref(database, 'attendance');
+                    const attendanceSnapshot = get(attendanceRef);
                     
-                    getDocs(q).then(snapshot => {
-                        const batch = writeBatch(db);
+                    attendanceSnapshot.then(snapshot => {
+                        if (snapshot.exists()) {
+                            const attendance = snapshot.val();
+                            
+                            Object.keys(attendance).forEach(key => {
+                                const att = attendance[key];
+                                const attDate = new Date(att.date);
+                                
+                                if (attDate.getFullYear() === year && attDate.getMonth() === month) {
+                                    remove(ref(database, 'attendance/' + key)).then(() => {
+                                        console.log("Deleted attendance record:", key);
+                                    }).catch(error => {
+                                        console.error("Error deleting attendance record:", error);
+                                    });
+                                }
+                            });
+                        }
                         
-                        snapshot.forEach(doc => {
-                            batch.delete(doc.ref);
-                        });
-                        
-                        return batch.commit();
-                    })
-                    .then(() => {
                         console.log("Attendance data deleted successfully");
                         showNotification('Attendance data deleted successfully!', 'success');
                         loadAttendance();
-                    })
-                    .catch(error => {
+                    }).catch(error => {
                         console.error("Error deleting attendance data:", error);
                         showNotification('Error deleting attendance data: ' + error.message, 'error');
                         showConnectionStatus('Database error: ' + error.message, 'disconnected');
@@ -1859,22 +1943,27 @@
                 studentCourseDropdown.innerHTML = '<option value="">Select Course</option>';
                 editStudentCourseDropdown.innerHTML = '<option value="">Select Course</option>';
                 
-                const coursesSnapshot = await getDocs(collection(db, 'courses'));
-                console.log("Found", coursesSnapshot.size, "courses for dropdowns");
+                const coursesRef = ref(database, 'courses');
+                const coursesSnapshot = await get(coursesRef);
                 
-                coursesSnapshot.forEach(doc => {
-                    const course = doc.data();
+                if (coursesSnapshot.exists()) {
+                    const courses = coursesSnapshot.val();
+                    console.log("Found", Object.keys(courses).length, "courses for dropdowns");
                     
-                    const option1 = document.createElement('option');
-                    option1.value = course.name;
-                    option1.textContent = course.name;
-                    studentCourseDropdown.appendChild(option1);
-                    
-                    const option2 = document.createElement('option');
-                    option2.value = course.name;
-                    option2.textContent = course.name;
-                    editStudentCourseDropdown.appendChild(option2);
-                });
+                    Object.keys(courses).forEach(key => {
+                        const course = courses[key];
+                        
+                        const option1 = document.createElement('option');
+                        option1.value = course.name;
+                        option1.textContent = course.name;
+                        studentCourseDropdown.appendChild(option1);
+                        
+                        const option2 = document.createElement('option');
+                        option2.value = course.name;
+                        option2.textContent = course.name;
+                        editStudentCourseDropdown.appendChild(option2);
+                    });
+                }
                 
                 console.log("Course dropdowns populated successfully");
             } catch (error) {
