@@ -774,6 +774,63 @@
             background-color: var(--danger-color);
         }
         
+        /* Fee Card */
+        .fee-card {
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .fee-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+        
+        .fee-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .fee-card-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .fee-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .fee-card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .fee-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .fee-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .fee-status-indicator.paid {
+            background-color: var(--success-color);
+        }
+        
+        .fee-status-indicator.unpaid {
+            background-color: var(--danger-color);
+        }
+        
         /* Mobile Optimizations */
         @media (max-width: 768px) {
             /* Sidebar adjustments */
@@ -2055,9 +2112,9 @@
             } else {
                 // Initialize with sample data
                 enrollments = [
-                    { id: 1, studentId: 1, courseId: 1 },
-                    { id: 2, studentId: 2, courseId: 2 },
-                    { id: 3, studentId: 3, courseId: 3 }
+                    { studentId: 1, courseId: 1 },
+                    { studentId: 2, courseId: 2 },
+                    { studentId: 3, courseId: 3 }
                 ];
                 saveEnrollments();
             }
@@ -2068,14 +2125,10 @@
                 fees = JSON.parse(feesData);
             } else {
                 // Initialize with sample data
-                const currentDate = new Date();
-                const currentYear = currentDate.getFullYear();
-                const currentMonth = currentDate.getMonth();
-                
                 fees = [
-                    { id: 1, studentId: 1, month: currentMonth, year: currentYear, amount: 5000, status: 'paid', date: '2023-06-15' },
-                    { id: 2, studentId: 2, month: currentMonth, year: currentYear, amount: 4500, status: 'paid', date: '2023-06-10' },
-                    { id: 3, studentId: 3, month: currentMonth, year: currentYear, amount: 6000, status: 'unpaid', date: '' }
+                    { id: 1, studentId: 1, month: 0, year: 2023, amount: 5000, status: 'paid' },
+                    { id: 2, studentId: 2, month: 0, year: 2023, amount: 4500, status: 'unpaid' },
+                    { id: 3, studentId: 3, month: 0, year: 2023, amount: 6000, status: 'paid' }
                 ];
                 saveFees();
             }
@@ -2086,42 +2139,71 @@
                 attendance = JSON.parse(attendanceData);
             } else {
                 // Initialize with sample data
-                const today = new Date().toISOString().split('T')[0];
                 attendance = [
-                    { id: 1, studentId: 1, date: today, status: 'present' },
-                    { id: 2, studentId: 2, date: today, status: 'present' },
-                    { id: 3, studentId: 3, date: today, status: 'absent' }
+                    { id: 1, studentId: 1, date: '2023-01-01', status: 'present' },
+                    { id: 2, studentId: 2, date: '2023-01-01', status: 'present' },
+                    { id: 3, studentId: 3, date: '2023-01-01', status: 'absent' }
                 ];
                 saveAttendance();
             }
-            
-            // Load dashboard
-            loadDashboard();
         }
 
-        // Save students to localStorage
+        // Save data functions
         function saveStudents() {
             localStorage.setItem('students', JSON.stringify(students));
         }
 
-        // Save courses to localStorage
         function saveCourses() {
             localStorage.setItem('courses', JSON.stringify(courses));
         }
 
-        // Save enrollments to localStorage
         function saveEnrollments() {
             localStorage.setItem('enrollments', JSON.stringify(enrollments));
         }
 
-        // Save fees to localStorage
         function saveFees() {
             localStorage.setItem('fees', JSON.stringify(fees));
         }
 
-        // Save attendance to localStorage
         function saveAttendance() {
             localStorage.setItem('attendance', JSON.stringify(attendance));
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Populate year select
+        function populateYearSelect() {
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelect.appendChild(option);
+            }
+        }
+
+        // Set current date
+        function setCurrentDate() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            attendanceDate.value = formattedDate;
+            
+            // Set current month and year
+            monthSelect.value = today.getMonth();
+            yearSelect.value = today.getFullYear();
         }
 
         // Load dashboard
@@ -2131,80 +2213,58 @@
             totalCourses.textContent = courses.length;
             
             // Calculate total fees
-            const totalFeesAmount = students.reduce((sum, student) => sum + student.fees, 0);
+            const totalFeesAmount = fees.reduce((sum, fee) => sum + fee.amount, 0);
             totalFees.textContent = `PKR ${totalFeesAmount.toLocaleString()}`;
             
             // Calculate attendance rate
-            const totalAttendanceRecords = attendance.length;
-            const presentRecords = attendance.filter(record => record.status === 'present').length;
-            const attendancePercentage = totalAttendanceRecords > 0 
-                ? Math.round((presentRecords / totalAttendanceRecords) * 100) 
-                : 0;
-            attendanceRate.textContent = `${attendancePercentage}%`;
+            const presentCount = attendance.filter(a => a.status === 'present').length;
+            const attendanceRateValue = attendance.length > 0 ? Math.round((presentCount / attendance.length) * 100) : 0;
+            attendanceRate.textContent = `${attendanceRateValue}%`;
             
             // Load recent students
             recentStudents.innerHTML = '';
-            const recentStudentsList = [...students].reverse().slice(0, 5);
+            const recentStudentsList = students.slice(-5).reverse();
             recentStudentsList.forEach(student => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                 li.innerHTML = `
                     <div>
-                        <strong>${student.name}</strong>
-                        <span class="roll-badge ms-2">${student.rollNumber}</span>
+                        <div class="fw-bold">${student.name}</div>
+                        <small class="text-muted">${student.contact}</small>
                     </div>
-                    <span class="text-muted">${student.contact}</span>
+                    <span class="roll-badge">${student.rollNumber}</span>
                 `;
                 recentStudents.appendChild(li);
             });
             
             // Load fee status
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
+            const paidFeesList = fees.filter(fee => fee.status === 'paid');
+            const unpaidFeesList = fees.filter(fee => fee.status === 'unpaid');
             
-            const monthFees = fees.filter(fee => 
-                fee.month === currentMonth && fee.year === currentYear
-            );
-            
-            const paidFees = monthFees.filter(fee => fee.status === 'paid').length;
-            const unpaidFees = monthFees.filter(fee => fee.status === 'unpaid').length;
-            const totalMonthFees = monthFees.length;
-            
-            paidFeesCount.textContent = paidFees;
-            unpaidFeesCount.textContent = unpaidFees;
-            totalFeesCount.textContent = totalMonthFees;
+            paidFeesCount.textContent = paidFeesList.length;
+            unpaidFeesCount.textContent = unpaidFeesList.length;
+            totalFeesCount.textContent = fees.length;
             
             // Load fee status table
             feeStatusTable.innerHTML = '';
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                              'July', 'August', 'September', 'October', 'November', 'December'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const currentYear = new Date().getFullYear();
             
-            // Get last 3 months
-            for (let i = 2; i >= 0; i--) {
-                const month = (currentMonth - i + 12) % 12;
-                const year = month > currentMonth ? currentYear - 1 : currentYear;
+            for (let i = 0; i < 6; i++) {
+                const monthIndex = (new Date().getMonth() - i + 12) % 12;
+                const year = monthIndex > new Date().getMonth() ? currentYear - 1 : currentYear;
                 
-                const monthFeesData = fees.filter(fee => 
-                    fee.month === month && fee.year === year
-                );
-                
-                const paid = monthFeesData.filter(fee => fee.status === 'paid').length;
-                const unpaid = monthFeesData.filter(fee => fee.status === 'unpaid').length;
-                const total = monthFeesData.length;
-                const collectionRate = total > 0 ? Math.round((paid / total) * 100) : 0;
+                const monthFees = fees.filter(fee => fee.month === monthIndex && fee.year === year);
+                const monthPaid = monthFees.filter(fee => fee.status === 'paid').length;
+                const monthUnpaid = monthFees.filter(fee => fee.status === 'unpaid').length;
+                const collectionRate = monthFees.length > 0 ? Math.round((monthPaid / monthFees.length) * 100) : 0;
                 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${monthNames[month]} ${year}</td>
-                    <td><span class="status-paid">${paid}</span></td>
-                    <td><span class="status-unpaid">${unpaid}</span></td>
-                    <td>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-success" style="width: ${collectionRate}%"></div>
-                        </div>
-                        <small>${collectionRate}%</small>
-                    </td>
+                    <td>${months[monthIndex]} ${year}</td>
+                    <td><span class="status-paid">${monthPaid}</span></td>
+                    <td><span class="status-unpaid">${monthUnpaid}</span></td>
+                    <td>${collectionRate}%</td>
                 `;
                 feeStatusTable.appendChild(tr);
             }
@@ -2215,24 +2275,20 @@
             studentsContainer.innerHTML = '';
             
             if (students.length === 0) {
-                studentsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-people-fill" style="font-size: 3rem; color: var(--text-muted);"></i>
-                        <h5 class="mt-3">No students found</h5>
-                        <p class="text-muted">Add students to get started</p>
-                    </div>
-                `;
+                studentsContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No students found. Add a new student to get started.</p></div>';
                 return;
             }
             
             students.forEach(student => {
-                // Find enrollment for this student
-                const enrollment = enrollments.find(e => e.studentId === student.id);
-                const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
-                const courseName = course ? course.name : 'Not enrolled';
-                
                 const studentCard = document.createElement('div');
-                studentCard.className = 'col-md-6 col-lg-4 mb-4';
+                studentCard.className = 'col-md-4 col-sm-6 mb-4';
+                
+                // Get enrolled courses for this student
+                const enrolledCourses = enrollments
+                    .filter(e => e.studentId === student.id)
+                    .map(e => courses.find(c => c.id === e.courseId))
+                    .filter(Boolean);
+                
                 studentCard.innerHTML = `
                     <div class="student-card">
                         <div class="student-card-header">
@@ -2248,25 +2304,167 @@
                         </div>
                         <div class="student-card-body">
                             <div class="student-card-detail">
-                                <span class="student-card-label">Roll Number</span>
-                                <span class="student-card-value">${student.rollNumber}</span>
+                                <div class="student-card-label">Roll Number</div>
+                                <div class="student-card-value">${student.rollNumber}</div>
                             </div>
                             <div class="student-card-detail">
-                                <span class="student-card-label">Contact</span>
-                                <span class="student-card-value">${student.contact}</span>
+                                <div class="student-card-label">Contact</div>
+                                <div class="student-card-value">${student.contact}</div>
                             </div>
                             <div class="student-card-detail">
-                                <span class="student-card-label">Fees</span>
-                                <span class="student-card-value">PKR ${student.fees.toLocaleString()}</span>
+                                <div class="student-card-label">Fees</div>
+                                <div class="student-card-value">PKR ${student.fees.toLocaleString()}</div>
                             </div>
                             <div class="student-card-detail">
-                                <span class="student-card-label">Course</span>
-                                <span class="student-card-value">${courseName}</span>
+                                <div class="student-card-label">Courses</div>
+                                <div class="student-card-value">${enrolledCourses.length}</div>
                             </div>
                         </div>
                     </div>
                 `;
                 studentsContainer.appendChild(studentCard);
+            });
+        }
+
+        // Load courses
+        function loadCourses() {
+            coursesTableBody.innerHTML = '';
+            
+            if (courses.length === 0) {
+                coursesTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-3">No courses found. Add a new course to get started.</td></tr>';
+                return;
+            }
+            
+            courses.forEach(course => {
+                const enrolledStudents = enrollments.filter(e => e.courseId === course.id).length;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${course.name}</td>
+                    <td>${enrolledStudents}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-primary" onclick="editCourse(${course.id})">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-outline-success" onclick="showCourseStudents(${course.id})">
+                                <i class="bi bi-people"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="enrollStudents(${course.id})">
+                                <i class="bi bi-person-plus"></i>
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="deleteCourse(${course.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                coursesTableBody.appendChild(tr);
+            });
+        }
+
+        // Load fees
+        function loadFees() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+            
+            feesContainer.innerHTML = '';
+            
+            const monthFees = fees.filter(fee => fee.month === month && fee.year === year);
+            
+            if (monthFees.length === 0) {
+                feesContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No fees found for the selected month and year.</p></div>';
+                return;
+            }
+            
+            monthFees.forEach(fee => {
+                const student = students.find(s => s.id === fee.studentId);
+                if (!student) return;
+                
+                const feeCard = document.createElement('div');
+                feeCard.className = 'col-md-4 col-sm-6 mb-4';
+                
+                feeCard.innerHTML = `
+                    <div class="fee-card">
+                        <div class="fee-card-header">
+                            <div class="fee-card-name">${student.name}</div>
+                            <div class="fee-card-actions">
+                                <button class="btn btn-sm ${fee.status === 'paid' ? 'btn-outline-warning' : 'btn-outline-success'}" 
+                                        onclick="toggleFeeStatus(${fee.id})">
+                                    <i class="bi ${fee.status === 'paid' ? 'bi-arrow-counterclockwise' : 'bi-check-circle'}"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="fee-card-body">
+                            <div>
+                                <div class="text-muted small">Roll Number</div>
+                                <div>${student.rollNumber}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Amount</div>
+                                <div>PKR ${fee.amount.toLocaleString()}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Status</div>
+                                <div class="fee-status">
+                                    <span class="fee-status-indicator ${fee.status}"></span>
+                                    <span class="status-${fee.status}">${fee.status.charAt(0).toUpperCase() + fee.status.slice(1)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                feesContainer.appendChild(feeCard);
+            });
+        }
+
+        // Load attendance
+        function loadAttendance() {
+            const date = attendanceDate.value;
+            
+            attendanceContainer.innerHTML = '';
+            
+            const dateAttendance = attendance.filter(a => a.date === date);
+            
+            if (dateAttendance.length === 0) {
+                attendanceContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No attendance records found for the selected date.</p></div>';
+                return;
+            }
+            
+            dateAttendance.forEach(att => {
+                const student = students.find(s => s.id === att.studentId);
+                if (!student) return;
+                
+                const attendanceCard = document.createElement('div');
+                attendanceCard.className = 'col-md-4 col-sm-6 mb-4';
+                
+                attendanceCard.innerHTML = `
+                    <div class="attendance-card">
+                        <div class="attendance-card-header">
+                            <div class="attendance-card-name">${student.name}</div>
+                            <div class="attendance-card-actions">
+                                <button class="btn btn-sm ${att.status === 'present' ? 'btn-outline-warning' : 'btn-outline-success'}" 
+                                        onclick="toggleAttendanceStatus(${att.id})">
+                                    <i class="bi ${att.status === 'present' ? 'bi-x-circle' : 'bi-check-circle'}"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="attendance-card-body">
+                            <div>
+                                <div class="text-muted small">Roll Number</div>
+                                <div>${student.rollNumber}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Status</div>
+                                <div class="attendance-status">
+                                    <span class="attendance-status-indicator ${att.status}"></span>
+                                    <span class="status-${att.status}">${att.status.charAt(0).toUpperCase() + att.status.slice(1)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                attendanceContainer.appendChild(attendanceCard);
             });
         }
 
@@ -2280,11 +2478,11 @@
             const courseId = parseInt(document.getElementById('studentCourse').value);
             
             // Generate roll number
-            const rollNumber = `STU${String(students.length + 1).padStart(3, '0')}`;
+            const rollNumber = 'STU' + String(students.length + 1).padStart(3, '0');
             
             // Create new student
             const newStudent = {
-                id: Date.now(),
+                id: students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1,
                 name,
                 contact,
                 fees,
@@ -2295,18 +2493,16 @@
             students.push(newStudent);
             saveStudents();
             
-            // Create enrollment
+            // Enroll student in course
             if (courseId) {
-                const newEnrollment = {
-                    id: Date.now(),
+                enrollments.push({
                     studentId: newStudent.id,
                     courseId
-                };
-                enrollments.push(newEnrollment);
+                });
                 saveEnrollments();
             }
             
-            // Reset form and close modal
+            // Reset form
             addStudentForm.reset();
             addStudentModal.hide();
             
@@ -2315,39 +2511,6 @@
             
             // Reload students
             loadStudents();
-            loadDashboard();
-        }
-
-        // Edit student
-        function editStudent(id) {
-            const student = students.find(s => s.id === id);
-            if (!student) return;
-            
-            // Find enrollment for this student
-            const enrollment = enrollments.find(e => e.studentId === student.id);
-            const courseId = enrollment ? enrollment.courseId : '';
-            
-            // Populate form
-            document.getElementById('editStudentRollNumber').value = student.rollNumber;
-            document.getElementById('editStudentName').value = student.name;
-            document.getElementById('editStudentContact').value = student.contact;
-            document.getElementById('editStudentFees').value = student.fees;
-            
-            // Populate course dropdown
-            const courseSelect = document.getElementById('editStudentCourse');
-            courseSelect.innerHTML = '<option value="">Select Course</option>';
-            courses.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course.id;
-                option.textContent = course.name;
-                if (course.id === courseId) {
-                    option.selected = true;
-                }
-                courseSelect.appendChild(option);
-            });
-            
-            // Show modal
-            editStudentModal.show();
         }
 
         // Handle edit student
@@ -2374,23 +2537,19 @@
             saveStudents();
             
             // Update enrollment
-            const enrollmentIndex = enrollments.findIndex(e => e.studentId === students[studentIndex].id);
-            if (enrollmentIndex !== -1) {
-                if (courseId) {
-                    enrollments[enrollmentIndex].courseId = courseId;
-                } else {
-                    enrollments.splice(enrollmentIndex, 1);
-                }
-            } else if (courseId) {
+            if (courseId) {
+                // Remove existing enrollments for this student
+                enrollments = enrollments.filter(e => e.studentId !== students[studentIndex].id);
+                
+                // Add new enrollment
                 enrollments.push({
-                    id: Date.now(),
                     studentId: students[studentIndex].id,
                     courseId
                 });
+                saveEnrollments();
             }
-            saveEnrollments();
             
-            // Reset form and close modal
+            // Reset form
             editStudentForm.reset();
             editStudentModal.hide();
             
@@ -2399,94 +2558,6 @@
             
             // Reload students
             loadStudents();
-            loadDashboard();
-        }
-
-        // Delete student
-        function deleteStudent(id) {
-            confirmTitle.textContent = 'Confirm Delete';
-            confirmMessage.textContent = 'Are you sure you want to delete this student? This action cannot be undone.';
-            confirmButton.textContent = 'Delete';
-            confirmButton.className = 'btn btn-danger';
-            
-            confirmButton.onclick = () => {
-                // Find student
-                const studentIndex = students.findIndex(s => s.id === id);
-                if (studentIndex === -1) return;
-                
-                // Delete student
-                students.splice(studentIndex, 1);
-                saveStudents();
-                
-                // Delete enrollment
-                const enrollmentIndex = enrollments.findIndex(e => e.studentId === id);
-                if (enrollmentIndex !== -1) {
-                    enrollments.splice(enrollmentIndex, 1);
-                    saveEnrollments();
-                }
-                
-                // Delete related fees
-                fees = fees.filter(fee => fee.studentId !== id);
-                saveFees();
-                
-                // Delete related attendance
-                attendance = attendance.filter(att => att.studentId !== id);
-                saveAttendance();
-                
-                // Show notification
-                showNotification('Student deleted successfully!', 'success');
-                
-                // Reload students
-                loadStudents();
-                loadDashboard();
-                
-                confirmModal.hide();
-            };
-            
-            confirmModal.show();
-        }
-
-        // Load courses
-        function loadCourses() {
-            coursesTableBody.innerHTML = '';
-            
-            if (courses.length === 0) {
-                coursesTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="text-center py-4">
-                            <i class="bi bi-book-fill" style="font-size: 2rem; color: var(--text-muted);"></i>
-                            <p class="mt-2 mb-0">No courses found</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            courses.forEach(course => {
-                // Count enrolled students
-                const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${course.name}</td>
-                    <td>${enrolledCount}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editCourse(${course.id})">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-success me-1" onclick="enrollStudents(${course.id})">
-                            <i class="bi bi-person-plus"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-info me-1" onclick="viewCourseStudents(${course.id})">
-                            <i class="bi bi-people"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.id})">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                `;
-                coursesTableBody.appendChild(tr);
-            });
         }
 
         // Handle add course
@@ -2497,7 +2568,7 @@
             
             // Create new course
             const newCourse = {
-                id: Date.now(),
+                id: courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1,
                 name
             };
             
@@ -2505,7 +2576,7 @@
             courses.push(newCourse);
             saveCourses();
             
-            // Reset form and close modal
+            // Reset form
             addCourseForm.reset();
             addCourseModal.hide();
             
@@ -2514,23 +2585,6 @@
             
             // Reload courses
             loadCourses();
-            loadDashboard();
-            
-            // Update course dropdowns
-            updateCourseDropdowns();
-        }
-
-        // Edit course
-        function editCourse(id) {
-            const course = courses.find(c => c.id === id);
-            if (!course) return;
-            
-            // Populate form
-            document.getElementById('editCourseId').value = course.id;
-            document.getElementById('editCourseName').value = course.name;
-            
-            // Show modal
-            editCourseModal.show();
         }
 
         // Handle edit course
@@ -2551,7 +2605,7 @@
             };
             saveCourses();
             
-            // Reset form and close modal
+            // Reset form
             editCourseForm.reset();
             editCourseModal.hide();
             
@@ -2560,9 +2614,120 @@
             
             // Reload courses
             loadCourses();
+        }
+
+        // Handle enroll students
+        function handleEnrollStudents(e) {
+            e.preventDefault();
             
-            // Update course dropdowns
-            updateCourseDropdowns();
+            const courseId = parseInt(document.getElementById('enrollCourseId').value);
+            const selectedStudents = Array.from(document.getElementById('enrollStudents').selectedOptions).map(option => parseInt(option.value));
+            
+            // Add enrollments
+            selectedStudents.forEach(studentId => {
+                // Check if already enrolled
+                const existingEnrollment = enrollments.find(e => e.studentId === studentId && e.courseId === courseId);
+                if (!existingEnrollment) {
+                    enrollments.push({
+                        studentId,
+                        courseId
+                    });
+                }
+            });
+            
+            saveEnrollments();
+            
+            // Reset form
+            enrollStudentsForm.reset();
+            enrollStudentsModal.hide();
+            
+            // Show notification
+            showNotification('Students enrolled successfully!', 'success');
+            
+            // Reload courses
+            loadCourses();
+        }
+
+        // Edit student
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            
+            // Get enrolled course
+            const enrollment = enrollments.find(e => e.studentId === id);
+            const courseId = enrollment ? enrollment.courseId : '';
+            
+            // Populate form
+            document.getElementById('editStudentRollNumber').value = student.rollNumber;
+            document.getElementById('editStudentName').value = student.name;
+            document.getElementById('editStudentContact').value = student.contact;
+            document.getElementById('editStudentFees').value = student.fees;
+            
+            // Populate courses dropdown
+            const courseSelect = document.getElementById('editStudentCourse');
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.name;
+                if (course.id === courseId) {
+                    option.selected = true;
+                }
+                courseSelect.appendChild(option);
+            });
+            
+            // Show modal
+            editStudentModal.show();
+        }
+
+        // Delete student
+        function deleteStudent(id) {
+            confirmTitle.textContent = 'Confirm Delete';
+            confirmMessage.textContent = 'Are you sure you want to delete this student? This action cannot be undone.';
+            confirmButton.textContent = 'Delete';
+            confirmButton.className = 'btn btn-danger';
+            
+            confirmButton.onclick = () => {
+                // Remove student
+                students = students.filter(s => s.id !== id);
+                saveStudents();
+                
+                // Remove enrollments
+                enrollments = enrollments.filter(e => e.studentId !== id);
+                saveEnrollments();
+                
+                // Remove fees
+                fees = fees.filter(f => f.studentId !== id);
+                saveFees();
+                
+                // Remove attendance
+                attendance = attendance.filter(a => a.studentId !== id);
+                saveAttendance();
+                
+                // Show notification
+                showNotification('Student deleted successfully!', 'success');
+                
+                // Reload students
+                loadStudents();
+                
+                // Hide modal
+                confirmModal.hide();
+            };
+            
+            confirmModal.show();
+        }
+
+        // Edit course
+        function editCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (!course) return;
+            
+            // Populate form
+            document.getElementById('editCourseId').value = course.id;
+            document.getElementById('editCourseName').value = course.name;
+            
+            // Show modal
+            editCourseModal.show();
         }
 
         // Delete course
@@ -2573,15 +2738,11 @@
             confirmButton.className = 'btn btn-danger';
             
             confirmButton.onclick = () => {
-                // Find course
-                const courseIndex = courses.findIndex(c => c.id === id);
-                if (courseIndex === -1) return;
-                
-                // Delete course
-                courses.splice(courseIndex, 1);
+                // Remove course
+                courses = courses.filter(c => c.id !== id);
                 saveCourses();
                 
-                // Delete related enrollments
+                // Remove enrollments
                 enrollments = enrollments.filter(e => e.courseId !== id);
                 saveEnrollments();
                 
@@ -2590,103 +2751,63 @@
                 
                 // Reload courses
                 loadCourses();
-                loadDashboard();
                 
-                // Update course dropdowns
-                updateCourseDropdowns();
-                
+                // Hide modal
                 confirmModal.hide();
             };
             
             confirmModal.show();
         }
 
-        // Enroll multiple students
+        // Enroll students
         function enrollStudents(courseId) {
-            // Populate student dropdown
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            // Set course ID
+            document.getElementById('enrollCourseId').value = courseId;
+            
+            // Populate students dropdown
             const studentSelect = document.getElementById('enrollStudents');
             studentSelect.innerHTML = '<option value="" disabled>Select students to enroll</option>';
             
-            // Get students not enrolled in this course
+            // Get already enrolled students
             const enrolledStudentIds = enrollments
                 .filter(e => e.courseId === courseId)
                 .map(e => e.studentId);
             
-            const availableStudents = students.filter(s => !enrolledStudentIds.includes(s.id));
-            
-            availableStudents.forEach(student => {
-                const option = document.createElement('option');
-                option.value = student.id;
-                option.textContent = `${student.name} (${student.rollNumber})`;
-                studentSelect.appendChild(option);
+            // Add unenrolled students
+            students.forEach(student => {
+                if (!enrolledStudentIds.includes(student.id)) {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.name} (${student.rollNumber})`;
+                    studentSelect.appendChild(option);
+                }
             });
-            
-            // Set course ID
-            document.getElementById('enrollCourseId').value = courseId;
             
             // Show modal
             enrollStudentsModal.show();
         }
 
-        // Handle enroll multiple students
-        function handleEnrollStudents(e) {
-            e.preventDefault();
-            
-            const courseId = parseInt(document.getElementById('enrollCourseId').value);
-            const studentSelect = document.getElementById('enrollStudents');
-            const selectedOptions = Array.from(studentSelect.selectedOptions);
-            
-            if (selectedOptions.length === 0) {
-                showNotification('Please select at least one student!', 'error');
-                return;
-            }
-            
-            // Create enrollments for selected students
-            selectedOptions.forEach(option => {
-                const studentId = parseInt(option.value);
-                
-                // Create new enrollment
-                const newEnrollment = {
-                    id: Date.now() + Math.random(),
-                    studentId,
-                    courseId
-                };
-                
-                // Add enrollment
-                enrollments.push(newEnrollment);
-            });
-            
-            saveEnrollments();
-            
-            // Reset form and close modal
-            enrollStudentsForm.reset();
-            enrollStudentsModal.hide();
-            
-            // Show notification
-            showNotification(`${selectedOptions.length} students enrolled successfully!`, 'success');
-            
-            // Reload courses
-            loadCourses();
-        }
-
-        // View course students
-        function viewCourseStudents(courseId) {
+        // Show course students
+        function showCourseStudents(courseId) {
             const course = courses.find(c => c.id === courseId);
             if (!course) return;
             
             // Get enrolled students
-            const courseEnrollments = enrollments.filter(e => e.courseId === courseId);
+            const enrolledStudents = enrollments
+                .filter(e => e.courseId === courseId)
+                .map(e => students.find(s => s.id === e.studentId))
+                .filter(Boolean);
             
             // Clear list
             courseStudentsList.innerHTML = '';
             
-            if (courseEnrollments.length === 0) {
-                courseStudentsList.innerHTML = '<p class="text-center text-muted">No students enrolled in this course</p>';
+            if (enrolledStudents.length === 0) {
+                courseStudentsList.innerHTML = '<div class="text-center py-3"><p class="text-muted">No students enrolled in this course.</p></div>';
             } else {
-                courseEnrollments.forEach(enrollment => {
-                    const student = students.find(s => s.id === enrollment.studentId);
-                    if (!student) return;
-                    
+                enrolledStudents.forEach(student => {
                     const studentItem = document.createElement('div');
                     studentItem.className = 'student-list-item';
                     studentItem.innerHTML = `
@@ -2694,8 +2815,8 @@
                             <div class="student-name">${student.name}</div>
                             <div class="student-roll">${student.rollNumber}</div>
                         </div>
-                        <button class="btn-remove" onclick="removeStudentFromCourse(${enrollment.id})">
-                            <i class="bi bi-x"></i>
+                        <button class="btn-remove" onclick="removeStudentFromCourse(${student.id}, ${courseId})">
+                            <i class="bi bi-x-circle"></i>
                         </button>
                     `;
                     courseStudentsList.appendChild(studentItem);
@@ -2707,223 +2828,51 @@
         }
 
         // Remove student from course
-        function removeStudentFromCourse(enrollmentId) {
-            confirmTitle.textContent = 'Confirm Remove';
-            confirmMessage.textContent = 'Are you sure you want to remove this student from the course?';
-            confirmButton.textContent = 'Remove';
-            confirmButton.className = 'btn btn-danger';
+        function removeStudentFromCourse(studentId, courseId) {
+            // Remove enrollment
+            enrollments = enrollments.filter(e => !(e.studentId === studentId && e.courseId === courseId));
+            saveEnrollments();
             
-            confirmButton.onclick = () => {
-                // Find enrollment
-                const enrollmentIndex = enrollments.findIndex(e => e.id === enrollmentId);
-                if (enrollmentIndex === -1) return;
-                
-                // Delete enrollment
-                enrollments.splice(enrollmentIndex, 1);
-                saveEnrollments();
-                
-                // Show notification
-                showNotification('Student removed from course successfully!', 'success');
-                
-                // Reload course students list
-                const courseId = enrollments[enrollmentIndex]?.courseId;
-                if (courseId) {
-                    viewCourseStudents(courseId);
-                }
-                
-                // Reload courses
-                loadCourses();
-                
-                confirmModal.hide();
-            };
+            // Show notification
+            showNotification('Student removed from course successfully!', 'success');
             
-            confirmModal.show();
+            // Reload course students
+            showCourseStudents(courseId);
+            
+            // Reload courses
+            loadCourses();
         }
 
-        // Update course dropdowns
-        function updateCourseDropdowns() {
-            // Update add student form
-            const studentCourseSelect = document.getElementById('studentCourse');
-            studentCourseSelect.innerHTML = '<option value="">Select Course</option>';
-            courses.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course.id;
-                option.textContent = course.name;
-                studentCourseSelect.appendChild(option);
-            });
+        // Toggle fee status
+        function toggleFeeStatus(feeId) {
+            const fee = fees.find(f => f.id === feeId);
+            if (!fee) return;
             
-            // Update edit student form
-            const editStudentCourseSelect = document.getElementById('editStudentCourse');
-            editStudentCourseSelect.innerHTML = '<option value="">Select Course</option>';
-            courses.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course.id;
-                option.textContent = course.name;
-                editStudentCourseSelect.appendChild(option);
-            });
-        }
-
-        // Populate year select
-        function populateYearSelect() {
-            const currentYear = new Date().getFullYear();
-            yearSelect.innerHTML = '';
-            
-            // Add current year and previous 4 years
-            for (let i = 0; i < 5; i++) {
-                const year = currentYear - i;
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                if (i === 0) {
-                    option.selected = true;
-                }
-                yearSelect.appendChild(option);
-            }
-        }
-
-        // Set current date
-        function setCurrentDate() {
-            const today = new Date().toISOString().split('T')[0];
-            attendanceDate.value = today;
-        }
-
-        // Load fees
-        function loadFees() {
-            const month = parseInt(monthSelect.value);
-            const year = parseInt(yearSelect.value);
-            
-            feesContainer.innerHTML = '';
-            
-            // Filter fees for selected month and year
-            const monthFees = fees.filter(fee => fee.month === month && fee.year === year);
-            
-            if (monthFees.length === 0) {
-                feesContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-cash-stack" style="font-size: 3rem; color: var(--text-muted);"></i>
-                        <h5 class="mt-3">No fee records found</h5>
-                        <p class="text-muted">There are no fee records for the selected month and year</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            monthFees.forEach(fee => {
-                const student = students.find(s => s.id === fee.studentId);
-                if (!student) return;
-                
-                const feeCard = document.createElement('div');
-                feeCard.className = 'col-md-6 col-lg-4 mb-4';
-                feeCard.innerHTML = `
-                    <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>${student.name}</strong>
-                                <span class="roll-badge ms-2">${student.rollNumber}</span>
-                            </div>
-                            <span class="${fee.status === 'paid' ? 'status-paid' : 'status-unpaid'}">
-                                ${fee.status === 'paid' ? 'Paid' : 'Unpaid'}
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Amount:</span>
-                                <strong>PKR ${fee.amount.toLocaleString()}</strong>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Due Date:</span>
-                                <span>${new Date(year, month + 1, 0).toLocaleDateString()}</span>
-                            </div>
-                            ${fee.status === 'paid' ? `
-                                <div class="d-flex justify-content-between">
-                                    <span>Payment Date:</span>
-                                    <span>${new Date(fee.date).toLocaleDateString()}</span>
-                                </div>
-                            ` : `
-                                <div class="d-grid gap-2 mt-3">
-                                    <button class="btn btn-success btn-sm" onclick="markFeeAsPaid(${fee.id})">
-                                        <i class="bi bi-check-circle"></i> Mark as Paid
-                                    </button>
-                                </div>
-                            `}
-                        </div>
-                    </div>
-                `;
-                feesContainer.appendChild(feeCard);
-            });
-        }
-
-        // Mark fee as paid
-        function markFeeAsPaid(id) {
-            const feeIndex = fees.findIndex(f => f.id === id);
-            if (feeIndex === -1) return;
-            
-            // Update fee
-            fees[feeIndex] = {
-                ...fees[feeIndex],
-                status: 'paid',
-                date: new Date().toISOString().split('T')[0]
-            };
+            // Toggle status
+            fee.status = fee.status === 'paid' ? 'unpaid' : 'paid';
             saveFees();
             
             // Show notification
-            showNotification('Fee marked as paid!', 'success');
+            showNotification(`Fee marked as ${fee.status}!`, 'success');
             
             // Reload fees
             loadFees();
-            loadDashboard();
         }
 
-        // Load attendance
-        function loadAttendance() {
-            const date = attendanceDate.value;
+        // Toggle attendance status
+        function toggleAttendanceStatus(attId) {
+            const att = attendance.find(a => a.id === attId);
+            if (!att) return;
             
-            attendanceContainer.innerHTML = '';
+            // Toggle status
+            att.status = att.status === 'present' ? 'absent' : 'present';
+            saveAttendance();
             
-            // Filter attendance for selected date
-            const dateAttendance = attendance.filter(att => att.date === date);
+            // Show notification
+            showNotification(`Attendance marked as ${att.status}!`, 'success');
             
-            if (dateAttendance.length === 0) {
-                attendanceContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-calendar-check-fill" style="font-size: 3rem; color: var(--text-muted);"></i>
-                        <h5 class="mt-3">No attendance records found</h5>
-                        <p class="text-muted">Mark attendance for the selected date</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            dateAttendance.forEach(att => {
-                const student = students.find(s => s.id === att.studentId);
-                if (!student) return;
-                
-                const attendanceCard = document.createElement('div');
-                attendanceCard.className = 'col-md-6 col-lg-4 mb-4';
-                attendanceCard.innerHTML = `
-                    <div class="attendance-card">
-                        <div class="attendance-card-header">
-                            <div class="attendance-card-name">${student.name}</div>
-                            <div class="attendance-card-actions">
-                                <button class="btn btn-sm ${att.status === 'present' ? 'btn-success' : 'btn-outline-success'}" onclick="markAttendanceAsPresent(${att.id})">
-                                    <i class="bi bi-check-circle"></i> Present
-                                </button>
-                                <button class="btn btn-sm ${att.status === 'absent' ? 'btn-danger' : 'btn-outline-danger'}" onclick="markAttendanceAsAbsent(${att.id})">
-                                    <i class="bi bi-x-circle"></i> Absent
-                                </button>
-                            </div>
-                        </div>
-                        <div class="attendance-card-body">
-                            <div class="attendance-status">
-                                <div class="attendance-status-indicator ${att.status}"></div>
-                                <span>${att.status === 'present' ? 'Present' : 'Absent'}</span>
-                            </div>
-                            <span class="roll-badge">${student.rollNumber}</span>
-                        </div>
-                    </div>
-                `;
-                attendanceContainer.appendChild(attendanceCard);
-            });
+            // Reload attendance
+            loadAttendance();
         }
 
         // Mark attendance
@@ -2931,53 +2880,23 @@
             const date = attendanceDate.value;
             
             // Check if attendance already exists for this date
-            const existingAttendance = attendance.filter(att => att.date === date);
+            const existingAttendance = attendance.filter(a => a.date === date);
             
             if (existingAttendance.length > 0) {
-                confirmTitle.textContent = 'Attendance Already Exists';
-                confirmMessage.textContent = 'Attendance for this date already exists. Do you want to overwrite it?';
-                confirmButton.textContent = 'Overwrite';
-                confirmButton.className = 'btn btn-warning';
-                
-                confirmButton.onclick = () => {
-                    // Delete existing attendance
-                    attendance = attendance.filter(att => att.date !== date);
-                    saveAttendance();
-                    
-                    // Create new attendance records
-                    students.forEach(student => {
-                        attendance.push({
-                            id: Date.now() + Math.random(),
-                            studentId: student.id,
-                            date,
-                            status: 'present' // Default to present
-                        });
-                    });
-                    saveAttendance();
-                    
-                    // Show notification
-                    showNotification('Attendance marked successfully!', 'success');
-                    
-                    // Reload attendance
-                    loadAttendance();
-                    loadDashboard();
-                    
-                    confirmModal.hide();
-                };
-                
-                confirmModal.show();
+                showNotification('Attendance already marked for this date!', 'error');
                 return;
             }
             
             // Create attendance records for all students
             students.forEach(student => {
                 attendance.push({
-                    id: Date.now() + Math.random(),
+                    id: attendance.length > 0 ? Math.max(...attendance.map(a => a.id)) + 1 : 1,
                     studentId: student.id,
                     date,
                     status: 'present' // Default to present
                 });
             });
+            
             saveAttendance();
             
             // Show notification
@@ -2985,47 +2904,6 @@
             
             // Reload attendance
             loadAttendance();
-            loadDashboard();
-        }
-
-        // Mark attendance as present
-        function markAttendanceAsPresent(id) {
-            const attendanceIndex = attendance.findIndex(a => a.id === id);
-            if (attendanceIndex === -1) return;
-            
-            // Update attendance
-            attendance[attendanceIndex] = {
-                ...attendance[attendanceIndex],
-                status: 'present'
-            };
-            saveAttendance();
-            
-            // Show notification
-            showNotification('Attendance marked as present!', 'success');
-            
-            // Reload attendance
-            loadAttendance();
-            loadDashboard();
-        }
-
-        // Mark attendance as absent
-        function markAttendanceAsAbsent(id) {
-            const attendanceIndex = attendance.findIndex(a => a.id === id);
-            if (attendanceIndex === -1) return;
-            
-            // Update attendance
-            attendance[attendanceIndex] = {
-                ...attendance[attendanceIndex],
-                status: 'absent'
-            };
-            saveAttendance();
-            
-            // Show notification
-            showNotification('Attendance marked as absent!', 'success');
-            
-            // Reload attendance
-            loadAttendance();
-            loadDashboard();
         }
 
         // Delete old attendance
@@ -3036,27 +2914,21 @@
             confirmButton.className = 'btn btn-danger';
             
             confirmButton.onclick = () => {
-                const currentDate = new Date();
                 const threeMonthsAgo = new Date();
-                threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+                threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
                 
-                // Delete attendance older than 3 months
+                // Remove old attendance
                 const initialLength = attendance.length;
-                attendance = attendance.filter(att => {
-                    const attDate = new Date(att.date);
-                    return attDate >= threeMonthsAgo;
-                });
-                
-                const deletedCount = initialLength - attendance.length;
+                attendance = attendance.filter(a => new Date(a.date) >= threeMonthsAgo);
                 saveAttendance();
                 
                 // Show notification
-                showNotification(`${deletedCount} attendance records deleted!`, 'success');
+                showNotification(`${initialLength - attendance.length} attendance records deleted!`, 'success');
                 
                 // Reload attendance
                 loadAttendance();
-                loadDashboard();
                 
+                // Hide modal
                 confirmModal.hide();
             };
             
@@ -3065,162 +2937,88 @@
 
         // Download data
         function downloadData(type) {
-            let csvContent = '';
-            let filename = '';
+            let data, filename;
             
             switch (type) {
                 case 'students':
-                    // Create CSV header
-                    csvContent = 'Roll Number,Name,Contact,Fees,Course\n';
-                    
-                    // Add student data
-                    students.forEach(student => {
-                        // Find enrollment for this student
-                        const enrollment = enrollments.find(e => e.studentId === student.id);
-                        const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
-                        const courseName = course ? course.name : 'Not enrolled';
-                        
-                        csvContent += `${student.rollNumber},${student.name},${student.contact},${student.fees},"${courseName}"\n`;
-                    });
-                    
+                    data = students;
                     filename = 'students.csv';
                     break;
-                    
                 case 'courses':
-                    // Create CSV header
-                    csvContent = 'Course Name,Enrolled Students\n';
-                    
-                    // Add course data
-                    courses.forEach(course => {
-                        // Count enrolled students
-                        const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
-                        csvContent += `"${course.name}",${enrolledCount}\n`;
-                    });
-                    
+                    data = courses;
                     filename = 'courses.csv';
                     break;
-                    
                 case 'fees':
-                    // Create CSV header
-                    csvContent = 'Student Name,Roll Number,Month,Year,Amount,Status,Payment Date\n';
-                    
-                    // Add fee data
-                    fees.forEach(fee => {
-                        const student = students.find(s => s.id === fee.studentId);
-                        if (!student) return;
-                        
-                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                          'July', 'August', 'September', 'October', 'November', 'December'];
-                        
-                        csvContent += `${student.name},${student.rollNumber},${monthNames[fee.month]},${fee.year},${fee.amount},${fee.status},${fee.date}\n`;
-                    });
-                    
+                    data = fees;
                     filename = 'fees.csv';
                     break;
-                    
                 case 'attendance':
-                    // Create CSV header
-                    csvContent = 'Student Name,Roll Number,Date,Status\n';
-                    
-                    // Add attendance data
-                    attendance.forEach(att => {
-                        const student = students.find(s => s.id === att.studentId);
-                        if (!student) return;
-                        
-                        csvContent += `${student.name},${student.rollNumber},${att.date},${att.status}\n`;
-                    });
-                    
+                    data = attendance;
                     filename = 'attendance.csv';
                     break;
-                    
                 case 'all':
-                    // Create a zip-like structure with multiple CSV files
-                    // In a real implementation, you would use a library like JSZip
-                    // For simplicity, we'll create a single CSV with all data
-                    
-                    csvContent = 'EDUTECH MANAGEMENT SYSTEM - ALL DATA\n\n';
-                    
-                    // Students section
-                    csvContent += 'STUDENTS\n';
-                    csvContent += 'Roll Number,Name,Contact,Fees,Course\n';
-                    students.forEach(student => {
-                        const enrollment = enrollments.find(e => e.studentId === student.id);
-                        const course = enrollment ? courses.find(c => c.id === enrollment.courseId) : null;
-                        const courseName = course ? course.name : 'Not enrolled';
-                        
-                        csvContent += `${student.rollNumber},${student.name},${student.contact},${student.fees},"${courseName}"\n`;
-                    });
-                    
-                    csvContent += '\n';
-                    
-                    // Courses section
-                    csvContent += 'COURSES\n';
-                    csvContent += 'Course Name,Enrolled Students\n';
-                    courses.forEach(course => {
-                        const enrolledCount = enrollments.filter(e => e.courseId === course.id).length;
-                        csvContent += `"${course.name}",${enrolledCount}\n`;
-                    });
-                    
-                    csvContent += '\n';
-                    
-                    // Fees section
-                    csvContent += 'FEES\n';
-                    csvContent += 'Student Name,Roll Number,Month,Year,Amount,Status,Payment Date\n';
-                    fees.forEach(fee => {
-                        const student = students.find(s => s.id === fee.studentId);
-                        if (!student) return;
-                        
-                        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                          'July', 'August', 'September', 'October', 'November', 'December'];
-                        
-                        csvContent += `${student.name},${student.rollNumber},${monthNames[fee.month]},${fee.year},${fee.amount},${fee.status},${fee.date}\n`;
-                    });
-                    
-                    csvContent += '\n';
-                    
-                    // Attendance section
-                    csvContent += 'ATTENDANCE\n';
-                    csvContent += 'Student Name,Roll Number,Date,Status\n';
-                    attendance.forEach(att => {
-                        const student = students.find(s => s.id === att.studentId);
-                        if (!student) return;
-                        
-                        csvContent += `${student.name},${student.rollNumber},${att.date},${att.status}\n`;
-                    });
-                    
-                    filename = 'edutech_data.csv';
+                    // Create a combined data structure
+                    data = {
+                        students,
+                        courses,
+                        enrollments,
+                        fees,
+                        attendance
+                    };
+                    filename = 'edutech_data.json';
                     break;
+                default:
+                    return;
+            }
+            
+            // Convert to CSV or JSON
+            let content;
+            if (type === 'all') {
+                content = JSON.stringify(data, null, 2);
+            } else {
+                content = convertToCSV(data);
             }
             
             // Create download link
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([content], { type: type === 'all' ? 'application/json' : 'text/csv' });
             const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', filename);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
             // Show notification
             showNotification(`${filename} downloaded successfully!`, 'success');
         }
 
-        // Show notification
-        function showNotification(message, type) {
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.style.display = 'block';
+        // Convert data to CSV
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
             
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            // Get headers
+            const headers = Object.keys(data[0]);
+            
+            // Create CSV content
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => {
+                    // Escape quotes and handle nested objects
+                    let value = row[header];
+                    if (typeof value === 'object' && value !== null) {
+                        value = JSON.stringify(value);
+                    }
+                    return `"${String(value).replace(/"/g, '""')}"`;
+                }).join(','))
+            ].join('\n');
+            
+            return csvContent;
         }
 
-        // Initialize the app
-        init();
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
