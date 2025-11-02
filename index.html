@@ -956,15 +956,14 @@
     <script>
         // Initialize Firebase
         const firebaseConfig = {
-  apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
-  authDomain: "edutech-d9330.firebaseapp.com",
-  databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "edutech-d9330",
-  storageBucket: "edutech-d9330.appspot.com", // ✅ correct
-  messagingSenderId: "466095399789",
-  appId: "1:466095399789:web:03e63bc7f14ba8cad6f064"
-};
-
+            apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
+            authDomain: "edutech-d9330.firebaseapp.com",
+            databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "edutech-d9330",
+            storageBucket: "edutech-d9330.appspot.com",
+            messagingSenderId: "466095399789",
+            appId: "1:466095399789:web:03e63bc7f14ba8cad6f064"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
@@ -1172,7 +1171,10 @@
                 const feesArray = Object.values(fees);
                 
                 // Calculate total fees
-                const totalFeesAmount = feesArray.reduce((sum, fee) => sum + fee.amount, 0);
+                const totalFeesAmount = feesArray.reduce((sum, fee) => {
+                    const amount = typeof fee.amount === 'number' ? fee.amount : Number(fee.amount);
+                    return sum + amount;
+                }, 0);
                 document.getElementById('totalFees').textContent = totalFeesAmount.toLocaleString();
                 
                 // Update fee status
@@ -1346,6 +1348,9 @@
                     const statusClass = fee.status === 'Paid' ? 'status-paid' : 'status-unpaid';
                     const statusIcon = fee.status === 'Paid' ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
                     
+                    // Ensure fee.amount is a number
+                    const feeAmount = typeof fee.amount === 'number' ? fee.amount : Number(fee.amount);
+                    
                     feeCard.innerHTML = `
                         <div class="fee-card">
                             <div class="d-flex justify-content-between align-items-start mb-3">
@@ -1355,7 +1360,7 @@
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
                                     <span>Amount:</span>
-                                    <span class="fw-bold">PKR ${fee.amount.toLocaleString()}</span>
+                                    <span class="fw-bold">PKR ${feeAmount.toLocaleString()}</span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <span>Month:</span>
@@ -2013,7 +2018,8 @@
                     case 'fees':
                         csvContent = 'Student Name,Amount (PKR),Status,Month,Year\n';
                         data.fees.forEach(fee => {
-                            csvContent += `${fee.studentName},${fee.amount},${fee.status},${fee.month},${fee.year}\n`;
+                            const feeAmount = typeof fee.amount === 'number' ? fee.amount : Number(fee.amount);
+                            csvContent += `${fee.studentName},${feeAmount},${fee.status},${fee.month},${fee.year}\n`;
                         });
                         filename = 'fees.csv';
                         break;
@@ -2044,7 +2050,8 @@
                         csvContent += '\n===== FEES =====\n';
                         csvContent += 'Student Name,Amount (PKR),Status,Month,Year\n';
                         data.fees.forEach(fee => {
-                            csvContent += `${fee.studentName},${fee.amount},${fee.status},${fee.month},${fee.year}\n`;
+                            const feeAmount = typeof fee.amount === 'number' ? fee.amount : Number(fee.amount);
+                            csvContent += `${fee.studentName},${feeAmount},${fee.status},${fee.month},${fee.year}\n`;
                         });
                         
                         csvContent += '\n===== ATTENDANCE =====\n';
