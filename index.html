@@ -956,14 +956,15 @@
     <script>
         // Initialize Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
-            authDomain: "edutech-d9330.firebaseapp.com",
-            databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.com",
-            projectId: "edutech-d9330",
-            storageBucket: "edutech-d9330.firebasestorage.app",
-            messagingSenderId: "466095399789",
-            appId: "1:466095399789:web:03e63bc7f14ba8cad6f064"
-        };
+  apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
+  authDomain: "edutech-d9330.firebaseapp.com",
+  databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "edutech-d9330",
+  storageBucket: "edutech-d9330.appspot.com", // ✅ correct
+  messagingSenderId: "466095399789",
+  appId: "1:466095399789:web:03e63bc7f14ba8cad6f064"
+};
+
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
