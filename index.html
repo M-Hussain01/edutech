@@ -653,6 +653,37 @@
                         </button>
                     </div>
                 </div>
+                
+                <!-- Form to add attendance -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Mark Attendance</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="attendanceStudentSelect" class="form-label">Select Student</label>
+                                    <select class="form-select" id="attendanceStudentSelect">
+                                        <option value="">Select Student</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="d-flex">
+                                    <button class="btn btn-success me-2" onclick="addAttendance('Present')">
+                                        <i class="bi bi-check"></i> Mark Present
+                                    </button>
+                                    <button class="btn btn-danger" onclick="addAttendance('Absent')">
+                                        <i class="bi bi-x"></i> Mark Absent
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- List of attendance records -->
                 <div class="row" id="attendanceList">
                     <!-- Attendance will be loaded here -->
                 </div>
@@ -779,10 +810,6 @@
                             <input type="tel" class="form-control" id="studentPhone" required>
                         </div>
                         <div class="mb-3">
-                            <label for="studentFees" class="form-label">Fees (PKR)</label>
-                            <input type="number" class="form-control" id="studentFees" min="0" required>
-                        </div>
-                        <div class="mb-3">
                             <label for="studentCourse" class="form-label">Enrolled Course</label>
                             <select class="form-select" id="studentCourse" required>
                                 <option value="">Select Course</option>
@@ -820,10 +847,6 @@
                         <div class="mb-3">
                             <label for="editStudentPhone" class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" id="editStudentPhone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editStudentFees" class="form-label">Fees (PKR)</label>
-                            <input type="number" class="form-control" id="editStudentFees" min="0" required>
                         </div>
                         <div class="mb-3">
                             <label for="editStudentCourse" class="form-label">Enrolled Course</label>
@@ -935,7 +958,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
             authDomain: "edutech-d9330.firebaseapp.com",
-            databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.app",
+            databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.com",
             projectId: "edutech-d9330",
             storageBucket: "edutech-d9330.firebasestorage.app",
             messagingSenderId: "466095399789",
@@ -1051,7 +1074,7 @@
             const password = document.getElementById('password').value;
             
             // Manual authentication check
-            if (username === 'shariq' && password === 'shariq 123') {
+            if (username === 'shariq' && password === 'shariq123') {
                 loginPage.style.display = 'none';
                 dashboardPage.style.display = 'block';
                 showToast('Login successful!', 'success');
@@ -1223,9 +1246,6 @@
                             <div class="mb-2">
                                 <i class="bi bi-telephone-fill me-2"></i> ${student.phone}
                             </div>
-                            <div class="mb-2">
-                                <i class="bi bi-cash-stack me-2"></i> PKR ${student.fees.toLocaleString()}
-                            </div>
                             <div class="mb-3">
                                 <i class="bi bi-book-fill me-2"></i> ${student.course}
                             </div>
@@ -1363,76 +1383,164 @@
         function loadAttendance() {
             showLoading();
             
-            attendanceRef.once('value').then(snapshot => {
-                const attendance = snapshot.val() || {};
-                const attendanceList = document.getElementById('attendanceList');
-                attendanceList.innerHTML = '';
+            // Populate student dropdown
+            const studentSelect = document.getElementById('attendanceStudentSelect');
+            studentSelect.innerHTML = '<option value="">Select Student</option>';
+            
+            studentsRef.once('value').then(snapshot => {
+                const students = snapshot.val() || {};
                 
-                const selectedDate = document.getElementById('attendanceDate').value;
-                
-                let filteredAttendance = Object.values(attendance);
-                
-                if (selectedDate) {
-                    filteredAttendance = filteredAttendance.filter(a => a.date === selectedDate);
-                }
-                
-                filteredAttendance.forEach(att => {
-                    const attendanceCard = document.createElement('div');
-                    attendanceCard.className = 'col-md-4 col-sm-6';
-                    
-                    let statusClass = '';
-                    let statusIcon = '';
-                    
-                    switch(att.status) {
-                        case 'Present':
-                            statusClass = 'status-present';
-                            statusIcon = 'bi-check-circle-fill';
-                            break;
-                        case 'Absent':
-                            statusClass = 'status-absent';
-                            statusIcon = 'bi-x-circle-fill';
-                            break;
-                        case 'Not Marked':
-                            statusClass = 'status-not-marked';
-                            statusIcon = 'bi-question-circle-fill';
-                            break;
-                    }
-                    
-                    attendanceCard.innerHTML = `
-                        <div class="attendance-card">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5>${att.studentName}</h5>
-                                <span class="${statusClass}"><i class="bi ${statusIcon}"></i> ${att.status}</span>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between">
-                                    <span>Roll Number:</span>
-                                    <span>${att.roll}</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Date:</span>
-                                    <span>${formatDate(att.date)}</span>
-                                </div>
-                            </div>
-                            ${att.status === 'Not Marked' ? `
-                                <div class="d-flex">
-                                    <button class="btn btn-success btn-sm me-2 flex-fill" onclick="markAttendance('${att.id}', 'Present')">
-                                        <i class="bi bi-check"></i> Present
-                                    </button>
-                                    <button class="btn btn-danger btn-sm flex-fill" onclick="markAttendance('${att.id}', 'Absent')">
-                                        <i class="bi bi-x"></i> Absent
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                    attendanceList.appendChild(attendanceCard);
+                Object.values(students).forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.name} (${student.roll})`;
+                    studentSelect.appendChild(option);
                 });
                 
-                hideLoading();
+                // Load attendance records for the selected date
+                const selectedDate = document.getElementById('attendanceDate').value;
+                
+                attendanceRef.once('value').then(snapshot => {
+                    const attendance = snapshot.val() || {};
+                    const attendanceList = document.getElementById('attendanceList');
+                    attendanceList.innerHTML = '';
+                    
+                    let filteredAttendance = Object.values(attendance);
+                    
+                    if (selectedDate) {
+                        filteredAttendance = filteredAttendance.filter(a => a.date === selectedDate);
+                    }
+                    
+                    filteredAttendance.forEach(att => {
+                        const attendanceCard = document.createElement('div');
+                        attendanceCard.className = 'col-md-4 col-sm-6';
+                        
+                        let statusClass = '';
+                        let statusIcon = '';
+                        
+                        switch(att.status) {
+                            case 'Present':
+                                statusClass = 'status-present';
+                                statusIcon = 'bi-check-circle-fill';
+                                break;
+                            case 'Absent':
+                                statusClass = 'status-absent';
+                                statusIcon = 'bi-x-circle-fill';
+                                break;
+                            case 'Not Marked':
+                                statusClass = 'status-not-marked';
+                                statusIcon = 'bi-question-circle-fill';
+                                break;
+                        }
+                        
+                        attendanceCard.innerHTML = `
+                            <div class="attendance-card">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5>${att.studentName}</h5>
+                                    <span class="${statusClass}"><i class="bi ${statusIcon}"></i> ${att.status}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Roll Number:</span>
+                                        <span>${att.roll}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Date:</span>
+                                        <span>${formatDate(att.date)}</span>
+                                    </div>
+                                </div>
+                                ${att.status === 'Not Marked' ? `
+                                    <div class="d-flex">
+                                        <button class="btn btn-success btn-sm me-2 flex-fill" onclick="markAttendance('${att.id}', 'Present')">
+                                            <i class="bi bi-check"></i> Present
+                                        </button>
+                                        <button class="btn btn-danger btn-sm flex-fill" onclick="markAttendance('${att.id}', 'Absent')">
+                                            <i class="bi bi-x"></i> Absent
+                                        </button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                        attendanceList.appendChild(attendanceCard);
+                    });
+                    
+                    hideLoading();
+                });
             }).catch(error => {
                 console.error('Error loading attendance:', error);
                 showToast('Error loading attendance data', 'danger');
+                hideLoading();
+            });
+        }
+
+        // Add Attendance
+        function addAttendance(status) {
+            const studentId = document.getElementById('attendanceStudentSelect').value;
+            const date = document.getElementById('attendanceDate').value;
+            
+            if (!studentId) {
+                showToast('Please select a student', 'danger');
+                return;
+            }
+            
+            if (!date) {
+                showToast('Please select a date', 'danger');
+                return;
+            }
+            
+            showLoading();
+            
+            // Get student name and roll number
+            studentsRef.child(studentId).once('value').then(snapshot => {
+                const student = snapshot.val();
+                if (!student) {
+                    showToast('Student not found', 'danger');
+                    hideLoading();
+                    return;
+                }
+                
+                // Check if attendance already exists for this student and date
+                attendanceRef.orderByChild('studentId').equalTo(studentId).once('value').then(snapshot => {
+                    const attendanceRecords = snapshot.val();
+                    let existingRecord = null;
+                    
+                    if (attendanceRecords) {
+                        Object.keys(attendanceRecords).forEach(key => {
+                            if (attendanceRecords[key].date === date) {
+                                existingRecord = { id: key, ...attendanceRecords[key] };
+                            }
+                        });
+                    }
+                    
+                    if (existingRecord) {
+                        // Update existing record
+                        attendanceRef.child(existingRecord.id).update({
+                            status: status
+                        }).then(() => {
+                            showToast(`Attendance updated to ${status}`, 'success');
+                            loadAttendance();
+                            hideLoading();
+                        });
+                    } else {
+                        // Create new record
+                        const newAttendanceRef = attendanceRef.push();
+                        newAttendanceRef.set({
+                            id: newAttendanceRef.key,
+                            studentId: studentId,
+                            studentName: student.name,
+                            roll: student.roll,
+                            status: status,
+                            date: date
+                        }).then(() => {
+                            showToast(`Attendance marked as ${status}`, 'success');
+                            loadAttendance();
+                            hideLoading();
+                        });
+                    }
+                });
+            }).catch(error => {
+                console.error('Error marking attendance:', error);
+                showToast('Error marking attendance', 'danger');
                 hideLoading();
             });
         }
@@ -1442,52 +1550,60 @@
             const name = document.getElementById('studentName').value;
             const roll = document.getElementById('studentRoll').value;
             const phone = document.getElementById('studentPhone').value;
-            const fees = parseInt(document.getElementById('studentFees').value);
             const course = document.getElementById('studentCourse').value;
             
-            if (!name || !roll || !phone || !fees || !course) {
+            if (!name || !roll || !phone || !course) {
                 showToast('Please fill all fields', 'danger');
                 return;
             }
             
             showLoading();
             
-            const newStudentRef = studentsRef.push();
-            const studentId = newStudentRef.key;
-            
-            newStudentRef.set({
-                id: studentId,
-                name,
-                roll,
-                phone,
-                fees,
-                course
-            }).then(() => {
-                // Create fee record for the student
-                const newFeeRef = feesRef.push();
-                newFeeRef.set({
-                    id: newFeeRef.key,
-                    studentId: studentId,
-                    studentName: name,
-                    amount: fees,
-                    status: 'Unpaid',
-                    month: new Date().getMonth() + 1,
-                    year: new Date().getFullYear()
+            // Get course fee
+            coursesRef.orderByChild('name').equalTo(course).once('value').then(snapshot => {
+                const courses = snapshot.val();
+                let courseFee = 0;
+                
+                if (courses) {
+                    courseFee = Object.values(courses)[0].fee;
+                }
+                
+                const newStudentRef = studentsRef.push();
+                const studentId = newStudentRef.key;
+                
+                newStudentRef.set({
+                    id: studentId,
+                    name,
+                    roll,
+                    phone,
+                    course
+                }).then(() => {
+                    // Create fee record for the student
+                    const newFeeRef = feesRef.push();
+                    newFeeRef.set({
+                        id: newFeeRef.key,
+                        studentId: studentId,
+                        studentName: name,
+                        amount: courseFee,
+                        status: 'Unpaid',
+                        month: new Date().getMonth() + 1,
+                        year: new Date().getFullYear()
+                    }).then(() => {
+                        // Reset form
+                        document.getElementById('addStudentForm').reset();
+                        
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
+                        modal.hide();
+                        
+                        // Show success message
+                        showToast('Student added successfully', 'success');
+                        
+                        // Reload students
+                        loadStudents();
+                        hideLoading();
+                    });
                 });
-                
-                // Reset form
-                document.getElementById('addStudentForm').reset();
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
-                modal.hide();
-                
-                // Show success message
-                showToast('Student added successfully', 'success');
-                
-                // Reload students
-                loadStudents();
-                hideLoading();
             }).catch(error => {
                 console.error('Error saving student:', error);
                 showToast('Error saving student', 'danger');
@@ -1511,7 +1627,6 @@
                 document.getElementById('editStudentName').value = student.name;
                 document.getElementById('editStudentRoll').value = student.roll;
                 document.getElementById('editStudentPhone').value = student.phone;
-                document.getElementById('editStudentFees').value = student.fees;
                 
                 // Update course options
                 updateEditCourseOptions();
@@ -1534,10 +1649,9 @@
             const name = document.getElementById('editStudentName').value;
             const roll = document.getElementById('editStudentRoll').value;
             const phone = document.getElementById('editStudentPhone').value;
-            const fees = parseInt(document.getElementById('editStudentFees').value);
             const course = document.getElementById('editStudentCourse').value;
             
-            if (!name || !roll || !phone || !fees || !course) {
+            if (!name || !roll || !phone || !course) {
                 showToast('Please fill all fields', 'danger');
                 return;
             }
@@ -1548,30 +1662,51 @@
                 name,
                 roll,
                 phone,
-                fees,
                 course
             }).then(() => {
-                // Update fee record
+                // Update fee record if course changed
                 feesRef.orderByChild('studentId').equalTo(id).once('value').then(snapshot => {
                     const fees = snapshot.val();
                     if (fees) {
                         const feeId = Object.keys(fees)[0];
-                        feesRef.child(feeId).update({
-                            studentName: name,
-                            amount: fees
+                        
+                        // Get the new course fee
+                        coursesRef.orderByChild('name').equalTo(course).once('value').then(courseSnapshot => {
+                            const courses = courseSnapshot.val();
+                            let courseFee = 0;
+                            
+                            if (courses) {
+                                courseFee = Object.values(courses)[0].fee;
+                            }
+                            
+                            feesRef.child(feeId).update({
+                                studentName: name,
+                                amount: courseFee
+                            }).then(() => {
+                                // Close modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('editStudentModal'));
+                                modal.hide();
+                                
+                                // Show success message
+                                showToast('Student updated successfully', 'success');
+                                
+                                // Reload students
+                                loadStudents();
+                                hideLoading();
+                            });
                         });
+                    } else {
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editStudentModal'));
+                        modal.hide();
+                        
+                        // Show success message
+                        showToast('Student updated successfully', 'success');
+                        
+                        // Reload students
+                        loadStudents();
+                        hideLoading();
                     }
-                    
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('editStudentModal'));
-                    modal.hide();
-                    
-                    // Show success message
-                    showToast('Student updated successfully', 'success');
-                    
-                    // Reload students
-                    loadStudents();
-                    hideLoading();
                 });
             }).catch(error => {
                 console.error('Error updating student:', error);
@@ -1859,9 +1994,9 @@
                 
                 switch(type) {
                     case 'students':
-                        csvContent = 'Name,Roll Number,Phone,Fees,Course\n';
+                        csvContent = 'Name,Roll Number,Phone,Course\n';
                         data.students.forEach(student => {
-                            csvContent += `${student.name},${student.roll},${student.phone},${student.fees},${student.course}\n`;
+                            csvContent += `${student.name},${student.roll},${student.phone},${student.course}\n`;
                         });
                         filename = 'students.csv';
                         break;
@@ -1894,9 +2029,9 @@
                         // Create a zip-like structure with multiple sheets
                         csvContent = 'EduTech Management System - All Data Export\n\n';
                         csvContent += '===== STUDENTS =====\n';
-                        csvContent += 'Name,Roll Number,Phone,Fees,Course\n';
+                        csvContent += 'Name,Roll Number,Phone,Course\n';
                         data.students.forEach(student => {
-                            csvContent += `${student.name},${student.roll},${student.phone},${student.fees},${student.course}\n`;
+                            csvContent += `${student.name},${student.roll},${student.phone},${student.course}\n`;
                         });
                         
                         csvContent += '\n===== COURSES =====\n';
