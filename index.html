@@ -1717,10 +1717,6 @@
                             <label for="courseName" class="form-label">Course Name</label>
                             <input type="text" class="form-control" id="courseName" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="courseFee" class="form-label">Monthly Fee (PKR)</label>
-                            <input type="number" class="form-control" id="courseFee" required>
-                        </div>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Add Course</button>
                         </div>
@@ -1744,10 +1740,6 @@
                         <div class="mb-3">
                             <label for="editCourseName" class="form-label">Course Name</label>
                             <input type="text" class="form-control" id="editCourseName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editCourseFee" class="form-label">Monthly Fee (PKR)</label>
-                            <input type="number" class="form-control" id="editCourseFee" required>
                         </div>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Update Course</button>
@@ -2433,9 +2425,9 @@
                 } else {
                     // Initialize with sample data
                     courses = [
-                        { id: 1, name: 'Web Development', feeAmount: 5000 },
-                        { id: 2, name: 'Data Science', feeAmount: 6000 },
-                        { id: 3, name: 'Mobile App Development', feeAmount: 5500 }
+                        { id: 1, name: 'Web Development' },
+                        { id: 2, name: 'Data Science' },
+                        { id: 3, name: 'Mobile App Development' }
                     ];
                     saveCourses();
                 }
@@ -2517,6 +2509,11 @@
             setTimeout(() => {
                 connectionStatus.style.display = 'none';
             }, 3000);
+        }
+
+        // Helper function to get correct ID type
+        function getCorrectId(id) {
+            return db ? id : parseInt(id, 10);
         }
 
         // Save data functions (using Firestore if available, otherwise localStorage)
@@ -2858,7 +2855,7 @@
                                 <button class="btn btn-sm btn-outline-primary" onclick="editStudent('${student.id}')">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('${student.id}')">
+                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteStudent('${student.id}')">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -2914,7 +2911,7 @@
                             <button class="btn btn-outline-secondary" onclick="enrollStudents('${course.id}')">
                                 <i class="bi bi-person-plus"></i>
                             </button>
-                            <button class="btn btn-outline-danger" onclick="deleteCourse('${course.id}')">
+                            <button class="btn btn-outline-danger" onclick="confirmDeleteCourse('${course.id}')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
@@ -3184,12 +3181,10 @@
             e.preventDefault();
             
             const name = document.getElementById('courseName').value;
-            const feeAmount = parseInt(document.getElementById('courseFee').value);
             
-            // Create new course
+            // Create new course without fee
             const newCourse = {
-                name,
-                feeAmount
+                name
             };
             
             // Add course - this will create the 'courses' collection if it doesn't exist
@@ -3212,12 +3207,10 @@
             
             const id = document.getElementById('editCourseId').value;
             const name = document.getElementById('editCourseName').value;
-            const feeAmount = parseInt(document.getElementById('editCourseFee').value);
             
-            // Update course
+            // Update course without fee
             const updatedCourse = {
-                name,
-                feeAmount
+                name
             };
             
             updateCourse(id, updatedCourse).then(() => {
@@ -3252,10 +3245,6 @@
                 return;
             }
             
-            // Get course details
-            const course = courses.find(c => c.id === courseId);
-            if (!course) return;
-            
             // Create enrollments and fees
             const promises = [];
             
@@ -3270,16 +3259,20 @@
                     };
                     promises.push(saveEnrollment(enrollment));
                     
-                    // Create fee
-                    const fee = {
-                        studentId,
-                        courseId,
-                        month,
-                        year,
-                        amount: course.feeAmount,
-                        status: 'unpaid'
-                    };
-                    promises.push(saveFee(fee));
+                    // Get student to use their fee amount
+                    const student = students.find(s => s.id === studentId);
+                    if (student) {
+                        // Create fee using student's fee amount
+                        const fee = {
+                            studentId,
+                            courseId,
+                            month,
+                            year,
+                            amount: student.fees,
+                            status: 'unpaid'
+                        };
+                        promises.push(saveFee(fee));
+                    }
                 }
             });
             
@@ -3323,46 +3316,79 @@
             }, 100);
         }
 
-        // Delete student
-        function deleteStudent(id) {
+        // Confirm delete student
+        function confirmDeleteStudent(id) {
             confirmTitle.textContent = 'Confirm Delete';
             confirmMessage.textContent = 'Are you sure you want to delete this student? This action cannot be undone.';
             confirmButton.textContent = 'Delete';
             confirmButton.className = 'btn btn-danger';
             
             confirmButton.onclick = () => {
-                // Remove student
-                deleteStudent(id).then(() => {
-                    // Remove enrollments
-                    const studentEnrollments = enrollments.filter(e => e.studentId === id);
-                    const enrollmentPromises = studentEnrollments.map(e => deleteEnrollment(e.id));
-                    
-                    return Promise.all(enrollmentPromises);
-                }).then(() => {
-                    // Remove fees
-                    const studentFees = fees.filter(f => f.studentId === id);
-                    const feePromises = studentFees.map(f => deleteFee(f.id));
-                    
-                    return Promise.all(feePromises);
-                }).then(() => {
-                    // Remove attendance
-                    const studentAttendance = attendance.filter(a => a.studentId === id);
-                    const attendancePromises = studentAttendance.map(a => deleteAttendance(a.id));
-                    
-                    return Promise.all(attendancePromises);
-                }).then(() => {
-                    // Show notification
-                    showNotification('Student deleted successfully!', 'success');
-                    
-                    // Hide modal
-                    confirmModal.hide();
-                }).catch(error => {
-                    console.error('Error deleting student:', error);
-                    showNotification('Error deleting student!', 'error');
-                });
+                deleteStudentData(id);
             };
             
             confirmModal.show();
+        }
+
+        // Delete student data
+        function deleteStudentData(id) {
+            const studentId = getCorrectId(id);
+            
+            // Remove student
+            deleteStudent(studentId).then(() => {
+                // Remove enrollments
+                const studentEnrollments = enrollments.filter(e => {
+                    const eStudentId = getCorrectId(e.studentId);
+                    return eStudentId === studentId;
+                });
+                
+                const enrollmentPromises = studentEnrollments.map(e => {
+                    const eId = getCorrectId(e.id);
+                    return deleteEnrollment(eId);
+                });
+                
+                return Promise.all(enrollmentPromises);
+            }).then(() => {
+                // Remove fees
+                const studentFees = fees.filter(f => {
+                    const fStudentId = getCorrectId(f.studentId);
+                    return fStudentId === studentId;
+                });
+                
+                const feePromises = studentFees.map(f => {
+                    const fId = getCorrectId(f.id);
+                    return deleteFee(fId);
+                });
+                
+                return Promise.all(feePromises);
+            }).then(() => {
+                // Remove attendance
+                const studentAttendance = attendance.filter(a => {
+                    const aStudentId = getCorrectId(a.studentId);
+                    return aStudentId === studentId;
+                });
+                
+                const attendancePromises = studentAttendance.map(a => {
+                    const aId = getCorrectId(a.id);
+                    return deleteAttendance(aId);
+                });
+                
+                return Promise.all(attendancePromises);
+            }).then(() => {
+                // Show notification
+                showNotification('Student deleted successfully!', 'success');
+                
+                // Hide modal
+                confirmModal.hide();
+                
+                // Reload students if on students section
+                if (studentsSection.style.display !== 'none') {
+                    loadStudents();
+                }
+            }).catch(error => {
+                console.error('Error deleting student:', error);
+                showNotification('Error deleting student!', 'error');
+            });
         }
 
         // Edit course
@@ -3373,46 +3399,71 @@
             // Populate form
             document.getElementById('editCourseId').value = course.id;
             document.getElementById('editCourseName').value = course.name;
-            document.getElementById('editCourseFee').value = course.feeAmount;
             
             // Show modal
             editCourseModal.show();
         }
 
-        // Delete course
-        function deleteCourse(id) {
+        // Confirm delete course
+        function confirmDeleteCourse(id) {
             confirmTitle.textContent = 'Confirm Delete';
             confirmMessage.textContent = 'Are you sure you want to delete this course? This action cannot be undone.';
             confirmButton.textContent = 'Delete';
             confirmButton.className = 'btn btn-danger';
             
             confirmButton.onclick = () => {
-                // Remove course
-                deleteCourse(id).then(() => {
-                    // Remove enrollments
-                    const courseEnrollments = enrollments.filter(e => e.courseId === id);
-                    const enrollmentPromises = courseEnrollments.map(e => deleteEnrollment(e.id));
-                    
-                    return Promise.all(enrollmentPromises);
-                }).then(() => {
-                    // Remove fees
-                    const courseFees = fees.filter(f => f.courseId === id);
-                    const feePromises = courseFees.map(f => deleteFee(f.id));
-                    
-                    return Promise.all(feePromises);
-                }).then(() => {
-                    // Show notification
-                    showNotification('Course deleted successfully!', 'success');
-                    
-                    // Hide modal
-                    confirmModal.hide();
-                }).catch(error => {
-                    console.error('Error deleting course:', error);
-                    showNotification('Error deleting course!', 'error');
-                });
+                deleteCourseData(id);
             };
             
             confirmModal.show();
+        }
+
+        // Delete course data
+        function deleteCourseData(id) {
+            const courseId = getCorrectId(id);
+            
+            // Remove course
+            deleteCourse(courseId).then(() => {
+                // Remove enrollments
+                const courseEnrollments = enrollments.filter(e => {
+                    const eCourseId = getCorrectId(e.courseId);
+                    return eCourseId === courseId;
+                });
+                
+                const enrollmentPromises = courseEnrollments.map(e => {
+                    const eId = getCorrectId(e.id);
+                    return deleteEnrollment(eId);
+                });
+                
+                return Promise.all(enrollmentPromises);
+            }).then(() => {
+                // Remove fees
+                const courseFees = fees.filter(f => {
+                    const fCourseId = getCorrectId(f.courseId);
+                    return fCourseId === courseId;
+                });
+                
+                const feePromises = courseFees.map(f => {
+                    const fId = getCorrectId(f.id);
+                    return deleteFee(fId);
+                });
+                
+                return Promise.all(feePromises);
+            }).then(() => {
+                // Show notification
+                showNotification('Course deleted successfully!', 'success');
+                
+                // Hide modal
+                confirmModal.hide();
+                
+                // Reload courses if on courses section
+                if (coursesSection.style.display !== 'none') {
+                    loadCourses();
+                }
+            }).catch(error => {
+                console.error('Error deleting course:', error);
+                showNotification('Error deleting course!', 'error');
+            });
         }
 
         // Enroll students
@@ -3489,12 +3540,12 @@
             
             selectedStudents.forEach(student => {
                 const li = document.createElement('li');
-                li.textContent = `${student.name} (${student.rollNumber}) - PKR ${course.feeAmount.toLocaleString()} for ${monthNames[month]} ${year}`;
+                li.textContent = `${student.name} (${student.rollNumber}) - PKR ${student.fees.toLocaleString()} for ${monthNames[month]} ${year}`;
                 enrollmentSummaryList.appendChild(li);
             });
             
             // Add total
-            const totalAmount = selectedStudents.length * course.feeAmount;
+            const totalAmount = selectedStudents.reduce((sum, student) => sum + student.fees, 0);
             const totalLi = document.createElement('li');
             totalLi.innerHTML = `<strong>Total: PKR ${totalAmount.toLocaleString()}</strong>`;
             enrollmentSummaryList.appendChild(totalLi);
@@ -3567,15 +3618,26 @@
 
         // Toggle fee status
         function toggleFeeStatus(feeId) {
-            const fee = fees.find(f => f.id === feeId);
+            const id = getCorrectId(feeId);
+            
+            const fee = fees.find(f => {
+                const fId = getCorrectId(f.id);
+                return fId === id;
+            });
+            
             if (!fee) return;
             
             // Toggle status
             const newStatus = fee.status === 'paid' ? 'unpaid' : 'paid';
             
-            updateFee(feeId, { status: newStatus }).then(() => {
+            updateFee(id, { status: newStatus }).then(() => {
                 // Show notification
                 showNotification(`Fee marked as ${newStatus}!`, 'success');
+                
+                // Reload fees if on fees section
+                if (feesSection.style.display !== 'none') {
+                    loadFees();
+                }
             }).catch(error => {
                 console.error('Error updating fee status:', error);
                 showNotification('Error updating fee status!', 'error');
@@ -3682,7 +3744,10 @@
                 }
                 
                 // Delete old attendance records
-                const promises = oldAttendance.map(a => deleteAttendance(a.id));
+                const promises = oldAttendance.map(a => {
+                    const aId = getCorrectId(a.id);
+                    return deleteAttendance(aId);
+                });
                 
                 Promise.all(promises).then(() => {
                     // Show notification
