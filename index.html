@@ -1266,12 +1266,6 @@
     <!-- Notification -->
     <div id="notification" class="notification"></div>
     
-    <!-- Connection Status -->
-    <div id="connectionStatus" class="connection-status">
-        <span id="dbStatusIndicator" class="db-status-indicator disconnected"></span>
-        <span id="dbStatusText">Disconnected</span>
-    </div>
-    
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="spinner-border text-primary" role="status">
@@ -1310,11 +1304,6 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <p class="mt-2">Signing in...</p>
-                </div>
-                <div class="mt-3 text-center">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="clearDataBtn">
-                        <i class="bi bi-arrow-clockwise"></i> Clear Login Data
-                    </button>
                 </div>
             </form>
         </div>
@@ -1885,35 +1874,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB_jAuvdnqVA-g4JzL90fukKGGN_U1mMAI",
-  authDomain: "edutech-ead49.firebaseapp.com",
-  databaseURL: "https://edutech-ead49-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "edutech-ead49",
-  storageBucket: "edutech-ead49.firebasestorage.app",
-  messagingSenderId: "503549426705",
-  appId: "1:503549426705:web:c9130b6202d5f9b31185b0"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyBaJPiohOWpc0PaTs4tTSy0W2V0oA-u6OY",
+            authDomain: "edutech-d9330.firebaseapp.com",
+            databaseURL: "https://edutech-d9330-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "edutech-d9330",
+            storageBucket: "edutech-d9330.firebasestorage.app",
+            messagingSenderId: "466095399789",
+            appId: "1:466095399789:web:03e63bc7f14ba8cad6f064"
+        };
         
-        // Initialize Firebase only if it's available
-        let db;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            
-            // Enable offline persistence
-            db.enablePersistence()
-                .catch((err) => {
-                    if (err.code == 'failed-precondition') {
-                        console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
-                    } else if (err.code == 'unimplemented') {
-                        console.log('The current browser does not support persistence.');
-                    }
-                });
-        } catch (error) {
-            console.log('Firebase initialization failed, using localStorage instead');
-            // We'll use localStorage as fallback
-        }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // Enable offline persistence
+        db.enablePersistence()
+            .catch((err) => {
+                if (err.code == 'failed-precondition') {
+                    console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                } else if (err.code == 'unimplemented') {
+                    console.log('The current browser does not support persistence.');
+                }
+            });
         
         // Flat data structures
         let students = [];
@@ -1927,7 +1910,6 @@ const firebaseConfig = {
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
         const loginSpinner = document.getElementById('loginSpinner');
-        const clearDataBtn = document.getElementById('clearDataBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
@@ -1936,9 +1918,6 @@ const firebaseConfig = {
         const mobileFab = document.getElementById('mobileFab');
         const notification = document.getElementById('notification');
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const connectionStatus = document.getElementById('connectionStatus');
-        const dbStatusIndicator = document.getElementById('dbStatusIndicator');
-        const dbStatusText = document.getElementById('dbStatusText');
         const adminName = document.getElementById('adminName');
         const pageTitle = document.getElementById('pageTitle');
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
@@ -2011,10 +1990,8 @@ const firebaseConfig = {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 showDashboard();
                 loadAdminName();
-                if (db) {
-                    setupRealtimeListeners();
-                    showRealtimeIndicator();
-                }
+                setupRealtimeListeners();
+                showRealtimeIndicator();
                 loadData();
                 setupEventListeners();
                 populateYearSelect();
@@ -2035,7 +2012,6 @@ const firebaseConfig = {
         // Setup login event listeners
         function setupLoginEventListeners() {
             loginForm.addEventListener('submit', handleLogin);
-            clearDataBtn.addEventListener('click', clearLoginData);
         }
 
         // Setup event listeners
@@ -2122,10 +2098,8 @@ const firebaseConfig = {
             document.getElementById('editStudentModal').addEventListener('shown.bs.modal', populateCourseDropdowns);
         }
 
-        // Setup real-time listeners (only if Firebase is available)
+        // Setup real-time listeners
         function setupRealtimeListeners() {
-            if (!db) return;
-            
             // Students collection listener
             db.collection('students').onSnapshot(snapshot => {
                 students = [];
@@ -2240,10 +2214,8 @@ const firebaseConfig = {
                     showNotification('Login successful!', 'success');
                     showDashboard();
                     loadAdminName();
-                    if (db) {
-                        setupRealtimeListeners();
-                        showRealtimeIndicator();
-                    }
+                    setupRealtimeListeners();
+                    showRealtimeIndicator();
                     loadData();
                     setupEventListeners();
                     populateYearSelect();
@@ -2273,13 +2245,6 @@ const firebaseConfig = {
             };
             
             confirmModal.show();
-        }
-
-        // Clear login data
-        function clearLoginData() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('adminName');
-            showNotification('Login data cleared!', 'success');
         }
 
         // Show dashboard
@@ -2344,376 +2309,60 @@ const firebaseConfig = {
             }
         }
 
-        // Load data from Firestore or localStorage
+        // Load data from Firestore
         function loadData() {
             // Show loading overlay
             loadingOverlay.style.display = 'flex';
             
-            if (db) {
-                // Load from Firestore
-                db.collection('students').get().then(snapshot => {
-                    students = [];
-                    snapshot.forEach(doc => {
-                        students.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Load courses
-                    return db.collection('courses').get();
-                }).then(snapshot => {
-                    courses = [];
-                    snapshot.forEach(doc => {
-                        courses.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Load enrollments
-                    return db.collection('enrollments').get();
-                }).then(snapshot => {
-                    enrollments = [];
-                    snapshot.forEach(doc => {
-                        enrollments.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Load fees
-                    return db.collection('fees').get();
-                }).then(snapshot => {
-                    fees = [];
-                    snapshot.forEach(doc => {
-                        fees.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Load attendance
-                    return db.collection('attendance').get();
-                }).then(snapshot => {
-                    attendance = [];
-                    snapshot.forEach(doc => {
-                        attendance.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Hide loading overlay
-                    loadingOverlay.style.display = 'none';
-                    
-                    // Load dashboard
-                    loadDashboard();
-                    
-                    // Update connection status
-                    updateConnectionStatus(true);
-                }).catch(error => {
-                    console.error('Error loading data:', error);
-                    showNotification('Error loading data!', 'error');
-                    loadingOverlay.style.display = 'none';
-                    updateConnectionStatus(false);
+            // Load from Firestore
+            db.collection('students').get().then(snapshot => {
+                students = [];
+                snapshot.forEach(doc => {
+                    students.push({ id: doc.id, ...doc.data() });
                 });
-            } else {
-                // Load from localStorage as fallback
-                // Load students
-                const studentsData = localStorage.getItem('students');
-                if (studentsData) {
-                    students = JSON.parse(studentsData);
-                } else {
-                    // Initialize with sample data
-                    students = [
-                        { id: 1, name: 'Ali Ahmed', contact: '03001234567', fees: 5000, rollNumber: 'STU001' },
-                        { id: 2, name: 'Sara Khan', contact: '03007654321', fees: 4500, rollNumber: 'STU002' },
-                        { id: 3, name: 'Usman Malik', contact: '03009876543', fees: 6000, rollNumber: 'STU003' }
-                    ];
-                    saveStudents();
-                }
                 
                 // Load courses
-                const coursesData = localStorage.getItem('courses');
-                if (coursesData) {
-                    courses = JSON.parse(coursesData);
-                } else {
-                    // Initialize with sample data
-                    courses = [
-                        { id: 1, name: 'Web Development' },
-                        { id: 2, name: 'Data Science' },
-                        { id: 3, name: 'Mobile App Development' }
-                    ];
-                    saveCourses();
-                }
+                return db.collection('courses').get();
+            }).then(snapshot => {
+                courses = [];
+                snapshot.forEach(doc => {
+                    courses.push({ id: doc.id, ...doc.data() });
+                });
                 
                 // Load enrollments
-                const enrollmentsData = localStorage.getItem('enrollments');
-                if (enrollmentsData) {
-                    enrollments = JSON.parse(enrollmentsData);
-                } else {
-                    // Initialize with sample data
-                    enrollments = [
-                        { id: 1, studentId: 1, courseId: 1 },
-                        { id: 2, studentId: 2, courseId: 2 },
-                        { id: 3, studentId: 3, courseId: 3 }
-                    ];
-                    saveEnrollments();
-                }
+                return db.collection('enrollments').get();
+            }).then(snapshot => {
+                enrollments = [];
+                snapshot.forEach(doc => {
+                    enrollments.push({ id: doc.id, ...doc.data() });
+                });
                 
                 // Load fees
-                const feesData = localStorage.getItem('fees');
-                if (feesData) {
-                    fees = JSON.parse(feesData);
-                } else {
-                    // Initialize with sample data
-                    const currentMonth = new Date().getMonth();
-                    const currentYear = new Date().getFullYear();
-                    
-                    fees = [
-                        { id: 1, studentId: 1, courseId: 1, month: currentMonth, year: currentYear, amount: 5000, status: 'paid' },
-                        { id: 2, studentId: 2, courseId: 2, month: currentMonth, year: currentYear, amount: 6000, status: 'unpaid' },
-                        { id: 3, studentId: 3, courseId: 3, month: currentMonth, year: currentYear, amount: 5500, status: 'paid' }
-                    ];
-                    saveFees();
-                }
+                return db.collection('fees').get();
+            }).then(snapshot => {
+                fees = [];
+                snapshot.forEach(doc => {
+                    fees.push({ id: doc.id, ...doc.data() });
+                });
                 
                 // Load attendance
-                const attendanceData = localStorage.getItem('attendance');
-                if (attendanceData) {
-                    attendance = JSON.parse(attendanceData);
-                } else {
-                    // Initialize with sample data
-                    const today = new Date().toISOString().split('T')[0];
-                    
-                    attendance = [
-                        { id: 1, studentId: 1, date: today, status: 'present' },
-                        { id: 2, studentId: 2, date: today, status: 'present' },
-                        { id: 3, studentId: 3, date: today, status: 'absent' }
-                    ];
-                    saveAttendance();
-                }
+                return db.collection('attendance').get();
+            }).then(snapshot => {
+                attendance = [];
+                snapshot.forEach(doc => {
+                    attendance.push({ id: doc.id, ...doc.data() });
+                });
                 
                 // Hide loading overlay
                 loadingOverlay.style.display = 'none';
                 
                 // Load dashboard
                 loadDashboard();
-                
-                // Update connection status
-                updateConnectionStatus(false);
-            }
-        }
-
-        // Update connection status
-        function updateConnectionStatus(connected) {
-            if (connected) {
-                connectionStatus.className = 'connection-status connected';
-                connectionStatus.textContent = 'Connected to database';
-                dbStatusIndicator.className = 'db-status-indicator connected';
-                dbStatusText.textContent = 'Connected';
-            } else {
-                connectionStatus.className = 'connection-status disconnected';
-                connectionStatus.textContent = 'Using local storage';
-                dbStatusIndicator.className = 'db-status-indicator disconnected';
-                dbStatusText.textContent = 'Local Storage';
-            }
-            
-            // Show/hide connection status
-            connectionStatus.style.display = 'block';
-            setTimeout(() => {
-                connectionStatus.style.display = 'none';
-            }, 3000);
-        }
-
-        // Helper function to get correct ID type
-        function getCorrectId(id) {
-            return db ? id : parseInt(id, 10);
-        }
-
-        // Save data functions (using Firestore if available, otherwise localStorage)
-        function saveStudent(student) {
-            if (db) {
-                // This will create the 'students' collection if it doesn't exist
-                return db.collection('students').add(student);
-            } else {
-                // Generate ID if not provided
-                if (!student.id) {
-                    student.id = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
-                }
-                students.push(student);
-                localStorage.setItem('students', JSON.stringify(students));
-                return Promise.resolve();
-            }
-        }
-
-        function updateStudent(id, student) {
-            if (db) {
-                return db.collection('students').doc(id).update(student);
-            } else {
-                const index = students.findIndex(s => s.id === id);
-                if (index !== -1) {
-                    students[index] = { ...students[index], ...student };
-                    localStorage.setItem('students', JSON.stringify(students));
-                }
-                return Promise.resolve();
-            }
-        }
-
-        function deleteStudent(id) {
-            if (db) {
-                return db.collection('students').doc(id).delete();
-            } else {
-                students = students.filter(s => s.id !== id);
-                localStorage.setItem('students', JSON.stringify(students));
-                return Promise.resolve();
-            }
-        }
-
-        function saveCourse(course) {
-            if (db) {
-                // This will create the 'courses' collection if it doesn't exist
-                return db.collection('courses').add(course);
-            } else {
-                // Generate ID if not provided
-                if (!course.id) {
-                    course.id = courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1;
-                }
-                courses.push(course);
-                localStorage.setItem('courses', JSON.stringify(courses));
-                return Promise.resolve();
-            }
-        }
-
-        function updateCourse(id, course) {
-            if (db) {
-                return db.collection('courses').doc(id).update(course);
-            } else {
-                const index = courses.findIndex(c => c.id === id);
-                if (index !== -1) {
-                    courses[index] = { ...courses[index], ...course };
-                    localStorage.setItem('courses', JSON.stringify(courses));
-                }
-                return Promise.resolve();
-            }
-        }
-
-        function deleteCourse(id) {
-            if (db) {
-                return db.collection('courses').doc(id).delete();
-            } else {
-                courses = courses.filter(c => c.id !== id);
-                localStorage.setItem('courses', JSON.stringify(courses));
-                return Promise.resolve();
-            }
-        }
-
-        function saveEnrollment(enrollment) {
-            if (db) {
-                // This will create the 'enrollments' collection if it doesn't exist
-                return db.collection('enrollments').add(enrollment);
-            } else {
-                // Generate ID if not provided
-                if (!enrollment.id) {
-                    enrollment.id = enrollments.length > 0 ? Math.max(...enrollments.map(e => e.id)) + 1 : 1;
-                }
-                enrollments.push(enrollment);
-                localStorage.setItem('enrollments', JSON.stringify(enrollments));
-                return Promise.resolve();
-            }
-        }
-
-        function deleteEnrollment(id) {
-            if (db) {
-                return db.collection('enrollments').doc(id).delete();
-            } else {
-                enrollments = enrollments.filter(e => e.id !== id);
-                localStorage.setItem('enrollments', JSON.stringify(enrollments));
-                return Promise.resolve();
-            }
-        }
-
-        function saveFee(fee) {
-            if (db) {
-                // This will create the 'fees' collection if it doesn't exist
-                return db.collection('fees').add(fee);
-            } else {
-                // Generate ID if not provided
-                if (!fee.id) {
-                    fee.id = fees.length > 0 ? Math.max(...fees.map(f => f.id)) + 1 : 1;
-                }
-                fees.push(fee);
-                localStorage.setItem('fees', JSON.stringify(fees));
-                return Promise.resolve();
-            }
-        }
-
-        function updateFee(id, fee) {
-            if (db) {
-                return db.collection('fees').doc(id).update(fee);
-            } else {
-                const index = fees.findIndex(f => f.id === id);
-                if (index !== -1) {
-                    fees[index] = { ...fees[index], ...fee };
-                    localStorage.setItem('fees', JSON.stringify(fees));
-                }
-                return Promise.resolve();
-            }
-        }
-
-        function deleteFee(id) {
-            if (db) {
-                return db.collection('fees').doc(id).delete();
-            } else {
-                fees = fees.filter(f => f.id !== id);
-                localStorage.setItem('fees', JSON.stringify(fees));
-                return Promise.resolve();
-            }
-        }
-
-        function saveAttendance(att) {
-            if (db) {
-                // This will create the 'attendance' collection if it doesn't exist
-                return db.collection('attendance').add(att);
-            } else {
-                // Generate ID if not provided
-                if (!att.id) {
-                    att.id = attendance.length > 0 ? Math.max(...attendance.map(a => a.id)) + 1 : 1;
-                }
-                attendance.push(att);
-                localStorage.setItem('attendance', JSON.stringify(attendance));
-                return Promise.resolve();
-            }
-        }
-
-        function updateAttendance(id, att) {
-            if (db) {
-                return db.collection('attendance').doc(id).update(att);
-            } else {
-                const index = attendance.findIndex(a => a.id === id);
-                if (index !== -1) {
-                    attendance[index] = { ...attendance[index], ...att };
-                    localStorage.setItem('attendance', JSON.stringify(attendance));
-                }
-                return Promise.resolve();
-            }
-        }
-
-        function deleteAttendance(id) {
-            if (db) {
-                return db.collection('attendance').doc(id).delete();
-            } else {
-                attendance = attendance.filter(a => a.id !== id);
-                localStorage.setItem('attendance', JSON.stringify(attendance));
-                return Promise.resolve();
-            }
-        }
-
-        // localStorage save functions for fallback
-        function saveStudents() {
-            localStorage.setItem('students', JSON.stringify(students));
-        }
-
-        function saveCourses() {
-            localStorage.setItem('courses', JSON.stringify(courses));
-        }
-
-        function saveEnrollments() {
-            localStorage.setItem('enrollments', JSON.stringify(enrollments));
-        }
-
-        function saveFees() {
-            localStorage.setItem('fees', JSON.stringify(fees));
-        }
-
-        function saveAttendance() {
-            localStorage.setItem('attendance', JSON.stringify(attendance));
+            }).catch(error => {
+                console.error('Error loading data:', error);
+                showNotification('Error loading data!', 'error');
+                loadingOverlay.style.display = 'none';
+            });
         }
 
         // Show notification
@@ -2814,8 +2463,8 @@ const firebaseConfig = {
                 const year = monthIndex > new Date().getMonth() ? currentYear - 1 : currentYear;
                 
                 const monthFees = fees.filter(fee => fee.month === monthIndex && fee.year === year);
-                const monthPaid = monthFees.filter(fee => fee.status === 'paid').length;
-                const monthUnpaid = monthFees.filter(fee => fee.status === 'unpaid').length;
+                const monthPaid = monthFees.filter(fee => f.status === 'paid').length;
+                const monthUnpaid = monthFees.filter(fee => f.status === 'unpaid').length;
                 const collectionRate = monthFees.length > 0 ? Math.round((monthPaid / monthFees.length) * 100) : 0;
                 
                 const tr = document.createElement('tr');
@@ -3058,8 +2707,8 @@ const firebaseConfig = {
             };
             
             // Add student - this will create the 'students' collection if it doesn't exist
-            saveStudent(newStudent).then(result => {
-                const studentId = db ? result.id : newStudent.id;
+            db.collection('students').add(newStudent).then(docRef => {
+                const studentId = docRef.id;
                 
                 // Enroll student in course if selected
                 if (courseId) {
@@ -3069,7 +2718,7 @@ const firebaseConfig = {
                     };
                     
                     // Add enrollment - this will create the 'enrollments' collection if it doesn't exist
-                    saveEnrollment(enrollment).then(() => {
+                    db.collection('enrollments').add(enrollment).then(() => {
                         // Create fee for the current month
                         const currentMonth = new Date().getMonth();
                         const currentYear = new Date().getFullYear();
@@ -3084,7 +2733,7 @@ const firebaseConfig = {
                         };
                         
                         // Add fee - this will create the 'fees' collection if it doesn't exist
-                        saveFee(fee).then(() => {
+                        db.collection('fees').add(fee).then(() => {
                             // Reset form
                             addStudentForm.reset();
                             addStudentModal.hide();
@@ -3134,12 +2783,14 @@ const firebaseConfig = {
                 fees
             };
             
-            updateStudent(student.id, updatedStudent).then(() => {
+            db.collection('students').doc(student.id).update(updatedStudent).then(() => {
                 // Update enrollment
                 if (courseId) {
                     // Remove existing enrollments for this student
                     const existingEnrollments = enrollments.filter(e => e.studentId === student.id);
-                    const enrollmentPromises = existingEnrollments.map(e => deleteEnrollment(e.id));
+                    const enrollmentPromises = existingEnrollments.map(e => 
+                        db.collection('enrollments').doc(e.id).delete()
+                    );
                     
                     Promise.all(enrollmentPromises).then(() => {
                         // Add new enrollment
@@ -3148,7 +2799,7 @@ const firebaseConfig = {
                             courseId
                         };
                         
-                        saveEnrollment(enrollment).then(() => {
+                        db.collection('enrollments').add(enrollment).then(() => {
                             // Reset form
                             editStudentForm.reset();
                             editStudentModal.hide();
@@ -3183,13 +2834,13 @@ const firebaseConfig = {
             
             const name = document.getElementById('courseName').value;
             
-            // Create new course without fee
+            // Create new course
             const newCourse = {
                 name
             };
             
             // Add course - this will create the 'courses' collection if it doesn't exist
-            saveCourse(newCourse).then(() => {
+            db.collection('courses').add(newCourse).then(() => {
                 // Reset form
                 addCourseForm.reset();
                 addCourseModal.hide();
@@ -3209,12 +2860,12 @@ const firebaseConfig = {
             const id = document.getElementById('editCourseId').value;
             const name = document.getElementById('editCourseName').value;
             
-            // Update course without fee
+            // Update course
             const updatedCourse = {
                 name
             };
             
-            updateCourse(id, updatedCourse).then(() => {
+            db.collection('courses').doc(id).update(updatedCourse).then(() => {
                 // Reset form
                 editCourseForm.reset();
                 editCourseModal.hide();
@@ -3258,7 +2909,7 @@ const firebaseConfig = {
                         studentId,
                         courseId
                     };
-                    promises.push(saveEnrollment(enrollment));
+                    promises.push(db.collection('enrollments').add(enrollment));
                     
                     // Get student to use their fee amount
                     const student = students.find(s => s.id === studentId);
@@ -3272,7 +2923,7 @@ const firebaseConfig = {
                             amount: student.fees,
                             status: 'unpaid'
                         };
-                        promises.push(saveFee(fee));
+                        promises.push(db.collection('fees').add(fee));
                     }
                 }
             });
@@ -3333,46 +2984,29 @@ const firebaseConfig = {
 
         // Delete student data
         function deleteStudentData(id) {
-            const studentId = getCorrectId(id);
-            
             // Remove student
-            deleteStudent(studentId).then(() => {
+            db.collection('students').doc(id).delete().then(() => {
                 // Remove enrollments
-                const studentEnrollments = enrollments.filter(e => {
-                    const eStudentId = getCorrectId(e.studentId);
-                    return eStudentId === studentId;
-                });
-                
-                const enrollmentPromises = studentEnrollments.map(e => {
-                    const eId = getCorrectId(e.id);
-                    return deleteEnrollment(eId);
-                });
+                const studentEnrollments = enrollments.filter(e => e.studentId === id);
+                const enrollmentPromises = studentEnrollments.map(e => 
+                    db.collection('enrollments').doc(e.id).delete()
+                );
                 
                 return Promise.all(enrollmentPromises);
             }).then(() => {
                 // Remove fees
-                const studentFees = fees.filter(f => {
-                    const fStudentId = getCorrectId(f.studentId);
-                    return fStudentId === studentId;
-                });
-                
-                const feePromises = studentFees.map(f => {
-                    const fId = getCorrectId(f.id);
-                    return deleteFee(fId);
-                });
+                const studentFees = fees.filter(f => f.studentId === id);
+                const feePromises = studentFees.map(f => 
+                    db.collection('fees').doc(f.id).delete()
+                );
                 
                 return Promise.all(feePromises);
             }).then(() => {
                 // Remove attendance
-                const studentAttendance = attendance.filter(a => {
-                    const aStudentId = getCorrectId(a.studentId);
-                    return aStudentId === studentId;
-                });
-                
-                const attendancePromises = studentAttendance.map(a => {
-                    const aId = getCorrectId(a.id);
-                    return deleteAttendance(aId);
-                });
+                const studentAttendance = attendance.filter(a => a.studentId === id);
+                const attendancePromises = studentAttendance.map(a => 
+                    db.collection('attendance').doc(a.id).delete()
+                );
                 
                 return Promise.all(attendancePromises);
             }).then(() => {
@@ -3381,11 +3015,6 @@ const firebaseConfig = {
                 
                 // Hide modal
                 confirmModal.hide();
-                
-                // Reload students if on students section
-                if (studentsSection.style.display !== 'none') {
-                    loadStudents();
-                }
             }).catch(error => {
                 console.error('Error deleting student:', error);
                 showNotification('Error deleting student!', 'error');
@@ -3421,33 +3050,21 @@ const firebaseConfig = {
 
         // Delete course data
         function deleteCourseData(id) {
-            const courseId = getCorrectId(id);
-            
             // Remove course
-            deleteCourse(courseId).then(() => {
+            db.collection('courses').doc(id).delete().then(() => {
                 // Remove enrollments
-                const courseEnrollments = enrollments.filter(e => {
-                    const eCourseId = getCorrectId(e.courseId);
-                    return eCourseId === courseId;
-                });
-                
-                const enrollmentPromises = courseEnrollments.map(e => {
-                    const eId = getCorrectId(e.id);
-                    return deleteEnrollment(eId);
-                });
+                const courseEnrollments = enrollments.filter(e => e.courseId === id);
+                const enrollmentPromises = courseEnrollments.map(e => 
+                    db.collection('enrollments').doc(e.id).delete()
+                );
                 
                 return Promise.all(enrollmentPromises);
             }).then(() => {
                 // Remove fees
-                const courseFees = fees.filter(f => {
-                    const fCourseId = getCorrectId(f.courseId);
-                    return fCourseId === courseId;
-                });
-                
-                const feePromises = courseFees.map(f => {
-                    const fId = getCorrectId(f.id);
-                    return deleteFee(fId);
-                });
+                const courseFees = fees.filter(f => f.courseId === id);
+                const feePromises = courseFees.map(f => 
+                    db.collection('fees').doc(f.id).delete()
+                );
                 
                 return Promise.all(feePromises);
             }).then(() => {
@@ -3456,11 +3073,6 @@ const firebaseConfig = {
                 
                 // Hide modal
                 confirmModal.hide();
-                
-                // Reload courses if on courses section
-                if (coursesSection.style.display !== 'none') {
-                    loadCourses();
-                }
             }).catch(error => {
                 console.error('Error deleting course:', error);
                 showNotification('Error deleting course!', 'error');
@@ -3596,10 +3208,12 @@ const firebaseConfig = {
             if (!enrollment) return;
             
             // Remove enrollment
-            deleteEnrollment(enrollment.id).then(() => {
+            db.collection('enrollments').doc(enrollment.id).delete().then(() => {
                 // Remove fees for this course
                 const courseFees = fees.filter(f => f.studentId === studentId && f.courseId === courseId);
-                const feePromises = courseFees.map(f => deleteFee(f.id));
+                const feePromises = courseFees.map(f => 
+                    db.collection('fees').doc(f.id).delete()
+                );
                 
                 return Promise.all(feePromises);
             }).then(() => {
@@ -3619,19 +3233,14 @@ const firebaseConfig = {
 
         // Toggle fee status
         function toggleFeeStatus(feeId) {
-            const id = getCorrectId(feeId);
-            
-            const fee = fees.find(f => {
-                const fId = getCorrectId(f.id);
-                return fId === id;
-            });
+            const fee = fees.find(f => f.id === feeId);
             
             if (!fee) return;
             
             // Toggle status
             const newStatus = fee.status === 'paid' ? 'unpaid' : 'paid';
             
-            updateFee(id, { status: newStatus }).then(() => {
+            db.collection('fees').doc(feeId).update({ status: newStatus }).then(() => {
                 // Show notification
                 showNotification(`Fee marked as ${newStatus}!`, 'success');
                 
@@ -3654,7 +3263,7 @@ const firebaseConfig = {
                 // Toggle status
                 const newStatus = existingAttendance.status === 'present' ? 'absent' : 'present';
                 
-                updateAttendance(existingAttendance.id, { status: newStatus }).then(() => {
+                db.collection('attendance').doc(existingAttendance.id).update({ status: newStatus }).then(() => {
                     // Show notification
                     showNotification(`Attendance marked as ${newStatus}!`, 'success');
                     
@@ -3673,7 +3282,7 @@ const firebaseConfig = {
                 };
                 
                 // Add attendance - this will create the 'attendance' collection if it doesn't exist
-                saveAttendance(att).then(() => {
+                db.collection('attendance').add(att).then(() => {
                     // Show notification
                     showNotification('Attendance marked as present!', 'success');
                     
@@ -3709,7 +3318,7 @@ const firebaseConfig = {
                     date,
                     status: 'present' // Default to present
                 };
-                promises.push(saveAttendance(att));
+                promises.push(db.collection('attendance').add(att));
             });
             
             Promise.all(promises).then(() => {
@@ -3745,10 +3354,9 @@ const firebaseConfig = {
                 }
                 
                 // Delete old attendance records
-                const promises = oldAttendance.map(a => {
-                    const aId = getCorrectId(a.id);
-                    return deleteAttendance(aId);
-                });
+                const promises = oldAttendance.map(a => 
+                    db.collection('attendance').doc(a.id).delete()
+                );
                 
                 Promise.all(promises).then(() => {
                     // Show notification
