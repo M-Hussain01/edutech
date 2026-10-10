@@ -496,9 +496,323 @@
           .mobile-bottom-nav { display:none !important; }
         }
 
+    
+        /* ===== Professional responsive UI refresh (presentation only) ===== */
+        :root{
+          --primary-color:#3659d9; --secondary-color:#2747bd; --accent-color:#8aa4ff;
+          --light-color:#f1f5ff; --dark-color:#111c3a;
+          --success-color:#15803d; --warning-color:#b45309; --danger-color:#b91c1c;
+        }
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;background:#f5f7fc;color:#182338}
+        button,input,select,textarea{font:inherit}
+        .login-container{padding:24px;background:radial-gradient(circle at 15% 15%,#7894ff 0,transparent 32%),linear-gradient(135deg,#14234b,#3157d5 65%,#6d86ed)}
+        .login-card{max-width:410px;border:1px solid rgba(255,255,255,.45);border-radius:22px;box-shadow:0 24px 70px rgba(8,22,65,.28)}
+        .login-header{padding:26px 24px;background:linear-gradient(135deg,#172554,#263f8b)}
+        .login-header h3{font-size:1.22rem;font-weight:750;letter-spacing:-.025em}
+        .login-header p{font-size:.86rem;color:#dbe5ff;margin-top:8px}
+        .login-body{padding:26px}
+        .sidebar{width:252px;background:linear-gradient(180deg,#111c3a,#1d3269);border-right:1px solid rgba(255,255,255,.08);box-shadow:8px 0 30px rgba(15,23,42,.06)}
+        .sidebar-header{padding:24px 19px 20px}
+        .sidebar-header h4{font-size:1rem;font-weight:750;letter-spacing:-.02em;line-height:1.5}
+        .sidebar-menu{padding:14px 11px}
+        .sidebar-menu .nav-link{display:flex;align-items:center;gap:11px;padding:11px 13px;margin:3px 0;border-radius:10px;color:#cbd5e9;font-size:.88rem;font-weight:550;transition:background .18s,color .18s}
+        .sidebar-menu .nav-link i{width:20px;margin:0;text-align:center;font-size:1rem}
+        .sidebar-menu .nav-link:hover,.sidebar-menu .nav-link.active{background:rgba(126,153,255,.19);color:#fff}
+        .sidebar-menu .nav-link.active{box-shadow:inset 3px 0 #8ba5ff}
+        .main-content{margin-left:252px;padding:24px 28px;min-width:0}
+        .top-bar{padding:16px 20px;margin-bottom:24px;border:1px solid #e5eaf4;border-radius:15px;background:rgba(255,255,255,.96);box-shadow:0 5px 20px rgba(26,44,84,.04)}
+        .top-bar h4{font-size:1.18rem;font-weight:750;letter-spacing:-.035em;color:#15213d}
+        .stats-card{height:100%;padding:19px;border:1px solid #e5eaf4;border-radius:16px;background:#fff;box-shadow:0 5px 18px rgba(26,44,84,.045);margin-bottom:18px}
+        .stats-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(26,44,84,.08)}
+        .stats-icon{font-size:1.45rem!important;margin-bottom:12px;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#eef2ff}
+        .stats-value{font-size:1.65rem!important;font-weight:760;letter-spacing:-.04em;color:#172554}
+        .stats-label{font-size:.82rem!important;color:#64748b}
+        .dashboard-container .card,.card{border:1px solid #e5eaf4;border-radius:15px;box-shadow:0 5px 20px rgba(26,44,84,.045);overflow:hidden}
+        .card-header{padding:15px 18px;background:#fff;color:#172554;border-bottom:1px solid #e8edf5;border-radius:0!important}
+        .card-header h5{font-size:.94rem;font-weight:750}
+        .card-body{padding:19px}
+        .student-card,.course-card,.fee-card,.attendance-card{padding:16px;border:1px solid #e5eaf4;border-radius:14px;background:#fff;box-shadow:0 4px 15px rgba(26,44,84,.035)}
+        .student-card:hover,.course-card:hover,.fee-card:hover,.attendance-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(26,44,84,.075)}
+        .btn{border-radius:9px;font-size:.84rem;font-weight:650;padding:.58rem .88rem;transition:transform .15s,box-shadow .15s}
+        .btn:hover{transform:translateY(-1px)}
+        .btn-primary{background:var(--primary-color);border-color:var(--primary-color);box-shadow:0 3px 8px rgba(54,89,217,.12)}
+        .btn-primary:hover{background:var(--secondary-color);border-color:var(--secondary-color)}
+        .btn-sm{font-size:.78rem;padding:.4rem .65rem}
+        .form-label{font-size:.83rem;font-weight:650;color:#334155;margin-bottom:6px}
+        .form-control,.form-select{font-size:.88rem;border-radius:9px;border-color:#dbe3f0;padding:.62rem .78rem;background-color:#fff}
+        .form-control:focus,.form-select:focus{border-color:#8198f5;box-shadow:0 0 0 .2rem rgba(54,89,217,.12)}
+        .table{font-size:.84rem;margin-bottom:0}
+        .table thead th{padding:13px 14px;font-size:.73rem;letter-spacing:.045em;color:#64748b;background:#f7f9fd}
+        .table td{padding:12px 14px;border-color:#edf0f6}
+        .table-hover tbody tr:hover{background:#f8faff}
+        .reminder-panel{border-radius:15px;box-shadow:0 5px 20px rgba(180,83,9,.05)}
+        .reminder-heading{padding:16px 19px}
+        .reminder-heading h5{font-size:.96rem;font-weight:750}
+        .reminder-item{padding:13px 19px;font-size:.85rem}
+        .student-avatar{border-radius:12px}
+        .notification-btn{width:40px;height:40px;border-radius:11px}
+        .live-clock .clock-time{font-size:.95rem}
+        .live-clock .clock-date{font-size:.72rem}
+        .connection-status{left:16px;bottom:15px;padding:7px 12px;font-size:.72rem;box-shadow:0 4px 12px #0f172a1c}
+        .modal-content{border:1px solid #e5eaf4;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(15,23,42,.2)}
+        .modal-header,.modal-footer{padding:15px 19px;border-color:#edf0f6}
+        .modal-title{font-size:1rem;font-weight:750}
+        .modal-body{padding:20px}
+        .toast-container{right:16px;top:16px}
+        .content-section{min-width:0}
+        .content-section> .d-flex h4{font-size:1.08rem;font-weight:750;letter-spacing:-.025em;color:#172554}
+        .progress{background:#edf1f8}
+        a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+        .mobile-menu-btn{color:#253b78;font-size:1.35rem;padding:0}
+        .sidebar-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.48);backdrop-filter:blur(2px);z-index:999}
+        @media(min-width:769px){
+          .sidebar{transform:none!important}
+          .main-content{margin-left:252px!important}
+          .mobile-bottom-nav{display:none!important}
+        }
+        @media(max-width:992px) and (min-width:769px){
+          .sidebar{width:220px}
+          .main-content{margin-left:220px!important;padding:20px}
+          .sidebar-menu .nav-link{padding:10px}
+        }
+        @media(max-width:768px){
+          body{font-size:13px;overflow-x:hidden}
+          .sidebar{width:min(290px,86vw);min-height:100dvh;transform:translateX(-105%);z-index:1001}
+          .sidebar.active{transform:translateX(0)}
+          .sidebar-menu .nav-link span,.sidebar-header h4{display:initial}
+          .main-content{width:100%!important;max-width:100vw;margin:0!important;padding:0 0 82px!important}
+          .top-bar{position:sticky;top:0;z-index:900;display:flex;min-height:60px;gap:8px;padding:10px 14px!important;margin:0 0 10px;border-radius:0 0 13px 13px;border:0;border-bottom:1px solid #e5eaf4;box-shadow:0 4px 14px rgba(26,44,84,.055)}
+          .top-bar h4{font-size:.96rem}
+          .top-bar .live-clock{display:none}
+          .content-section{padding:12px 12px 20px!important}
+          .row{--bs-gutter-x:.7rem;--bs-gutter-y:.7rem}
+          .stats-card{padding:13px!important;margin-bottom:0!important;border-radius:13px}
+          .stats-icon{width:34px;height:34px;font-size:1.15rem!important;margin-bottom:8px}
+          .stats-value{font-size:1.25rem!important}
+          .stats-label{font-size:.73rem!important;line-height:1.35}
+          .card-body{padding:13px}
+          .card-header{padding:12px 14px}
+          .card-header h5{font-size:.88rem}
+          .btn{min-height:38px;padding:.48rem .7rem;font-size:.8rem}
+          .btn-sm{min-height:32px;padding:.34rem .55rem;font-size:.75rem}
+          .form-control,.form-select{font-size:16px;min-height:42px;padding:.55rem .7rem}
+          .table-responsive{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+          .table{min-width:590px}
+          .content-section>.d-flex{gap:10px;flex-wrap:wrap!important;align-items:center!important;margin-bottom:16px!important}
+          .content-section>.d-flex h4{font-size:.98rem;margin:0}
+          #feesSection>.d-flex>div{display:flex;gap:7px;width:100%}
+          #monthFilter,#yearFilter{width:50%!important;margin:0!important;min-width:0}
+          #attendanceSection>.d-flex{align-items:stretch!important;flex-direction:column;gap:10px}
+          #attendanceSection>.d-flex>div{width:100%;display:flex;flex-wrap:wrap;gap:8px}
+          #attendanceDate{width:100%!important;margin:0!important}
+          #deleteOldAttendance{width:100%}
+          #attendanceSection .card-body .d-flex{flex-wrap:wrap;gap:8px}
+          #attendanceSection .card-body .d-flex .btn{flex:1}
+          .mobile-bottom-nav{position:fixed!important;display:flex!important;flex-direction:row!important;align-items:stretch!important;justify-content:space-around!important;top:auto!important;right:0!important;left:0!important;bottom:0!important;transform:none!important;width:100%!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;gap:0!important;padding:6px 4px calc(6px + env(safe-area-inset-bottom))!important;border:0!important;border-top:1px solid #e2e8f0!important;border-radius:14px 14px 0 0!important;background:rgba(255,255,255,.97)!important;backdrop-filter:blur(16px);box-shadow:0 -5px 22px rgba(15,23,42,.09)!important;z-index:1100}
+          .mobile-bottom-nav .nav-link{flex:1 0 0!important;width:auto!important;height:auto!important;min-width:38px;min-height:46px!important;padding:5px 2px!important;margin:0 1px!important;border-radius:9px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;color:#64748b!important;font-size:9px!important}
+          .mobile-bottom-nav .nav-link i{display:block!important;font-size:17px!important;line-height:1;margin:0!important}
+          .mobile-bottom-nav .nav-link span{display:block!important;font-size:9px!important;line-height:1.1}
+          .mobile-bottom-nav .nav-link.active{color:#3157d5!important;background:#eef2ff!important;box-shadow:none!important}
+          .login-card{width:100%;max-width:390px;margin:0}
+          .login-body{padding:21px}
+          .login-header{padding:21px}
+          .login-header h3{font-size:1.08rem}
+          .reminder-heading{align-items:flex-start!important;flex-wrap:wrap;gap:8px;padding:13px}
+          .reminder-heading h5{font-size:.9rem}
+          .reminder-item{padding:11px 13px;flex-wrap:wrap;gap:8px}
+          .modal{--bs-modal-margin:.5rem}
+          .modal-dialog{max-width:calc(100vw - 16px);margin:8px auto}
+          .modal-body{padding:15px}
+          .modal-header,.modal-footer{padding:12px 15px}
+          .connection-status{left:9px;bottom:76px;max-width:calc(100vw - 18px);font-size:10px;padding:6px 9px}
+          .toast-container{left:10px;right:10px;top:10px}
+        }
+        @media(max-width:380px){
+          .content-section{padding-left:9px!important;padding-right:9px!important}
+          .stats-card{padding:10px!important}
+          .stats-value{font-size:1.12rem!important}
+          .mobile-bottom-nav .nav-link span{font-size:8px}
+          .mobile-bottom-nav .nav-link i{font-size:16px!important}
+        }
+
+    
+
+        /* ===== Minimal polish + accessible light/dark themes ===== */
+        :root{--ui-bg:#f6f8fc;--ui-surface:#fff;--ui-surface-soft:#f8faff;--ui-text:#202b40;--ui-muted:#6b7890;--ui-border:#e4e9f2;--ui-primary:#4361d8;--ui-primary-soft:#edf1ff;--ui-shadow:0 2px 10px rgba(20,35,70,.035)}
+        body{background:var(--ui-bg);color:var(--ui-text);font-size:13.5px;transition:background .2s,color .2s}
+        .main-content{padding:20px 24px}
+        .top-bar{padding:12px 16px;margin-bottom:18px;border-radius:12px;box-shadow:var(--ui-shadow);background:var(--ui-surface);border-color:var(--ui-border)}
+        .top-bar h4{font-size:1.05rem;letter-spacing:-.02em}
+        .stats-card{padding:15px;border-radius:12px;box-shadow:none;border-color:var(--ui-border);margin-bottom:14px}
+        .stats-card:hover,.student-card:hover,.course-card:hover,.fee-card:hover,.attendance-card:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(20,35,70,.06)}
+        .stats-icon{width:36px;height:36px;border-radius:10px;font-size:1.15rem!important;margin-bottom:9px;background:#eaf0ff;color:#4361d8}
+        .stats-value{font-size:1.45rem!important;letter-spacing:-.03em}
+        .stats-label{font-size:.78rem!important}
+        .card,.dashboard-container .card,.student-card,.course-card,.fee-card,.attendance-card{border-radius:12px;box-shadow:none;border-color:var(--ui-border)}
+        .card-header{padding:12px 15px;background:var(--ui-surface);border-color:var(--ui-border)}
+        .card-body{padding:15px}
+        .card-header h5,.reminder-heading h5{font-size:.9rem}
+        .content-section>.d-flex h4{font-size:1rem}
+        .btn{padding:.48rem .76rem;border-radius:8px;box-shadow:none}
+        .form-control,.form-select{padding:.53rem .7rem;border-radius:8px}
+        .table{font-size:.82rem}
+        .table thead th{padding:10px 12px;background:var(--ui-surface-soft)}
+        .table td{padding:10px 12px}
+        .student-card,.course-card,.fee-card,.attendance-card{padding:13px}
+        .notification-btn{width:36px;height:36px;border-radius:9px}
+        .theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:36px;height:36px;padding:0 10px;border:1px solid var(--ui-border);border-radius:9px;background:var(--ui-surface);color:var(--ui-text);font-size:.8rem;cursor:pointer;white-space:nowrap}
+        .theme-toggle:hover{background:var(--ui-primary-soft);border-color:#cbd5ff}
+        .theme-toggle i{font-size:1rem;color:var(--ui-primary)}
+        .mobile-bottom-nav{box-shadow:0 -2px 12px rgba(20,35,70,.06)!important}
+        body[data-theme="dark"]{--ui-bg:#111827;--ui-surface:#1b2433;--ui-surface-soft:#202c3d;--ui-text:#e7edf7;--ui-muted:#a6b2c5;--ui-border:#303c4e;--ui-primary:#91a7ff;--ui-primary-soft:#273657;--ui-shadow:0 2px 10px rgba(0,0,0,.12);background:var(--ui-bg);color:var(--ui-text);color-scheme:dark}
+        body[data-theme="dark"] .top-bar,body[data-theme="dark"] .stats-card,body[data-theme="dark"] .card,body[data-theme="dark"] .dashboard-container .card,body[data-theme="dark"] .student-card,body[data-theme="dark"] .course-card,body[data-theme="dark"] .fee-card,body[data-theme="dark"] .attendance-card,body[data-theme="dark"] .theme-toggle{background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+        body[data-theme="dark"] .top-bar h4,body[data-theme="dark"] .content-section>.d-flex h4,body[data-theme="dark"] .card-header,body[data-theme="dark"] .card-header h5,body[data-theme="dark"] .stats-value,body[data-theme="dark"] .form-label{color:var(--ui-text)!important}
+        body[data-theme="dark"] .card-header,body[data-theme="dark"] .table thead th{background:var(--ui-surface-soft);border-color:var(--ui-border)}
+        body[data-theme="dark"] .table,body[data-theme="dark"] .table td,body[data-theme="dark"] .table th{--bs-table-color:var(--ui-text);--bs-table-bg:var(--ui-surface);--bs-table-border-color:var(--ui-border);color:var(--ui-text);border-color:var(--ui-border)}
+        body[data-theme="dark"] .table-hover tbody tr:hover{--bs-table-bg:#253248;background:#253248}
+        body[data-theme="dark"] .form-control,body[data-theme="dark"] .form-select{background-color:#151e2c;color:var(--ui-text);border-color:var(--ui-border)}
+        body[data-theme="dark"] .form-control::placeholder{color:#9aa8bc}
+        body[data-theme="dark"] .stats-icon{background:#273657;color:#a9baff}
+        body[data-theme="dark"] .stats-label,body[data-theme="dark"] .text-muted{color:var(--ui-muted)!important}
+        body[data-theme="dark"] .mobile-bottom-nav{background:rgba(27,36,51,.97)!important;border-color:var(--ui-border)!important}
+        body[data-theme="dark"] .mobile-bottom-nav .nav-link{color:#a6b2c5!important}
+        body[data-theme="dark"] .mobile-bottom-nav .nav-link.active{color:#b9c7ff!important;background:#273657!important}
+        body[data-theme="dark"] .modal-content,body[data-theme="dark"] .modal-header,body[data-theme="dark"] .modal-body,body[data-theme="dark"] .modal-footer{background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+        body[data-theme="dark"] .dropdown-menu,body[data-theme="dark"] .list-group-item{background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+        body[data-theme="dark"] .progress{background:#303c4e}
+        @media(max-width:768px){
+          .main-content{padding:0 0 76px!important}
+          .top-bar{min-height:54px;padding:9px 11px!important;margin-bottom:6px;border-radius:0 0 10px 10px;gap:6px}
+          .top-bar h4{font-size:.92rem}
+          .top-bar .d-flex{min-width:0}
+          .top-bar .d-flex.align-items-center.gap-2{gap:6px!important}
+          .theme-toggle{width:35px;min-width:35px;height:35px;padding:0;font-size:0;gap:0}
+          .theme-toggle i{font-size:1rem}
+          .content-section{padding:10px 10px 18px!important}
+          .stats-card{padding:11px!important;border-radius:10px}
+          .stats-icon{width:31px;height:31px;font-size:1rem!important;margin-bottom:7px}
+          .stats-value{font-size:1.2rem!important}
+          .stats-label{font-size:.71rem!important}
+          .card-body{padding:12px}
+          .card-header{padding:11px 12px}
+          .mobile-bottom-nav{padding:5px 3px calc(5px + env(safe-area-inset-bottom))!important;border-radius:11px 11px 0 0!important}
+          .mobile-bottom-nav .nav-link{min-height:43px!important;border-radius:8px!important}
+        }
+
     </style>
+
+<style id="beginner-friendly-polish">
+  :root{--polish-blue:#4169e1;--polish-violet:#7357d8;--polish-teal:#0f9f9a;--polish-border:#e4e9f2;--polish-radius:12px}
+  body{font-size:13.5px;color:#253047;background:#f5f7fb}
+  .top-bar,.card,.stats-card,.student-card,.course-card,.fee-card,.attendance-card,.reminder-panel{border:1px solid var(--ui-border,#e5eaf4)!important;border-radius:12px!important;box-shadow:0 2px 9px rgba(27,43,77,.035)!important}
+  .top-bar{padding:12px 16px!important;gap:12px}
+  .content-section{padding:16px!important}
+  .content-section>.d-flex h4{font-size:1.02rem!important;letter-spacing:-.02em}
+  .card-header{background:transparent;border-bottom:1px solid var(--ui-border,#e5eaf4)}
+  .btn{border-radius:9px;font-weight:600;transition:background .16s ease,border-color .16s ease,transform .16s ease;box-shadow:none!important}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--polish-blue);border-color:var(--polish-blue)}
+  .btn-primary:hover{background:#3154c7;border-color:#3154c7}
+  .btn-success{background:#128779;border-color:#128779}
+  .btn-warning{background:#f0b429;border-color:#e3a91b;color:#30270b}
+  .btn-danger{background:#dc5262;border-color:#dc5262}
+  .btn-outline-primary{color:var(--polish-blue);border-color:#cbd5f4}
+  .btn-outline-primary:hover{background:#eef2ff;color:#2948b8;border-color:#aebef4}
+  .form-control,.form-select{border:1px solid #dce3ef;border-radius:9px;box-shadow:none}
+  .form-control:focus,.form-select:focus{border-color:#8098f4;box-shadow:0 0 0 3px rgba(65,105,225,.12)}
+  .table thead th{background:#f3f6fc;color:#596780}
+  .sidebar{width:232px;background:linear-gradient(180deg,#24366f 0%,#304b94 100%);box-shadow:3px 0 18px rgba(28,45,92,.07)}
+  .sidebar-header{padding:16px 13px}
+  .sidebar-header h4{font-size:.96rem;line-height:1.4}
+  .sidebar-menu{padding:12px 9px}
+  .sidebar-menu .nav-link{display:flex;align-items:center;gap:10px;margin:3px 0;padding:10px 11px;border-radius:9px;font-size:.83rem;color:rgba(255,255,255,.82);transition:background .15s ease,color .15s ease}
+  .sidebar-menu .nav-link i{width:18px;text-align:center;font-size:.98rem}
+  .sidebar-menu .nav-link:hover{background:rgba(255,255,255,.11);color:#fff}
+  .sidebar-menu .nav-link.active{background:rgba(255,255,255,.17);color:#fff;box-shadow:inset 3px 0 #a9c6ff}
+  .notification-btn,.theme-toggle{height:36px!important;min-width:36px!important;border:1px solid var(--ui-border,#e1e7f1)!important;border-radius:10px!important;background:var(--ui-surface,#fff)!important;color:var(--ui-text,#334155)!important;box-shadow:none!important}
+  .notification-btn{width:36px!important;position:relative}
+  .theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 10px!important;font-size:.78rem!important;font-weight:650;white-space:nowrap}
+  .theme-toggle i{color:var(--polish-blue);font-size:.95rem}
+  .theme-toggle:hover,.notification-btn:hover{border-color:#b9c8f2!important;background:#f0f4ff!important}
+  .mobile-menu-btn{width:34px;height:34px;border:1px solid #dfe6f3!important;border-radius:9px!important;background:#fff!important;display:inline-flex;align-items:center;justify-content:center;font-size:1.15rem!important;margin-right:8px!important}
+  .mobile-bottom-nav{border-top:1px solid var(--ui-border,#e4e9f2)!important;background:var(--ui-surface,#fff)!important;padding:6px 4px calc(6px + env(safe-area-inset-bottom))!important;box-shadow:0 -4px 15px rgba(20,35,70,.05)!important}
+  .mobile-bottom-nav .nav-link{font-size:.67rem!important;gap:3px!important;color:#64748b!important;padding:5px 3px!important;border-radius:8px!important}
+  .mobile-bottom-nav .nav-link.active{background:#edf2ff!important;color:#3859cb!important}
+  body[data-theme="dark"]{background:var(--ui-bg)!important;color:var(--ui-text)!important}
+  body[data-theme="dark"] .top-bar,body[data-theme="dark"] .card,body[data-theme="dark"] .stats-card,body[data-theme="dark"] .student-card,body[data-theme="dark"] .course-card,body[data-theme="dark"] .fee-card,body[data-theme="dark"] .attendance-card,body[data-theme="dark"] .reminder-panel{background:var(--ui-surface)!important;border-color:var(--ui-border)!important;color:var(--ui-text)!important}
+  body[data-theme="dark"] .card-header,body[data-theme="dark"] .modal-header,body[data-theme="dark"] .modal-footer{background:transparent!important;border-color:var(--ui-border)!important}
+  body[data-theme="dark"] .table{--bs-table-bg:var(--ui-surface);--bs-table-color:var(--ui-text);--bs-table-border-color:var(--ui-border)}
+  body[data-theme="dark"] .table thead th{background:#222e40!important;color:#b9c7db!important}
+  body[data-theme="dark"] .table-hover tbody tr:hover{background:#263348!important}
+  body[data-theme="dark"] .form-control,body[data-theme="dark"] .form-select{background:#202b3c!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+  body[data-theme="dark"] .form-control::placeholder{color:#9aa9bf!important}
+  body[data-theme="dark"] .mobile-menu-btn{background:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+  body[data-theme="dark"] .mobile-bottom-nav{background:var(--ui-surface)!important}
+  body[data-theme="dark"] .mobile-bottom-nav .nav-link.active{background:#263b66!important;color:#c8d6ff!important}
+  body[data-theme="dark"] .theme-toggle:hover,body[data-theme="dark"] .notification-btn:hover{background:#263348!important;border-color:#536b91!important}
+  @media(min-width:769px){.sidebar{width:232px!important}.main-content{margin-left:232px!important;padding:18px!important}}
+  @media(max-width:768px){
+    .sidebar{width:min(248px,78vw)!important;max-width:248px;min-height:0!important;height:100dvh;overflow-y:auto;transform:translateX(-105%);border-radius:0 15px 15px 0;z-index:1001;padding-bottom:12px}
+    .sidebar.active{transform:translateX(0)}
+    .sidebar-header{padding:14px 12px!important}
+    .sidebar-header h4{font-size:.9rem!important;max-width:205px}
+    .sidebar-menu{padding:9px 8px!important}
+    .sidebar-menu .nav-link{padding:9px 10px!important;margin:2px 0!important;font-size:.81rem!important}
+    .top-bar{min-height:56px!important;padding:9px 11px!important;display:flex;align-items:center;justify-content:space-between;gap:8px!important;border-radius:0 0 11px 11px!important}
+    .top-bar>div:first-child{min-width:0;gap:0!important}
+    .top-bar h4{font-size:.91rem!important;max-width:42vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .top-bar .d-flex.align-items-center.gap-2{gap:6px!important;flex-shrink:0}
+    .theme-toggle{width:auto!important;min-width:66px!important;height:34px!important;padding:0 8px!important;font-size:.72rem!important;gap:5px!important}
+    .theme-toggle span{display:inline!important;font-size:.72rem!important}
+    .theme-toggle i{font-size:.85rem!important}
+    .notification-btn{width:34px!important;min-width:34px!important;height:34px!important}
+    .notification-count{min-width:16px!important;height:16px!important;font-size:9px!important;top:-4px!important;right:-4px!important}
+    .mobile-menu-btn{width:32px!important;height:32px!important;margin-right:7px!important;flex-shrink:0}
+    .content-section{padding:10px 10px 18px!important}
+    .stats-card{padding:11px!important;border-radius:11px!important}
+    .stats-value{font-size:1.15rem!important}
+    .stats-label{font-size:.7rem!important}
+    .card-body{padding:11px!important}
+    .card-header{padding:10px 12px!important}
+    .btn{min-height:35px;padding:.42rem .62rem;font-size:.77rem}
+    .btn-sm{min-height:30px;padding:.3rem .5rem;font-size:.72rem}
+    .form-control,.form-select{min-height:40px;font-size:16px}
+    .sidebar-backdrop{background:rgba(15,23,42,.4)!important;backdrop-filter:blur(1px)}
+  }
+  @media(max-width:360px){.top-bar h4{max-width:34vw}.theme-toggle{min-width:34px!important;width:34px!important;padding:0!important}.theme-toggle span{display:none!important}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<script>
+/* Apply dark theme before first paint to prevent white flash during navigation. */
+(function(){try{document.documentElement.dataset.initialTheme=localStorage.getItem('sirKawishTheme')||'dark';}catch(e){document.documentElement.dataset.initialTheme='dark';}})();
+</script>
+<style>
+html[data-initial-theme="dark"],html[data-initial-theme="dark"] body{background:#111827;color:#e7edf7;color-scheme:dark}
+html[data-initial-theme="dark"] .loading-spinner{background:rgba(17,24,39,.82)!important}
+html[data-initial-theme="dark"] .loading-spinner .spinner-border{color:#91a7ff!important}
+</style>
+<style id="real-records-dark-loading-fixes">
+  .loading-spinner{background:rgba(17,24,39,.76)!important;backdrop-filter:blur(2px);}
+  .loading-spinner .spinner-border{color:#91a7ff!important}
+  body[data-theme="light"] .loading-spinner{background:rgba(246,248,252,.72)!important}
+  body[data-theme="light"] .loading-spinner .spinner-border{color:#4361d8!important}
+  body[data-theme="dark"] .real-fee-note{background:#202c3d!important;border:1px solid #303c4e!important}
+  body[data-theme="light"] .real-fee-note{background:#f5f7ff;border:1px solid #e4e9f2}
+  .fee-student-name{font-size:.94rem;margin:0;overflow-wrap:anywhere}
+  .fee-detail-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--ui-border);font-size:.83rem}
+  .fee-detail-row:last-of-type{border-bottom:0}
+  .empty-state{text-align:center;padding:30px 16px;border:1px dashed var(--ui-border);border-radius:12px;color:var(--ui-muted)}
+  .empty-state>i{font-size:1.8rem;color:var(--ui-primary)}
+  body[data-theme="dark"] .modal-content{background:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+  body[data-theme="dark"] .modal .btn-close{filter:invert(1) grayscale(100%) brightness(200%)}
+  body[data-theme="dark"] .status-paid{color:#5ee0b5}
+  body[data-theme="dark"] .status-unpaid{color:#ff9da8}
+</style>
 </head>
-<body>
+<body data-theme="dark">
     <!-- Login Page -->
     <div class="login-container" id="loginPage">
         <div class="login-card">
@@ -666,33 +980,9 @@
                                     <span>Total:</span>
                                     <span class="fw-bold" id="totalFeesCount">0</span>
                                 </div>
-                                <h6>Monthly Collection</h6>
-                                <div class="mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <span>January</span>
-                                        <span>75%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <span>February</span>
-                                        <span>60%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" style="width: 60%"></div>
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <span>March</span>
-                                        <span>90%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" style="width: 90%"></div>
-                                    </div>
+                                <div class="mt-3 p-3 rounded-3 real-fee-note">
+                                    <div class="fw-semibold mb-1"><i class="bi bi-database-check me-1"></i>Real fee register</div>
+                                    <div class="small text-muted">Paid, unpaid and total counts above are calculated from actual fee records. No sample monthly figures are shown.</div>
                                 </div>
                             </div>
                         </div>
@@ -784,35 +1074,7 @@
                     </div>
                 </div>
                 
-                <!-- Form to add attendance -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Mark Attendance</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="attendanceStudentSelect" class="form-label">Select Student</label>
-                                    <select class="form-select" id="attendanceStudentSelect">
-                                        <option value="">Select Student</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6 d-flex align-items-end">
-                                <div class="d-flex">
-                                    <button class="btn btn-success me-2" onclick="addAttendance('Present')">
-                                        <i class="bi bi-check"></i> Mark Present
-                                    </button>
-                                    <button class="btn btn-danger" onclick="addAttendance('Absent')">
-                                        <i class="bi bi-x"></i> Mark Absent
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+                <!-- Attendance is marked directly on each student's card to avoid duplicate controls. -->
                 <!-- List of attendance records -->
                 <div class="row" id="attendanceList">
                     <!-- Attendance will be loaded here -->
@@ -1100,6 +1362,28 @@
 
     <!-- Toast Container -->
     <div class="toast-container"></div>
+
+    <!-- Edit Fee Record Modal -->
+    <div class="modal fade" id="editFeeModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+        <div class="modal-header"><div><h5 class="modal-title">Edit fee record</h5><div class="small text-muted">Correct an amount or payment status.</div></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body">
+          <input type="hidden" id="editFeeId">
+          <div class="mb-3"><label class="form-label" for="editFeeStudent">Student</label><input class="form-control" id="editFeeStudent" readonly></div>
+          <div class="mb-3"><label class="form-label" for="editFeeAmount">Fee amount (PKR)</label><input class="form-control" type="number" min="0" step="1" id="editFeeAmount" required></div>
+          <div class="row g-2"><div class="col-7"><label class="form-label" for="editFeeMonth">Month</label><select class="form-select" id="editFeeMonth"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div><div class="col-5"><label class="form-label" for="editFeeYear">Year</label><input class="form-control" type="number" min="2000" max="2100" id="editFeeYear"></div></div>
+          <div class="mt-3"><label class="form-label" for="editFeeStatus">Payment status</label><select class="form-select" id="editFeeStatus"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div>
+        </div><div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="saveFeeEdit()"><i class="bi bi-check2-circle me-1"></i>Save changes</button></div>
+      </div></div>
+    </div>
+    <!-- Edit Attendance Record Modal -->
+    <div class="modal fade" id="editAttendanceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+        <div class="modal-header"><div><h5 class="modal-title">Edit attendance</h5><div class="small text-muted">Correct the date or present/absent status.</div></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body"><input type="hidden" id="editAttendanceId"><div class="mb-3"><label class="form-label" for="editAttendanceStudent">Student</label><input class="form-control" id="editAttendanceStudent" readonly></div><div class="mb-3"><label class="form-label" for="editAttendanceDate">Date</label><input class="form-control" type="date" id="editAttendanceDate" required></div><div><label class="form-label" for="editAttendanceStatus">Status</label><select class="form-select" id="editAttendanceStatus"><option value="Present">Present</option><option value="Absent">Absent</option></select></div></div>
+        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="saveAttendanceEdit()"><i class="bi bi-check2-circle me-1"></i>Save changes</button></div>
+      </div></div>
+    </div>
 
     <!-- Loading Spinner -->
     <div class="loading-spinner" id="loadingSpinner">
@@ -1608,11 +1892,16 @@
                 return attendanceRef.once('value');
             }).then(snapshot => {
                 const attendance = snapshot.val() || {};
-                const attendanceArray = Object.values(attendance);
-                
-                // Calculate attendance rate
+                // Count one attendance per student/date (ignore any legacy duplicate records).
+                const attendanceByStudentDate = new Map();
+                Object.values(attendance).forEach(record => {
+                    if (!record || !record.studentId || !record.date) return;
+                    attendanceByStudentDate.set(`${record.studentId}__${record.date}`, record);
+                });
+                const attendanceArray = Array.from(attendanceByStudentDate.values());
+                // Calculate attendance rate from unique student/date records only.
                 const presentCount = attendanceArray.filter(a => a.status === 'Present').length;
-                const markedCount = attendanceArray.filter(a => a.status !== 'Not Marked').length;
+                const markedCount = attendanceArray.filter(a => a.status === 'Present' || a.status === 'Absent').length;
                 const attendanceRate = markedCount > 0 ? Math.round((presentCount / markedCount) * 100) : 0;
                 document.getElementById('attendanceRate').textContent = `${attendanceRate}%`;
                 
@@ -1733,70 +2022,48 @@
             });
         }
 
-        // Load Fees
+        // Load Fees — render actual Firebase fee records only.
         function loadFees() {
             showLoading();
-            
             feesRef.once('value').then(snapshot => {
                 const fees = snapshot.val() || {};
                 const feesList = document.getElementById('feesList');
                 feesList.innerHTML = '';
-                
                 const monthFilter = document.getElementById('monthFilter').value;
                 const yearFilter = document.getElementById('yearFilter').value;
-                
-                let filteredFees = Object.values(fees);
-                
-                if (monthFilter) {
-                    filteredFees = filteredFees.filter(fee => fee.month == monthFilter);
+                let filteredFees = Object.entries(fees).map(([key, fee]) => ({...fee, id: fee.id || key}));
+                if (monthFilter) filteredFees = filteredFees.filter(fee => Number(fee.month) === Number(monthFilter));
+                if (yearFilter) filteredFees = filteredFees.filter(fee => Number(fee.year) === Number(yearFilter));
+                filteredFees.sort((a,b) => Number(b.year||0)*12+Number(b.month||0) - (Number(a.year||0)*12+Number(a.month||0)));
+                if (!filteredFees.length) {
+                    feesList.innerHTML = '<div class="col-12"><div class="empty-state"><i class="bi bi-receipt"></i><div class="fw-semibold mt-2">No fee records found</div><div class="small text-muted">Try another month/year or add a student to create a real fee record.</div></div></div>';
                 }
-                
-                if (yearFilter) {
-                    filteredFees = filteredFees.filter(fee => fee.year == yearFilter);
-                }
-                
                 filteredFees.forEach(fee => {
                     const feeCard = document.createElement('div');
-                    feeCard.className = 'col-md-4 col-sm-6';
-                    
+                    feeCard.className = 'col-md-4 col-sm-6 mb-3';
                     const statusClass = fee.status === 'Paid' ? 'status-paid' : 'status-unpaid';
                     const statusIcon = fee.status === 'Paid' ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
-                    
-                    // Ensure fee.amount is a number
-                    const feeAmount = typeof fee.amount === 'number' ? fee.amount : Number(fee.amount);
-                    
+                    const feeAmount = Number(fee.amount || 0);
+                    const safeId = String(fee.id || '');
                     feeCard.innerHTML = `
-                        <div class="fee-card">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5>${fee.studentName}</h5>
-                                <span class="${statusClass}"><i class="bi ${statusIcon}"></i> ${fee.status}</span>
+                        <div class="fee-card h-100">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                                <h5 class="fee-student-name">${escapeHtml(fee.studentName || 'Student')}</h5>
+                                <span class="${statusClass}"><i class="bi ${statusIcon}"></i> ${escapeHtml(fee.status || 'Unpaid')}</span>
                             </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between">
-                                    <span>Amount:</span>
-                                    <span class="fw-bold">PKR ${feeAmount.toLocaleString()}</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Month:</span>
-                                    <span>${getMonthName(fee.month)} ${fee.year}</span>
-                                </div>
+                            <div class="fee-detail-row"><span>Amount</span><strong>PKR ${feeAmount.toLocaleString()}</strong></div>
+                            <div class="fee-detail-row"><span>Month</span><strong>${escapeHtml(getMonthName(fee.month))} ${escapeHtml(fee.year || '')}</strong></div>
+                            <div class="d-flex gap-2 mt-3">
+                                <button class="btn btn-outline-primary btn-sm flex-fill" onclick="editFee('${safeId}')"><i class="bi bi-pencil-square me-1"></i>Edit</button>
+                                ${fee.status !== 'Paid' ? `<button class="btn btn-success btn-sm flex-fill" onclick="markAsPaid('${safeId}')"><i class="bi bi-check-circle me-1"></i>Mark paid</button>` : ''}
                             </div>
-                            ${fee.status === 'Unpaid' ? `
-                                <button class="btn btn-success btn-sm w-100" onclick="markAsPaid('${fee.id}')">
-                                    <i class="bi bi-check-circle"></i> Mark as Paid
-                                </button>
-                            ` : ''}
-                        </div>
-                    `;
+                        </div>`;
                     feesList.appendChild(feeCard);
                 });
-                
-                hideLoading();
             }).catch(error => {
                 console.error('Error loading fees:', error);
                 showToast('Error loading fees data', 'danger');
-                hideLoading();
-            });
+            }).finally(hideLoading);
         }
 
         // Load Attendance
@@ -1815,7 +2082,8 @@
                 }
                 allStudents.forEach(student => {
                     const studentId = student.id;
-                    const record = Object.values(records).find(a => a.studentId === studentId && a.date === selectedDate);
+                    const recordEntry = Object.entries(records).find(([key, a]) => a && a.studentId === studentId && a.date === selectedDate);
+                    const record = recordEntry ? {...recordEntry[1], id: recordEntry[1].id || recordEntry[0]} : null;
                     const status = record ? record.status : 'Not Marked';
                     const col = document.createElement('div');
                     col.className = 'col-12 col-md-6 col-xl-4';
@@ -1831,6 +2099,7 @@
                           <button class="btn btn-success" onclick="markStudentAttendance('${studentId}', '${selectedDate}', 'Present')"><i class="bi bi-check-lg"></i> Present</button>
                           <button class="btn btn-danger" onclick="markStudentAttendance('${studentId}', '${selectedDate}', 'Absent')"><i class="bi bi-x-lg"></i> Absent</button>
                         </div>
+                        ${record ? `<button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="editAttendanceRecord('${record.id}')"><i class="bi bi-pencil-square me-1"></i>Edit attendance</button>` : ''}
                       </div>`;
                     attendanceList.appendChild(col);
                 });
@@ -1848,14 +2117,83 @@
                 if (!student) { showToast('Student not found', 'danger'); return; }
                 const snap = await attendanceRef.orderByChild('studentId').equalTo(studentId).once('value');
                 const all = snap.val() || {};
-                const found = Object.entries(all).find(([key, a]) => a.date === date);
-                if (found) await attendanceRef.child(found[0]).update({ status, studentName: student.name, roll: student.roll });
-                else {
+                const matches = Object.entries(all).filter(([key, a]) => a && a.date === date);
+                if (matches.length) {
+                    const [keepKey] = matches[0];
+                    await attendanceRef.child(keepKey).update({ status, studentName: student.name, roll: student.roll, studentId, date });
+                    // Clean duplicate records for the same student/date so attendance is never counted twice.
+                    await Promise.all(matches.slice(1).map(([duplicateKey]) => attendanceRef.child(duplicateKey).remove()));
+                } else {
                     const ref = attendanceRef.push();
                     await ref.set({ id: ref.key, studentId, studentName: student.name, roll: student.roll, status, date });
                 }
                 showToast(`${student.name}: ${status}`, 'success'); loadAttendance();
             } catch (error) { console.error(error); showToast('Could not save attendance. Check Firebase connection.', 'danger'); }
+        }
+
+        // Edit an existing attendance record (status/date) without creating a second record.
+        async function editAttendanceRecord(recordId) {
+            try {
+                const snap = await attendanceRef.child(recordId).once('value');
+                const record = snap.val();
+                if (!record) { showToast('Attendance record not found.', 'warning'); return; }
+                document.getElementById('editAttendanceId').value = recordId;
+                document.getElementById('editAttendanceStudent').value = record.studentName || 'Student';
+                document.getElementById('editAttendanceDate').value = record.date || document.getElementById('attendanceDate').value;
+                document.getElementById('editAttendanceStatus').value = record.status || 'Present';
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('editAttendanceModal')).show();
+            } catch (error) { console.error(error); showToast('Could not load attendance record.', 'danger'); }
+        }
+        async function saveAttendanceEdit() {
+            const id = document.getElementById('editAttendanceId').value;
+            const date = document.getElementById('editAttendanceDate').value;
+            const status = document.getElementById('editAttendanceStatus').value;
+            if (!date || !['Present','Absent'].includes(status)) { showToast('Choose a valid date and status.', 'warning'); return; }
+            try {
+                const currentSnap = await attendanceRef.child(id).once('value');
+                const current = currentSnap.val();
+                if (!current) { showToast('Attendance record not found.', 'warning'); return; }
+                const siblingsSnap = await attendanceRef.orderByChild('studentId').equalTo(current.studentId).once('value');
+                const siblings = Object.entries(siblingsSnap.val() || {}).filter(([key, item]) => key !== id && item && item.date === date);
+                await attendanceRef.child(id).update({date, status});
+                await Promise.all(siblings.map(([duplicateId]) => attendanceRef.child(duplicateId).remove()));
+                bootstrap.Modal.getInstance(document.getElementById('editAttendanceModal'))?.hide();
+                document.getElementById('attendanceDate').value = date;
+                showToast('Attendance record updated.', 'success');
+                loadAttendance();
+            } catch (error) { console.error(error); showToast('Could not update attendance.', 'danger'); }
+        }
+
+        // Edit a fee register entry: amount, month, year and payment status.
+        async function editFee(id) {
+            try {
+                const snap = await feesRef.child(id).once('value');
+                const fee = snap.val();
+                if (!fee) { showToast('Fee record not found.', 'warning'); return; }
+                document.getElementById('editFeeId').value = id;
+                document.getElementById('editFeeStudent').value = fee.studentName || 'Student';
+                document.getElementById('editFeeAmount').value = Number(fee.amount || 0);
+                document.getElementById('editFeeMonth').value = String(fee.month || new Date().getMonth()+1);
+                document.getElementById('editFeeYear').value = Number(fee.year || new Date().getFullYear());
+                document.getElementById('editFeeStatus').value = fee.status || 'Unpaid';
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('editFeeModal')).show();
+            } catch (error) { console.error(error); showToast('Could not load fee record.', 'danger'); }
+        }
+        async function saveFeeEdit() {
+            const id = document.getElementById('editFeeId').value;
+            const amount = Number(document.getElementById('editFeeAmount').value);
+            const month = Number(document.getElementById('editFeeMonth').value);
+            const year = Number(document.getElementById('editFeeYear').value);
+            const status = document.getElementById('editFeeStatus').value;
+            if (!Number.isFinite(amount) || amount < 0 || month < 1 || month > 12 || !Number.isInteger(year) || year < 2000 || year > 2100 || !['Paid','Unpaid'].includes(status)) {
+                showToast('Please enter a valid amount, month, year and status.', 'warning'); return;
+            }
+            try {
+                await feesRef.child(id).update({amount, month, year, status});
+                bootstrap.Modal.getInstance(document.getElementById('editFeeModal'))?.hide();
+                showToast('Fee record updated.', 'success');
+                loadFees(); loadDashboard();
+            } catch (error) { console.error(error); showToast('Could not update fee record. Check Firebase connection.', 'danger'); }
         }
 
         // Add Attendance
@@ -2455,5 +2793,65 @@
             }
         }
     </script>
+
+<script>
+(function(){
+  const root = document.body;
+  let saved = 'dark';
+  try { saved = localStorage.getItem('sirKawishTheme') || 'dark'; } catch(e) {}
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    const btn = document.getElementById('themeToggleBtn');
+    if(btn){
+      const dark = theme === 'dark';
+      btn.innerHTML = '<i class="bi ' + (dark ? 'bi-sun-fill' : 'bi-moon-stars-fill') + '"></i><span>' + (dark ? 'Light' : 'Dark') + '</span>';
+      btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      btn.setAttribute('title', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+    try { localStorage.setItem('sirKawishTheme', theme); } catch(e) {}
+  }
+  function setup(){
+    const group = document.querySelector('.top-bar .d-flex.align-items-center.gap-2');
+    if(group && !document.getElementById('themeToggleBtn')){
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.id = 'themeToggleBtn'; btn.className = 'theme-toggle';
+      btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i><span>Dark</span>';
+      btn.addEventListener('click', function(){ applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
+      group.insertBefore(btn, group.firstChild);
+    }
+    applyTheme(saved);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
+})();
+</script>
+
+
+<script id="beginner-friendly-accessibility">
+(function(){
+  function polishControls(){
+    const sidebar=document.getElementById('sidebar');
+    if(sidebar){
+      sidebar.querySelectorAll('.sidebar-menu .nav-link').forEach(function(link){
+        const label=(link.innerText||'').replace(/\s+/g,' ').trim();
+        if(label){link.title=label;link.setAttribute('aria-label',label);}
+      });
+    }
+    document.querySelectorAll('button').forEach(function(btn){
+      const label=(btn.getAttribute('aria-label')||btn.getAttribute('title')||btn.innerText||'').replace(/\s+/g,' ').trim();
+      if(label && !btn.hasAttribute('aria-label')) btn.setAttribute('aria-label',label);
+      if(label && !btn.hasAttribute('title') && !btn.classList.contains('btn-close')) btn.setAttribute('title',label);
+    });
+    const menu=document.getElementById('mobileMenuBtn');
+    if(menu){menu.setAttribute('aria-label','Open navigation menu');menu.setAttribute('title','Open menu');menu.setAttribute('aria-controls','sidebar');menu.setAttribute('aria-expanded','false');}
+    const sidebarObserver=document.getElementById('sidebar');
+    if(sidebarObserver && menu){
+      const update=function(){const open=sidebarObserver.classList.contains('active');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');menu.setAttribute('title',open?'Close menu':'Open menu');};
+      new MutationObserver(update).observe(sidebarObserver,{attributes:true,attributeFilter:['class']});update();
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',polishControls);else polishControls();
+})();
+</script>
+
 </body>
 </html>
