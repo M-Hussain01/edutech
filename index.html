@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sir Kawish Coaching Center | Management System</title>
+    <title>Sir Kawish Coaching Center | Smart Management Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Firebase SDK -->
@@ -11,20 +11,20 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
         :root {
-            --primary-color: #0d47a1;
-            --secondary-color: #1976d2;
-            --accent-color: #2196f3;
-            --light-color: #e3f2fd;
-            --dark-color: #0d47a1;
-            --success-color: #4caf50;
-            --warning-color: #ff9800;
-            --danger-color: #f44336;
+            --primary-color: #3157d5;
+            --secondary-color: #2445b8;
+            --accent-color: #6c8cff;
+            --light-color: #eef2ff;
+            --dark-color: #172554;
+            --success-color: #16a34a;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
+            background: #f4f6fb;
+            color: #182230;
         }
         
         /* Login Page Styles */
@@ -63,7 +63,7 @@
         }
         
         .sidebar {
-            background-color: var(--dark-color);
+            background: linear-gradient(180deg, #172554 0%, #243b80 100%);
             color: white;
             min-height: 100vh;
             position: fixed;
@@ -112,22 +112,24 @@
         }
         
         .top-bar {
-            background-color: white;
-            border-radius: 10px;
+            background: rgba(255,255,255,.94);
+            border: 1px solid #e8ecf5;
+            border-radius: 16px;
             padding: 15px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 22px;
+            box-shadow: 0 8px 24px rgba(30, 48, 90, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .stats-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
+            background: #fff;
+            border: 1px solid #e8ecf5;
+            border-radius: 16px;
+            padding: 22px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 24px rgba(30, 48, 90, 0.055);
             transition: transform 0.3s;
         }
         
@@ -159,18 +161,19 @@
         }
         
         .card-header {
-            background-color: var(--primary-color);
+            background: linear-gradient(110deg, var(--primary-color), #5979ee);
             color: white;
-            border-radius: 10px 10px 0 0 !important;
-            padding: 15px 20px;
+            border-radius: 16px 16px 0 0 !important;
+            padding: 16px 20px;
         }
         
         .student-card, .course-card, .fee-card, .attendance-card {
-            border-radius: 10px;
-            padding: 15px;
+            border: 1px solid #e8ecf5;
+            border-radius: 14px;
+            padding: 17px;
             margin-bottom: 15px;
             background-color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 18px rgba(30, 48, 90, 0.045);
             transition: all 0.3s;
         }
         
@@ -354,6 +357,25 @@
             }
         }
         
+        .live-clock { display:flex; flex-direction:column; align-items:flex-end; line-height:1.35; min-width:150px; }
+        .live-clock .clock-time { font-size:1.05rem; font-weight:800; color:#172554; font-variant-numeric:tabular-nums; }
+        .live-clock .clock-date { font-size:.78rem; color:#64748b; }
+        .notification-btn { position:relative; border:1px solid #e2e8f0; background:#fff; color:#334155; border-radius:12px; width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; font-size:1.15rem; }
+        .notification-count { position:absolute; top:-5px; right:-5px; min-width:19px; height:19px; padding:0 4px; border-radius:99px; background:#dc2626; color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; border:2px solid #fff; }
+        .reminder-panel { border:1px solid #fed7aa; background:linear-gradient(135deg,#fff7ed,#fff); border-radius:16px; overflow:hidden; box-shadow:0 8px 24px rgba(180,83,9,.06); margin-bottom:22px; }
+        .reminder-panel .reminder-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:17px 20px; border-bottom:1px solid #ffedd5; }
+        .reminder-item { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:13px 20px; border-bottom:1px solid #ffedd5; }
+        .reminder-item:last-child { border-bottom:0; }
+        .reminder-name { font-weight:750; color:#7c2d12; }
+        .reminder-empty { padding:22px; color:#64748b; text-align:center; }
+        .student-avatar { width:44px; height:44px; flex:0 0 44px; display:inline-flex; align-items:center; justify-content:center; border-radius:13px; color:#3157d5; background:#eef2ff; font-size:1.25rem; }
+        .dashboard-container .card { overflow:hidden; border:1px solid #e8ecf5; border-radius:16px; box-shadow:0 8px 24px rgba(30,48,90,.055); }
+        .table thead th { color:#475569; background:#f8faff; border-bottom:1px solid #e2e8f0; font-size:.82rem; text-transform:uppercase; letter-spacing:.035em; }
+        .btn { border-radius:10px; font-weight:600; }
+        .form-control, .form-select { border-radius:10px; border-color:#dbe2ef; padding-top:.62rem; padding-bottom:.62rem; }
+        .top-bar h4 { font-weight:800; letter-spacing:-.02em; }
+        @media (max-width: 575px) { .live-clock { min-width:0; margin-left:auto; margin-right:10px; } .live-clock .clock-time { font-size:.9rem; } .live-clock .clock-date { font-size:.68rem; } .top-bar { padding:12px; gap:8px; } .reminder-item { align-items:flex-start; } }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 250px;
@@ -464,17 +486,29 @@
                     </button>
                     <h4 class="mb-0" id="pageTitle">Dashboard</h4>
                 </div>
-                <div class="d-flex align-items-center">
-                    <div class="me-3 text-end">
-                        <div class="fw-bold">Admin</div>
-                        <small class="text-muted">Administrator</small>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="notification-btn" id="notificationBtn" title="Fee reminders" aria-label="Fee reminders">
+                        <i class="bi bi-bell-fill"></i><span class="notification-count" id="reminderBadge">0</span>
+                    </button>
+                    <div class="live-clock" aria-live="off">
+                        <div class="clock-time" id="liveTime">--:--:--</div>
+                        <div class="clock-date" id="liveDate">Loading date…</div>
                     </div>
-                    <img src="https://picsum.photos/seed/admin/40/40.jpg" alt="Admin" class="rounded-circle">
                 </div>
             </div>
 
             <!-- Dashboard Section -->
             <div id="dashboardSection" class="content-section">
+                <section class="reminder-panel" id="feeReminderPanel" aria-live="polite">
+                    <div class="reminder-heading">
+                        <div>
+                            <h5 class="mb-1"><i class="bi bi-bell-fill text-warning me-2"></i>Fee Payment Reminders</h5>
+                            <small class="text-muted" id="reminderSubtext">Unpaid fees are checked automatically from the 10th of each month.</small>
+                        </div>
+                        <span class="badge text-bg-warning" id="reminderCountLabel">0 pending</span>
+                    </div>
+                    <div id="feeReminderList"><div class="reminder-empty">Fee reminders will appear here after data loads.</div></div>
+                </section>
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
                         <div class="stats-card">
@@ -1077,6 +1111,8 @@
             document.getElementById('attendanceDate').value = today;
             
             // Dashboard data loads only after a successful login.
+            startLiveClock();
+            document.getElementById('notificationBtn').addEventListener('click', handleReminderNotificationClick);
             
             // Event Listeners
             loginForm.addEventListener('submit', handleLogin);
@@ -1156,10 +1192,13 @@
                 loginPage.style.display = 'none';
                 dashboardPage.style.display = 'block';
                 showToast('Welcome to Sir Kawish Coaching Center!', 'success');
-                seedDefaultClasses().then(() => loadDashboard()).catch(error => {
-                    console.error('Could not prepare default classes:', error);
-                    loadDashboard();
-                });
+                seedDefaultClasses()
+                    .then(() => ensureCurrentMonthFeeRecords())
+                    .then(() => loadDashboard())
+                    .catch(error => {
+                        console.error('Could not prepare dashboard data:', error);
+                        loadDashboard();
+                    });
             } else {
                 loginError.textContent = 'Invalid username or password';
             }
@@ -1310,6 +1349,139 @@
             }).catch(error => console.error('Unable to load class fee/timing:', error));
         }
 
+        // Create this month's fee record once per student when the dashboard opens.
+        // This lets the reminder list include returning students, not just newly added students.
+        async function ensureCurrentMonthFeeRecords() {
+            const today = getKarachiCalendarParts();
+            const [studentsSnap, feesSnap, classesSnap] = await Promise.all([
+                studentsRef.once('value'), feesRef.once('value'), coursesRef.once('value')
+            ]);
+            const students = studentsSnap.val() || {};
+            const fees = feesSnap.val() || {};
+            const classes = Object.values(classesSnap.val() || {});
+            const existing = new Set(Object.values(fees).map(fee => `${fee.studentId || ''}|${Number(fee.month || 0)}|${Number(fee.year || 0)}`));
+            const writes = [];
+            Object.entries(students).forEach(([key, student]) => {
+                const studentId = student.id || key;
+                const recordKey = `${studentId}|${today.month}|${today.year}`;
+                if (existing.has(recordKey)) return;
+                const matchedClass = classes.find(item => item && item.name === student.course);
+                const amount = Number(student.monthlyFee ?? (matchedClass ? matchedClass.fee : 0) ?? 0);
+                if (!Number.isFinite(amount) || amount <= 0) return;
+                const feeRef = feesRef.push();
+                writes.push(feeRef.set({
+                    id: feeRef.key, studentId, studentName: student.name || 'Student',
+                    roll: student.roll || '', course: student.course || '', amount,
+                    status: 'Unpaid', month: today.month, year: today.year,
+                    createdAt: new Date().toISOString()
+                }));
+            });
+            await Promise.all(writes);
+        }
+
+        // Live Karachi date/time (updates every second)
+        function startLiveClock() {
+            const update = () => {
+                const now = new Date();
+                const timeText = new Intl.DateTimeFormat('en-PK', { timeZone: 'Asia/Karachi', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(now);
+                const dateText = new Intl.DateTimeFormat('en-PK', { timeZone: 'Asia/Karachi', weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(now);
+                const timeNode = document.getElementById('liveTime');
+                const dateNode = document.getElementById('liveDate');
+                if (timeNode) timeNode.textContent = timeText;
+                if (dateNode) dateNode.textContent = dateText + ' · PKT';
+            };
+            update();
+            setInterval(update, 1000);
+        }
+
+        function getKarachiCalendarParts() {
+            const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+            const result = {};
+            parts.forEach(part => { if (part.type !== 'literal') result[part.type] = Number(part.value); });
+            return result;
+        }
+
+        function getOverdueFeeReminders(fees) {
+            const today = getKarachiCalendarParts();
+            const currentMonthIndex = today.year * 12 + today.month;
+            return Object.values(fees || {}).filter(fee => {
+                if (!fee || fee.status === 'Paid') return false;
+                const feeMonth = Number(fee.month || 0);
+                const feeYear = Number(fee.year || 0);
+                if (!feeMonth || !feeYear) return false;
+                const feeMonthIndex = feeYear * 12 + feeMonth;
+                // Current month's fee is due from the 10th; previous months remain overdue until paid.
+                return feeMonthIndex < currentMonthIndex || (feeMonthIndex === currentMonthIndex && today.day >= 10);
+            }).sort((a, b) => (Number(b.year || 0) * 12 + Number(b.month || 0)) - (Number(a.year || 0) * 12 + Number(a.month || 0)));
+        }
+
+        function renderFeeReminders(fees) {
+            const reminders = getOverdueFeeReminders(fees);
+            const badge = document.getElementById('reminderBadge');
+            const label = document.getElementById('reminderCountLabel');
+            const list = document.getElementById('feeReminderList');
+            if (badge) { badge.textContent = reminders.length > 99 ? '99+' : String(reminders.length); badge.style.display = reminders.length ? 'flex' : 'none'; }
+            if (label) label.textContent = `${reminders.length} pending`;
+            // If browser alerts were previously allowed, show one automatic reminder per day while the app is open.
+            if (reminders.length && 'Notification' in window && Notification.permission === 'granted') {
+                try {
+                    const today = getKarachiCalendarParts();
+                    const key = `sirKawishFeeNotice-${today.year}-${today.month}-${today.day}`;
+                    if (!sessionStorage.getItem(key)) {
+                        new Notification(`Sir Kawish Coaching Center: ${reminders.length} fee reminder(s)`, {
+                            body: reminders.slice(0, 4).map(fee => `${fee.studentName || 'Student'}: PKR ${Number(fee.amount || 0).toLocaleString()}`).join(' | ')
+                        });
+                        sessionStorage.setItem(key, 'shown');
+                    }
+                } catch (notificationError) { console.warn('Browser notification could not be displayed:', notificationError); }
+            }
+            if (!list) return;
+            if (!reminders.length) {
+                list.innerHTML = '<div class="reminder-empty"><i class="bi bi-check-circle-fill text-success me-2"></i>No overdue fee reminders right now.</div>';
+                return;
+            }
+            list.innerHTML = reminders.map(fee => `
+                <div class="reminder-item">
+                    <div>
+                        <div class="reminder-name">${escapeHtml(fee.studentName || 'Student')}</div>
+                        <small class="text-muted">${escapeHtml(fee.course || '')} · ${getMonthName(fee.month)} ${fee.year}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold text-danger">PKR ${Number(fee.amount || 0).toLocaleString()}</div>
+                        <button class="btn btn-sm btn-success mt-1" onclick="markAsPaid('${String(fee.id || '').replace(/'/g, '&#39;')}')"><i class="bi bi-check2-circle me-1"></i>Mark paid</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        async function handleReminderNotificationClick() {
+            try {
+                const snapshot = await feesRef.once('value');
+                const reminders = getOverdueFeeReminders(snapshot.val() || {});
+                renderFeeReminders(snapshot.val() || {});
+                const summary = reminders.length
+                    ? reminders.slice(0, 5).map(fee => `${fee.studentName || 'Student'}: PKR ${Number(fee.amount || 0).toLocaleString()}`).join(' | ')
+                    : 'No overdue fees at the moment.';
+                if ('Notification' in window && window.isSecureContext) {
+                    let permission = Notification.permission;
+                    if (permission === 'default') permission = await Notification.requestPermission();
+                    if (permission === 'granted' && reminders.length) {
+                        new Notification(`Sir Kawish Coaching Center · ${reminders.length} fee reminder(s)`, { body: summary });
+                        showToast('Browser fee reminder sent.', 'success');
+                    } else if (!reminders.length) {
+                        showToast('No overdue fee reminders right now.', 'success');
+                    } else {
+                        showToast('Browser alerts are blocked or not enabled. See the reminder list on Dashboard.', 'warning');
+                    }
+                } else {
+                    showToast(reminders.length ? `${reminders.length} fee reminder(s) are listed on Dashboard.` : 'No overdue fee reminders right now.', reminders.length ? 'warning' : 'success');
+                }
+                document.getElementById('feeReminderPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Unable to check fee reminders:', error);
+                showToast('Could not check fee reminders. Check Firebase connection.', 'danger');
+            }
+        }
+
         // Load Dashboard
         function loadDashboard() {
             showLoading();
@@ -1332,6 +1504,7 @@
             }).then(snapshot => {
                 const fees = snapshot.val() || {};
                 const feesArray = Object.values(fees);
+                renderFeeReminders(fees);
                 
                 // Calculate total fees
                 const totalFeesAmount = feesArray.reduce((sum, fee) => {
@@ -1370,7 +1543,7 @@
                         const studentCard = document.createElement('div');
                         studentCard.className = 'd-flex align-items-center mb-3 p-3 border rounded';
                         studentCard.innerHTML = `
-                            <img src="https://picsum.photos/seed/${student.id}/50/50.jpg" alt="${student.name}" class="rounded-circle me-3">
+                            <span class="student-avatar me-3"><i class="bi bi-person-fill"></i></span>
                             <div>
                                 <h6 class="mb-0">${escapeHtml(student.name)}</h6>
                                 <small class="text-muted">${escapeHtml(student.roll)} | ${escapeHtml(student.course)}</small>
@@ -1403,7 +1576,7 @@
                     studentCard.innerHTML = `
                         <div class="student-card">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="https://picsum.photos/seed/${student.id}/60/60.jpg" alt="${student.name}" class="rounded-circle me-3">
+                                <span class="student-avatar me-3"><i class="bi bi-person-fill"></i></span>
                                 <div>
                                     <h5 class="mb-0">${student.name}</h5>
                                     <p class="mb-0 text-muted">${student.roll}</p>
@@ -1952,6 +2125,7 @@
             }).then(() => {
                 showToast('Fee marked as paid', 'success');
                 loadFees();
+                loadDashboard();
                 hideLoading();
             }).catch(error => {
                 console.error('Error marking fee as paid:', error);
